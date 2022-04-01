@@ -1,0 +1,90 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<!--
+Copyright (c) 2022 Surati
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to read
+the Software only. Permissions is hereby NOT GRANTED to use, copy, modify,
+merge, publish, distribute, sublicense, and/or sell copies of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+-->
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
+  <changeSet author="baudoliver7" id="001-ma">
+    <sql>
+      CREATE TABLE ma_bundle (
+        id bigserial PRIMARY KEY,
+        code character varying(50) NOT NULL,
+        notes character varying(250)
+      );
+
+      CREATE TABLE ma_section (
+        id bigserial PRIMARY KEY,
+        code character varying(50) NOT NULL,
+        name character varying(200) NOT NULL,
+        notes character varying(250)
+      );
+
+      CREATE TABLE ma_title (
+        id bigserial PRIMARY KEY,
+        code character varying(50) NOT NULL,
+        name character varying(200) NOT NULL,
+        notes character varying(250)
+      );
+
+      CREATE TABLE ma_data (
+        id bigint PRIMARY KEY,
+        bundle_id integer NOT NULL,
+        title_id integer NOT NULL,
+        section_id integer NOT NULL,
+        imputation character varying(25),
+        CONSTRAINT ma_data_id_fkey FOREIGN KEY (id) REFERENCES pay_reference_document (id)
+          ON UPDATE CASCADE ON DELETE CASCADE,
+        CONSTRAINT ma_data_bundle_id_fkey FOREIGN KEY (bundle_id) REFERENCES ma_bundle (id)
+          ON UPDATE CASCADE ON DELETE CASCADE,
+        CONSTRAINT ma_data_title_id_fkey FOREIGN KEY (title_id) REFERENCES ma_title (id)
+          ON UPDATE CASCADE ON DELETE CASCADE,
+        CONSTRAINT ma_data_section_id_fkey FOREIGN KEY (section_id) REFERENCES ma_section (id)
+          ON UPDATE CASCADE ON DELETE CASCADE
+      );
+
+      CREATE VIEW ma_document_to_bundle_view AS
+        SELECT t2.id,
+        t2.reference,
+        t2.beneficiary_id,
+        t2.year_of_payment,
+        t2.total_amount,
+        t2.annual_amount_paid,
+        data.imputation,
+        data.bundle_id,
+        data.title_id,
+        data.section_id,
+        (t2.total_amount - t2.annual_amount_paid) AS left_amount,
+        (t2.total_amount &gt; t2.annual_amount_paid) AS is_split
+        FROM (( SELECT t1.id,
+        t1.reference,
+        t1.beneficiary_id,
+        t1.year_of_payment,
+        t1.total_amount,
+        sum(t1.annual_amount_paid) AS annual_amount_paid
+        FROM ( SELECT doc.id,
+        po.beneficiary_id,
+        doc.reference,
+        doc.amount AS total_amount,
+        format((pay.date)::date, 'YYYY') AS year_of_payment,
+        po.amount_to_pay AS annual_amount_paid
+        FROM ((pay_payment_order po
+        LEFT JOIN pay_reference_document doc ON ((doc.id = po.reference_document_id)))
+        LEFT JOIN pay_payment pay ON ((pay.group_id = po.group_id)))
+        WHERE ((pay.status_id)::text = 'ISSUED'::text)) t1
+        GROUP BY t1.id, t1.reference, t1.beneficiary_id, t1.year_of_payment, t1.total_amount) t2
+        LEFT JOIN ma_data data ON ((data.id = t2.id)));
+    </sql>
+  </changeSet>
+</databaseChangeLog>

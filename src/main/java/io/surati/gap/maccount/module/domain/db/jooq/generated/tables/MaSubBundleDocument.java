@@ -13,6 +13,7 @@ import java.util.List;
 
 import org.jooq.Field;
 import org.jooq.ForeignKey;
+import org.jooq.Identity;
 import org.jooq.Name;
 import org.jooq.Record;
 import org.jooq.Row2;
@@ -50,12 +51,12 @@ public class MaSubBundleDocument extends TableImpl<MaSubBundleDocumentRecord> {
     /**
      * The column <code>public.ma_sub_bundle_document.id</code>.
      */
-    public final TableField<MaSubBundleDocumentRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false), this, "");
+    public final TableField<MaSubBundleDocumentRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false).identity(true), this, "");
 
     /**
      * The column <code>public.ma_sub_bundle_document.sub_bundle_id</code>.
      */
-    public final TableField<MaSubBundleDocumentRecord, Integer> SUB_BUNDLE_ID = createField(DSL.name("sub_bundle_id"), SQLDataType.INTEGER.nullable(false), this, "");
+    public final TableField<MaSubBundleDocumentRecord, Long> SUB_BUNDLE_ID = createField(DSL.name("sub_bundle_id"), SQLDataType.BIGINT.nullable(false), this, "");
 
     private MaSubBundleDocument(Name alias, Table<MaSubBundleDocumentRecord> aliased) {
         this(alias, aliased, null);
@@ -93,6 +94,11 @@ public class MaSubBundleDocument extends TableImpl<MaSubBundleDocumentRecord> {
     @Override
     public Schema getSchema() {
         return Public.PUBLIC;
+    }
+
+    @Override
+    public Identity<MaSubBundleDocumentRecord, Long> getIdentity() {
+        return (Identity<MaSubBundleDocumentRecord, Long>) super.getIdentity();
     }
 
     @Override
@@ -150,7 +156,7 @@ public class MaSubBundleDocument extends TableImpl<MaSubBundleDocumentRecord> {
     // -------------------------------------------------------------------------
 
     @Override
-    public Row2<Long, Integer> fieldsRow() {
+    public Row2<Long, Long> fieldsRow() {
         return (Row2) super.fieldsRow();
     }
 }

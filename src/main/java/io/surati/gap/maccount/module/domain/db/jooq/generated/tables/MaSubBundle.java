@@ -14,6 +14,7 @@ import java.util.List;
 
 import org.jooq.Field;
 import org.jooq.ForeignKey;
+import org.jooq.Identity;
 import org.jooq.Name;
 import org.jooq.Record;
 import org.jooq.Row7;
@@ -51,12 +52,12 @@ public class MaSubBundle extends TableImpl<MaSubBundleRecord> {
     /**
      * The column <code>public.ma_sub_bundle.id</code>.
      */
-    public final TableField<MaSubBundleRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false), this, "");
+    public final TableField<MaSubBundleRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false).identity(true), this, "");
 
     /**
      * The column <code>public.ma_sub_bundle.no</code>.
      */
-    public final TableField<MaSubBundleRecord, Integer> NO = createField(DSL.name("no"), SQLDataType.INTEGER.nullable(false), this, "");
+    public final TableField<MaSubBundleRecord, Long> NO = createField(DSL.name("no"), SQLDataType.BIGINT.nullable(false), this, "");
 
     /**
      * The column <code>public.ma_sub_bundle.creation_date</code>.
@@ -66,22 +67,22 @@ public class MaSubBundle extends TableImpl<MaSubBundleRecord> {
     /**
      * The column <code>public.ma_sub_bundle.author_id</code>.
      */
-    public final TableField<MaSubBundleRecord, Integer> AUTHOR_ID = createField(DSL.name("author_id"), SQLDataType.INTEGER.nullable(false), this, "");
+    public final TableField<MaSubBundleRecord, Long> AUTHOR_ID = createField(DSL.name("author_id"), SQLDataType.BIGINT.nullable(false), this, "");
 
     /**
      * The column <code>public.ma_sub_bundle.title_id</code>.
      */
-    public final TableField<MaSubBundleRecord, Integer> TITLE_ID = createField(DSL.name("title_id"), SQLDataType.INTEGER.nullable(false), this, "");
+    public final TableField<MaSubBundleRecord, Long> TITLE_ID = createField(DSL.name("title_id"), SQLDataType.BIGINT.nullable(false), this, "");
 
     /**
      * The column <code>public.ma_sub_bundle.section_id</code>.
      */
-    public final TableField<MaSubBundleRecord, Integer> SECTION_ID = createField(DSL.name("section_id"), SQLDataType.INTEGER.nullable(false), this, "");
+    public final TableField<MaSubBundleRecord, Long> SECTION_ID = createField(DSL.name("section_id"), SQLDataType.BIGINT.nullable(false), this, "");
 
     /**
      * The column <code>public.ma_sub_bundle.bundle_id</code>.
      */
-    public final TableField<MaSubBundleRecord, Integer> BUNDLE_ID = createField(DSL.name("bundle_id"), SQLDataType.INTEGER.nullable(false), this, "");
+    public final TableField<MaSubBundleRecord, Long> BUNDLE_ID = createField(DSL.name("bundle_id"), SQLDataType.BIGINT.nullable(false), this, "");
 
     private MaSubBundle(Name alias, Table<MaSubBundleRecord> aliased) {
         this(alias, aliased, null);
@@ -119,6 +120,11 @@ public class MaSubBundle extends TableImpl<MaSubBundleRecord> {
     @Override
     public Schema getSchema() {
         return Public.PUBLIC;
+    }
+
+    @Override
+    public Identity<MaSubBundleRecord, Long> getIdentity() {
+        return (Identity<MaSubBundleRecord, Long>) super.getIdentity();
     }
 
     @Override
@@ -192,7 +198,7 @@ public class MaSubBundle extends TableImpl<MaSubBundleRecord> {
     // -------------------------------------------------------------------------
 
     @Override
-    public Row7<Long, Integer, LocalDateTime, Integer, Integer, Integer, Integer> fieldsRow() {
+    public Row7<Long, Long, LocalDateTime, Long, Long, Long, Long> fieldsRow() {
         return (Row7) super.fieldsRow();
     }
 }

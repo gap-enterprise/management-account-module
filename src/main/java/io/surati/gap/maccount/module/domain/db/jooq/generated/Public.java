@@ -87,6 +87,8 @@ public class Public extends SchemaImpl {
         return Arrays.<Sequence<?>>asList(
             Sequences.MA_BUNDLE_ID_SEQ,
             Sequences.MA_SECTION_ID_SEQ,
+            Sequences.MA_SUB_BUNDLE_DOCUMENT_ID_SEQ,
+            Sequences.MA_SUB_BUNDLE_ID_SEQ,
             Sequences.MA_TITLE_ID_SEQ);
     }
 

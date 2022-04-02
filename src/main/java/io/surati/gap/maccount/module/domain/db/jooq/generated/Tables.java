@@ -8,6 +8,8 @@ import io.surati.gap.maccount.module.domain.db.jooq.generated.tables.MaBundle;
 import io.surati.gap.maccount.module.domain.db.jooq.generated.tables.MaData;
 import io.surati.gap.maccount.module.domain.db.jooq.generated.tables.MaDocumentToBundleView;
 import io.surati.gap.maccount.module.domain.db.jooq.generated.tables.MaSection;
+import io.surati.gap.maccount.module.domain.db.jooq.generated.tables.MaSubBundle;
+import io.surati.gap.maccount.module.domain.db.jooq.generated.tables.MaSubBundleDocument;
 import io.surati.gap.maccount.module.domain.db.jooq.generated.tables.MaTitle;
 
 
@@ -36,6 +38,16 @@ public class Tables {
      * The table <code>public.ma_section</code>.
      */
     public static final MaSection MA_SECTION = MaSection.MA_SECTION;
+
+    /**
+     * The table <code>public.ma_sub_bundle</code>.
+     */
+    public static final MaSubBundle MA_SUB_BUNDLE = MaSubBundle.MA_SUB_BUNDLE;
+
+    /**
+     * The table <code>public.ma_sub_bundle_document</code>.
+     */
+    public static final MaSubBundleDocument MA_SUB_BUNDLE_DOCUMENT = MaSubBundleDocument.MA_SUB_BUNDLE_DOCUMENT;
 
     /**
      * The table <code>public.ma_title</code>.

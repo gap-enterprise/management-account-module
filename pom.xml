@@ -100,7 +100,7 @@ SOFTWARE.
       <groupId>com.h2database</groupId>
       <artifactId>h2</artifactId>
       <version>1.4.200</version>
-      <scope>runtime</scope>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.hamcrest</groupId>
@@ -143,6 +143,7 @@ SOFTWARE.
       <groupId>com.baudoliver7</groupId>
       <artifactId>lightweight-db</artifactId>
       <version>0.5.1</version>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.baudoliver7</groupId>

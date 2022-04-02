@@ -8,6 +8,8 @@ import io.surati.gap.maccount.module.domain.db.jooq.generated.tables.MaBundle;
 import io.surati.gap.maccount.module.domain.db.jooq.generated.tables.MaData;
 import io.surati.gap.maccount.module.domain.db.jooq.generated.tables.MaDocumentToBundleView;
 import io.surati.gap.maccount.module.domain.db.jooq.generated.tables.MaSection;
+import io.surati.gap.maccount.module.domain.db.jooq.generated.tables.MaSubBundle;
+import io.surati.gap.maccount.module.domain.db.jooq.generated.tables.MaSubBundleDocument;
 import io.surati.gap.maccount.module.domain.db.jooq.generated.tables.MaTitle;
 
 import java.util.Arrays;
@@ -53,6 +55,16 @@ public class Public extends SchemaImpl {
     public final MaSection MA_SECTION = MaSection.MA_SECTION;
 
     /**
+     * The table <code>public.ma_sub_bundle</code>.
+     */
+    public final MaSubBundle MA_SUB_BUNDLE = MaSubBundle.MA_SUB_BUNDLE;
+
+    /**
+     * The table <code>public.ma_sub_bundle_document</code>.
+     */
+    public final MaSubBundleDocument MA_SUB_BUNDLE_DOCUMENT = MaSubBundleDocument.MA_SUB_BUNDLE_DOCUMENT;
+
+    /**
      * The table <code>public.ma_title</code>.
      */
     public final MaTitle MA_TITLE = MaTitle.MA_TITLE;
@@ -85,6 +97,8 @@ public class Public extends SchemaImpl {
             MaData.MA_DATA,
             MaDocumentToBundleView.MA_DOCUMENT_TO_BUNDLE_VIEW,
             MaSection.MA_SECTION,
+            MaSubBundle.MA_SUB_BUNDLE,
+            MaSubBundleDocument.MA_SUB_BUNDLE_DOCUMENT,
             MaTitle.MA_TITLE);
     }
 }

@@ -7,10 +7,14 @@ package io.surati.gap.maccount.module.domain.db.jooq.generated;
 import io.surati.gap.maccount.module.domain.db.jooq.generated.tables.MaBundle;
 import io.surati.gap.maccount.module.domain.db.jooq.generated.tables.MaData;
 import io.surati.gap.maccount.module.domain.db.jooq.generated.tables.MaSection;
+import io.surati.gap.maccount.module.domain.db.jooq.generated.tables.MaSubBundle;
+import io.surati.gap.maccount.module.domain.db.jooq.generated.tables.MaSubBundleDocument;
 import io.surati.gap.maccount.module.domain.db.jooq.generated.tables.MaTitle;
 import io.surati.gap.maccount.module.domain.db.jooq.generated.tables.records.MaBundleRecord;
 import io.surati.gap.maccount.module.domain.db.jooq.generated.tables.records.MaDataRecord;
 import io.surati.gap.maccount.module.domain.db.jooq.generated.tables.records.MaSectionRecord;
+import io.surati.gap.maccount.module.domain.db.jooq.generated.tables.records.MaSubBundleDocumentRecord;
+import io.surati.gap.maccount.module.domain.db.jooq.generated.tables.records.MaSubBundleRecord;
 import io.surati.gap.maccount.module.domain.db.jooq.generated.tables.records.MaTitleRecord;
 
 import org.jooq.ForeignKey;
@@ -34,6 +38,8 @@ public class Keys {
     public static final UniqueKey<MaBundleRecord> MA_BUNDLE_PKEY = Internal.createUniqueKey(MaBundle.MA_BUNDLE, DSL.name("ma_bundle_pkey"), new TableField[] { MaBundle.MA_BUNDLE.ID }, true);
     public static final UniqueKey<MaDataRecord> MA_DATA_PKEY = Internal.createUniqueKey(MaData.MA_DATA, DSL.name("ma_data_pkey"), new TableField[] { MaData.MA_DATA.ID }, true);
     public static final UniqueKey<MaSectionRecord> MA_SECTION_PKEY = Internal.createUniqueKey(MaSection.MA_SECTION, DSL.name("ma_section_pkey"), new TableField[] { MaSection.MA_SECTION.ID }, true);
+    public static final UniqueKey<MaSubBundleRecord> MA_SUB_BUNDLE_PKEY = Internal.createUniqueKey(MaSubBundle.MA_SUB_BUNDLE, DSL.name("ma_sub_bundle_pkey"), new TableField[] { MaSubBundle.MA_SUB_BUNDLE.ID }, true);
+    public static final UniqueKey<MaSubBundleDocumentRecord> MA_SUB_BUNDLE_DOCUMENT_PKEY = Internal.createUniqueKey(MaSubBundleDocument.MA_SUB_BUNDLE_DOCUMENT, DSL.name("ma_sub_bundle_document_pkey"), new TableField[] { MaSubBundleDocument.MA_SUB_BUNDLE_DOCUMENT.ID }, true);
     public static final UniqueKey<MaTitleRecord> MA_TITLE_PKEY = Internal.createUniqueKey(MaTitle.MA_TITLE, DSL.name("ma_title_pkey"), new TableField[] { MaTitle.MA_TITLE.ID }, true);
 
     // -------------------------------------------------------------------------
@@ -43,4 +49,8 @@ public class Keys {
     public static final ForeignKey<MaDataRecord, MaBundleRecord> MA_DATA__MA_DATA_BUNDLE_ID_FKEY = Internal.createForeignKey(MaData.MA_DATA, DSL.name("ma_data_bundle_id_fkey"), new TableField[] { MaData.MA_DATA.BUNDLE_ID }, Keys.MA_BUNDLE_PKEY, new TableField[] { MaBundle.MA_BUNDLE.ID }, true);
     public static final ForeignKey<MaDataRecord, MaSectionRecord> MA_DATA__MA_DATA_SECTION_ID_FKEY = Internal.createForeignKey(MaData.MA_DATA, DSL.name("ma_data_section_id_fkey"), new TableField[] { MaData.MA_DATA.SECTION_ID }, Keys.MA_SECTION_PKEY, new TableField[] { MaSection.MA_SECTION.ID }, true);
     public static final ForeignKey<MaDataRecord, MaTitleRecord> MA_DATA__MA_DATA_TITLE_ID_FKEY = Internal.createForeignKey(MaData.MA_DATA, DSL.name("ma_data_title_id_fkey"), new TableField[] { MaData.MA_DATA.TITLE_ID }, Keys.MA_TITLE_PKEY, new TableField[] { MaTitle.MA_TITLE.ID }, true);
+    public static final ForeignKey<MaSubBundleRecord, MaBundleRecord> MA_SUB_BUNDLE__MA_SUB_BUNDLE_BUNDLE_ID_FKEY = Internal.createForeignKey(MaSubBundle.MA_SUB_BUNDLE, DSL.name("ma_sub_bundle_bundle_id_fkey"), new TableField[] { MaSubBundle.MA_SUB_BUNDLE.BUNDLE_ID }, Keys.MA_BUNDLE_PKEY, new TableField[] { MaBundle.MA_BUNDLE.ID }, true);
+    public static final ForeignKey<MaSubBundleRecord, MaSectionRecord> MA_SUB_BUNDLE__MA_SUB_BUNDLE_SECTION_ID_FKEY = Internal.createForeignKey(MaSubBundle.MA_SUB_BUNDLE, DSL.name("ma_sub_bundle_section_id_fkey"), new TableField[] { MaSubBundle.MA_SUB_BUNDLE.SECTION_ID }, Keys.MA_SECTION_PKEY, new TableField[] { MaSection.MA_SECTION.ID }, true);
+    public static final ForeignKey<MaSubBundleRecord, MaTitleRecord> MA_SUB_BUNDLE__MA_SUB_BUNDLE_TITLE_ID_FKEY = Internal.createForeignKey(MaSubBundle.MA_SUB_BUNDLE, DSL.name("ma_sub_bundle_title_id_fkey"), new TableField[] { MaSubBundle.MA_SUB_BUNDLE.TITLE_ID }, Keys.MA_TITLE_PKEY, new TableField[] { MaTitle.MA_TITLE.ID }, true);
+    public static final ForeignKey<MaSubBundleDocumentRecord, MaSubBundleRecord> MA_SUB_BUNDLE_DOCUMENT__MA_SUB_BUNDLE_DOCUMENT_SUB_BUNDLE_ID_FKEY = Internal.createForeignKey(MaSubBundleDocument.MA_SUB_BUNDLE_DOCUMENT, DSL.name("ma_sub_bundle_document_sub_bundle_id_fkey"), new TableField[] { MaSubBundleDocument.MA_SUB_BUNDLE_DOCUMENT.SUB_BUNDLE_ID }, Keys.MA_SUB_BUNDLE_PKEY, new TableField[] { MaSubBundle.MA_SUB_BUNDLE.ID }, true);
 }

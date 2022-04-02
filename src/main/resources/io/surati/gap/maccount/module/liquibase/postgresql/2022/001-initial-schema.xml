@@ -85,6 +85,33 @@ SOFTWARE.
         WHERE ((pay.status_id)::text = 'ISSUED'::text)) t1
         GROUP BY t1.id, t1.reference, t1.beneficiary_id, t1.year_of_payment, t1.total_amount) t2
         LEFT JOIN ma_data data ON ((data.id = t2.id)));
+
+		CREATE TABLE ma_sub_bundle (
+	        id bigint PRIMARY KEY,
+	        no integer NOT NULL,
+			creation_date TIMESTAMP WITHOUT TIME ZONE NOT NULL,
+			author_id integer NOT NULL,
+	        title_id integer NOT NULL,
+	        section_id integer NOT NULL,
+			bundle_id integer NOT NULL,
+	        CONSTRAINT ma_sub_bundle_author_id_fkey FOREIGN KEY (author_id) REFERENCES ad_user (id)
+	          ON UPDATE CASCADE ON DELETE CASCADE,
+	        CONSTRAINT ma_sub_bundle_bundle_id_fkey FOREIGN KEY (bundle_id) REFERENCES ma_bundle (id)
+	          ON UPDATE CASCADE ON DELETE CASCADE,
+	        CONSTRAINT ma_sub_bundle_title_id_fkey FOREIGN KEY (title_id) REFERENCES ma_title (id)
+	          ON UPDATE CASCADE ON DELETE CASCADE,
+	        CONSTRAINT ma_sub_bundle_section_id_fkey FOREIGN KEY (section_id) REFERENCES ma_section (id)
+	          ON UPDATE CASCADE ON DELETE CASCADE
+	      );
+
+		  CREATE TABLE ma_sub_bundle_document (
+	        id bigint PRIMARY KEY,
+	        sub_bundle_id integer NOT NULL,
+	        CONSTRAINT ma_sub_bundle_document_id_fkey FOREIGN KEY (id) REFERENCES pay_reference_document (id)
+	          ON UPDATE CASCADE ON DELETE CASCADE,
+	        CONSTRAINT ma_sub_bundle_document_sub_bundle_id_fkey FOREIGN KEY (sub_bundle_id) REFERENCES ma_sub_bundle (id)
+	          ON UPDATE CASCADE ON DELETE CASCADE
+	      );
     </sql>
   </changeSet>
 </databaseChangeLog>

@@ -13,7 +13,6 @@ import java.util.List;
 
 import org.jooq.Field;
 import org.jooq.ForeignKey;
-import org.jooq.Identity;
 import org.jooq.Name;
 import org.jooq.Record;
 import org.jooq.Row2;
@@ -21,7 +20,6 @@ import org.jooq.Schema;
 import org.jooq.Table;
 import org.jooq.TableField;
 import org.jooq.TableOptions;
-import org.jooq.UniqueKey;
 import org.jooq.impl.DSL;
 import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;
@@ -51,7 +49,7 @@ public class MaSubBundleDocument extends TableImpl<MaSubBundleDocumentRecord> {
     /**
      * The column <code>public.ma_sub_bundle_document.id</code>.
      */
-    public final TableField<MaSubBundleDocumentRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false).identity(true), this, "");
+    public final TableField<MaSubBundleDocumentRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false), this, "");
 
     /**
      * The column <code>public.ma_sub_bundle_document.sub_bundle_id</code>.
@@ -94,21 +92,6 @@ public class MaSubBundleDocument extends TableImpl<MaSubBundleDocumentRecord> {
     @Override
     public Schema getSchema() {
         return Public.PUBLIC;
-    }
-
-    @Override
-    public Identity<MaSubBundleDocumentRecord, Long> getIdentity() {
-        return (Identity<MaSubBundleDocumentRecord, Long>) super.getIdentity();
-    }
-
-    @Override
-    public UniqueKey<MaSubBundleDocumentRecord> getPrimaryKey() {
-        return Keys.MA_SUB_BUNDLE_DOCUMENT_PKEY;
-    }
-
-    @Override
-    public List<UniqueKey<MaSubBundleDocumentRecord>> getKeys() {
-        return Arrays.<UniqueKey<MaSubBundleDocumentRecord>>asList(Keys.MA_SUB_BUNDLE_DOCUMENT_PKEY);
     }
 
     @Override

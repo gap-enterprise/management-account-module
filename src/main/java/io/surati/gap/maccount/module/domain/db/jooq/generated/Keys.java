@@ -39,7 +39,6 @@ public class Keys {
     public static final UniqueKey<MaDataRecord> MA_DATA_PKEY = Internal.createUniqueKey(MaData.MA_DATA, DSL.name("ma_data_pkey"), new TableField[] { MaData.MA_DATA.ID }, true);
     public static final UniqueKey<MaSectionRecord> MA_SECTION_PKEY = Internal.createUniqueKey(MaSection.MA_SECTION, DSL.name("ma_section_pkey"), new TableField[] { MaSection.MA_SECTION.ID }, true);
     public static final UniqueKey<MaSubBundleRecord> MA_SUB_BUNDLE_PKEY = Internal.createUniqueKey(MaSubBundle.MA_SUB_BUNDLE, DSL.name("ma_sub_bundle_pkey"), new TableField[] { MaSubBundle.MA_SUB_BUNDLE.ID }, true);
-    public static final UniqueKey<MaSubBundleDocumentRecord> MA_SUB_BUNDLE_DOCUMENT_PKEY = Internal.createUniqueKey(MaSubBundleDocument.MA_SUB_BUNDLE_DOCUMENT, DSL.name("ma_sub_bundle_document_pkey"), new TableField[] { MaSubBundleDocument.MA_SUB_BUNDLE_DOCUMENT.ID }, true);
     public static final UniqueKey<MaTitleRecord> MA_TITLE_PKEY = Internal.createUniqueKey(MaTitle.MA_TITLE, DSL.name("ma_title_pkey"), new TableField[] { MaTitle.MA_TITLE.ID }, true);
 
     // -------------------------------------------------------------------------

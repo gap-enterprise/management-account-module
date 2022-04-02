@@ -105,7 +105,7 @@ SOFTWARE.
 	      );
 
 		  CREATE TABLE ma_sub_bundle_document (
-	        id bigserial PRIMARY KEY,
+	        id bigint NOT NULL,
 	        sub_bundle_id bigint NOT NULL,
 	        CONSTRAINT ma_sub_bundle_document_id_fkey FOREIGN KEY (id) REFERENCES pay_reference_document (id)
 	          ON UPDATE CASCADE ON DELETE CASCADE,

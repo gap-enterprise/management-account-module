@@ -18,21 +18,15 @@
 package io.surati.gap.maccount.module.domain.api;
 
 /**
- * All SubBundles.
+ * List of SubBundles.
  * @since 3.0
  */
 public interface SubBundles {
 
     /**
-     * Get a sub bundle.
+     * Get a sub-bundle.
      * @param id Identifier
-     * @return Title
+     * @return Sub-bundle
      */
 	SubBundle get(Long id);
-
-    /**
-     * Iterate them all.
-     * @return List of SubBundleDocument
-     */
-    Iterable<SubBundleDocument> iterate();
 }

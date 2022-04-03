@@ -25,14 +25,14 @@ import io.surati.gap.payment.base.db.jooq.generated.tables.PayReferenceDocument;
 public interface SubBundleDocument {
 
     /**
-     * Get ReferenceDocument.
+     * Get Reference-document.
      * @return reference
      */
 	PayReferenceDocument reference_document();
 
     /**
-     * Get SubBundle.
-     * @return order number
+     * Get Sub-bundle.
+     * @return order Sub-bundle
      */
 	SubBundle sub_bundle();
 }

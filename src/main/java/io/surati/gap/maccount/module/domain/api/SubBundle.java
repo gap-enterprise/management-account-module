@@ -17,8 +17,7 @@
 package io.surati.gap.maccount.module.domain.api;
 
 import java.time.LocalDateTime;
-
-import io.surati.gap.admin.base.db.jooq.generated.tables.AdUser;
+import io.surati.gap.admin.base.api.User;
 
 /**
  * SubBundle.
@@ -42,30 +41,35 @@ public interface SubBundle {
 	 * Get date of sub bundlde.
 	 * @return Datetime
 	 */
-	LocalDateTime creation_date();
+	LocalDateTime creationDate();
 
     /**
      * Get author.
      * @return login
      */
-	AdUser author();
+	User author();
 
     /**
      * Get title.
-     * @return code
+     * @return title
      */
 	Title title();
 
     /**
      * Get section.
-     * @return code
+     * @return section
      */
 	Section section();
 
     /**
      * Get bundle.
-     * @return code
+     * @return bundle
      */
 	Bundle bundle();
-	
+
+    /**
+     * Iterate them all.
+     * @return List of SubBundleDocument
+     */
+    Iterable<SubBundleDocument> iterate();
 }

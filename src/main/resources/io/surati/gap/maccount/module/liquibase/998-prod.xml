@@ -16,8 +16,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 -->
 <databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
-  <include file="io/surati/gap/payment/base/liquibase/db.oracle.changelog-master.xml"/>
-  <includeAll path="io/surati/gap/maccount/module/liquibase/oracle/2022"/>
-  <include file="io/surati/gap/maccount/module/liquibase/998-prod.xml"/>
-  <include file="io/surati/gap/maccount/module/liquibase/999-demo.xml"/>
+  <changeSet author="baudoliver7" id="998" context="prod">
+    <sql>
+        SELECT * FROM ma_title where id=0;
+    </sql>
+  </changeSet>
 </databaseChangeLog>

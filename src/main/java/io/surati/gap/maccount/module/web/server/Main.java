@@ -31,6 +31,7 @@ import com.zaxxer.hikari.HikariDataSource;
 import io.surati.gap.admin.module.AdminModule;
 import io.surati.gap.maccount.module.ManagementAccountModule;
 import io.surati.gap.maccount.module.domain.db.MaDatabaseBuiltWithLiquibase;
+import io.surati.gap.maccount.module.domain.db.MaDemoDatabase;
 import io.surati.gap.payment.base.module.PaymentBaseModule;
 import io.surati.gap.web.base.FkMimes;
 import io.surati.gap.web.base.TkSafe;
@@ -86,7 +87,7 @@ public final class Main {
 		configdb.setMaximumPoolSize(psize);
 		final DataSource source = new HikariDataSource(configdb);
 		final Database database = new BasicDatabase(
-			new MaDatabaseBuiltWithLiquibase(source)
+			new MaDemoDatabase(source)
 		);
 		AdminModule.setup();
 		PaymentBaseModule.setup();

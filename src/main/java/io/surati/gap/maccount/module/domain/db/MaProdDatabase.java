@@ -16,42 +16,24 @@
  */
 package io.surati.gap.maccount.module.domain.db;
 
-import com.baudoliver7.easy.liquibase4j.gen.UncheckedLiquibaseDataSource;
 import com.baudoliver7.jdbc.toolset.wrapper.DataSourceWrap;
 import javax.sql.DataSource;
 
 /**
- * Data source decorator that automatically build module database with liquibase.
+ * Database with prod data.
  *
  * @since 0.1
  */
-public final class MaDatabaseBuiltWithLiquibase extends DataSourceWrap {
-
-    /**
-     * Changelog master file name.
-     */
-    public static final String CHANGELOG_MASTER_FILENAME =
-        "io/surati/gap/maccount/module/liquibase/db.postgresql.changelog-master.xml";
+public final class MaProdDatabase extends DataSourceWrap {
 
     /**
      * Ctor.
      * @param src Data source
      */
-    public MaDatabaseBuiltWithLiquibase(final DataSource src) {
-        this(src, "base");
-    }
-
-    /**
-     * Ctor.
-     * @param src Data source
-     * @param contexts Contexts
-     */
-    public MaDatabaseBuiltWithLiquibase(final DataSource src, final String contexts) {
+    public MaProdDatabase(final DataSource src) {
         super(
-            new UncheckedLiquibaseDataSource(
-                src,
-                MaDatabaseBuiltWithLiquibase.CHANGELOG_MASTER_FILENAME,
-                contexts
+            new MaDatabaseBuiltWithLiquibase(
+                src, "base,prod"
             )
         );
     }

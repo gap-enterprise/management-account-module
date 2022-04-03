@@ -148,12 +148,12 @@ SOFTWARE.
     <dependency>
       <groupId>com.baudoliver7</groupId>
       <artifactId>easy-liquibase4j</artifactId>
-      <version>0.1.0</version>
+      <version>0.2.0</version>
     </dependency>
     <dependency>
       <groupId>io.surati.gap</groupId>
       <artifactId>database-utils</artifactId>
-      <version>0.5.0</version>
+      <version>0.5.1</version>
     </dependency>
     <dependency>
       <groupId>org.llorllale</groupId>
@@ -202,22 +202,22 @@ SOFTWARE.
     <dependency>
       <groupId>io.surati.gap</groupId>
       <artifactId>admin-base</artifactId>
-      <version>0.4.4</version>
+      <version>0.5.0</version>
     </dependency>
     <dependency>
       <groupId>io.surati.gap</groupId>
       <artifactId>payment-base</artifactId>
-      <version>0.1.4</version>
+      <version>0.2.0</version>
     </dependency>
     <dependency>
       <groupId>io.surati.gap</groupId>
       <artifactId>admin-module</artifactId>
-      <version>0.4.4</version>
+      <version>0.4.5</version>
     </dependency>
     <dependency>
       <groupId>io.surati.gap</groupId>
       <artifactId>payment-base-module</artifactId>
-      <version>0.1.1</version>
+      <version>0.1.2</version>
     </dependency>
   </dependencies>
   <build>

@@ -35,7 +35,7 @@ public interface SubBundle {
      * Order number.
      * @return order
      */
-	Long no();
+	Long order();
 	
 	/**
 	 * Get date of sub bundlde.

@@ -23,7 +23,7 @@ package io.surati.gap.maccount.module.domain.api;
 public interface SubBundleDocument {
 
     /**
-     * Get Reference-document.
+     * Get identifier.
      * @return Number
      */
 	Long id();

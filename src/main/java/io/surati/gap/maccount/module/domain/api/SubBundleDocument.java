@@ -16,23 +16,21 @@
  */
 package io.surati.gap.maccount.module.domain.api;
 
-import io.surati.gap.payment.base.db.jooq.generated.tables.PayReferenceDocument;
-
 /**
- * SubBundleDocument.
- * @since 3.0
+ * Sub-bundle document.
+ * @since 0.5
  */
 public interface SubBundleDocument {
 
     /**
      * Get Reference-document.
-     * @return reference
+     * @return Number
      */
-	PayReferenceDocument reference_document();
+	Long id();
 
     /**
      * Get Sub-bundle.
-     * @return order Sub-bundle
+     * @return Sub-bundle
      */
-	SubBundle sub_bundle();
+	SubBundle subBundle();
 }

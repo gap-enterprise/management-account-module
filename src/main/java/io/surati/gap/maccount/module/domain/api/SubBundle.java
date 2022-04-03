@@ -20,8 +20,8 @@ import java.time.LocalDateTime;
 import io.surati.gap.admin.base.api.User;
 
 /**
- * SubBundle.
- * @since 3.0
+ * Sub-bundle.
+ * @since 0.5
  */
 public interface SubBundle {
 
@@ -33,7 +33,7 @@ public interface SubBundle {
 
     /**
      * Order number.
-     * @return Number
+     * @return order
      */
 	Long no();
 	

@@ -19,7 +19,7 @@ package io.surati.gap.maccount.module.domain.api;
 
 /**
  * List of SubBundles.
- * @since 3.0
+ * @since 0.5
  */
 public interface SubBundles {
 

@@ -36,11 +36,6 @@ import io.surati.gap.maccount.module.domain.db.jooq.generated.tables.records.MaS
 public final class DbSubBundle implements SubBundle {
 
 	/**
-	 * Table of Sub-bundle.
-	 */
-	private static final MaSubBundle MA_SUB_BUNDLE = MaSubBundle.MA_SUB_BUNDLE;
-
-	/**
 	 * Record.
 	 */
 	private final MaSubBundleRecord record;
@@ -57,7 +52,7 @@ public final class DbSubBundle implements SubBundle {
 	 */
 	public DbSubBundle(final DataSource source, final Long id) {
 		this.record = new JooqContext(source)
-			.fetchOne(MA_SUB_BUNDLE, MA_SUB_BUNDLE.ID.eq(id));
+			.fetchOne(MaSubBundle.MA_SUB_BUNDLE, MaSubBundle.MA_SUB_BUNDLE.ID.eq(id));
 		this.src = source;
 	}
 	

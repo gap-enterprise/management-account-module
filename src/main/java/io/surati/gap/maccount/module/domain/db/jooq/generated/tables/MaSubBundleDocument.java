@@ -56,7 +56,7 @@ public class MaSubBundleDocument extends TableImpl<MaSubBundleDocumentRecord> {
     /**
      * The column <code>public.ma_sub_bundle_document.no</code>.
      */
-    public final TableField<MaSubBundleDocumentRecord, Long> NO = createField(DSL.name("no"), SQLDataType.BIGINT.nullable(false), this, "");
+    public final TableField<MaSubBundleDocumentRecord, Integer> NO = createField(DSL.name("no"), SQLDataType.INTEGER.nullable(false), this, "");
 
     /**
      * The column <code>public.ma_sub_bundle_document.reference_document_id</code>.
@@ -186,7 +186,7 @@ public class MaSubBundleDocument extends TableImpl<MaSubBundleDocumentRecord> {
     // -------------------------------------------------------------------------
 
     @Override
-    public Row8<Long, Long, Long, Short, Double, Double, Double, Long> fieldsRow() {
+    public Row8<Long, Integer, Long, Short, Double, Double, Double, Long> fieldsRow() {
         return (Row8) super.fieldsRow();
     }
 }

@@ -18,28 +18,27 @@ package io.surati.gap.maccount.module.domain.db;
 
 import java.time.LocalDateTime;
 import javax.sql.DataSource;
-import org.jooq.impl.DSL;
-import org.jooq.impl.DefaultConfiguration;
 import io.surati.gap.admin.base.api.User;
 import io.surati.gap.admin.base.db.DbUser;
+import io.surati.gap.database.utils.jooq.JooqContext;
 import io.surati.gap.maccount.module.domain.api.Bundle;
 import io.surati.gap.maccount.module.domain.api.Section;
 import io.surati.gap.maccount.module.domain.api.SubBundle;
 import io.surati.gap.maccount.module.domain.api.SubBundleDocument;
 import io.surati.gap.maccount.module.domain.api.Title;
+import io.surati.gap.maccount.module.domain.db.jooq.generated.tables.MaSubBundle;
 import io.surati.gap.maccount.module.domain.db.jooq.generated.tables.records.MaSubBundleRecord;
 
 /**
  * Sub-bundle from database.
- * @since 0.5
+ * @since 0.2
  */
 public final class DbSubBundle implements SubBundle {
 
 	/**
-	 * Table of log events.
+	 * Table of Sub-bundle.
 	 */
-	private static final io.surati.gap.maccount.module.domain.db.jooq.generated.tables.MaSubBundle MA_SUB_BUNDLE = 
-			io.surati.gap.maccount.module.domain.db.jooq.generated.tables.MaSubBundle.MA_SUB_BUNDLE;
+	private static final MaSubBundle MA_SUB_BUNDLE = MaSubBundle.MA_SUB_BUNDLE;
 
 	/**
 	 * Record.
@@ -49,7 +48,7 @@ public final class DbSubBundle implements SubBundle {
 	/**
 	 * Data source.
 	 */
-	private final DataSource source;
+	private final DataSource src;
 
 	/**
 	 * Ctor.
@@ -57,9 +56,9 @@ public final class DbSubBundle implements SubBundle {
 	 * @param id Identifier
 	 */
 	public DbSubBundle(final DataSource source, final Long id) {
-		this.record = DSL.using(new DefaultConfiguration().set(source))
+		this.record = new JooqContext(source)
 			.fetchOne(MA_SUB_BUNDLE, MA_SUB_BUNDLE.ID.eq(id));
-		this.source = source;
+		this.src = source;
 	}
 	
     @Override
@@ -79,22 +78,22 @@ public final class DbSubBundle implements SubBundle {
     
     @Override
 	public User author() {
-		return new DbUser(source, this.record.getAuthorId());
+		return new DbUser(this.src, this.record.getAuthorId());
 	}
     
     @Override
     public Title title() {
-    	return new DbTitle(source, this.record.getTitleId());
+    	return new DbTitle(this.src, this.record.getTitleId());
     }
     
     @Override
     public Section section() {
-    	return new DbSection(source, this.record.getSectionId());
+    	return new DbSection(this.src, this.record.getSectionId());
     }
     
     @Override
     public Bundle bundle() {
-    	return new DbBundle(source, this.record.getBundleId());
+    	return new DbBundle(this.src, this.record.getBundleId());
     }
     
     @Override

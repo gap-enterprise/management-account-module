@@ -105,9 +105,15 @@ SOFTWARE.
 	      );
 
 		  CREATE TABLE ma_sub_bundle_document (
-	        id bigint NOT NULL,
-	        sub_bundle_id bigint NOT NULL,
-	        CONSTRAINT ma_sub_bundle_document_id_fkey FOREIGN KEY (id) REFERENCES pay_reference_document (id)
+	        id bigserial PRIMARY KEY,
+	        no integer NOT NULL,
+			reference_document_id bigint NOT NULL,
+			year smallint NOT NULL,
+			amount_paid_before DOUBLE PRECISION NOT NULL,
+			annual_amount_paid  DOUBLE PRECISION NOT NULL,
+			amount_left  DOUBLE PRECISION NOT NULL,
+			sub_bundle_id bigint, 
+	        CONSTRAINT ma_sub_bundle_document_reference_document_id_fkey FOREIGN KEY (reference_document_id) REFERENCES pay_reference_document (id)
 	          ON UPDATE CASCADE ON DELETE CASCADE,
 	        CONSTRAINT ma_sub_bundle_document_sub_bundle_id_fkey FOREIGN KEY (sub_bundle_id) REFERENCES ma_sub_bundle (id)
 	          ON UPDATE CASCADE ON DELETE CASCADE

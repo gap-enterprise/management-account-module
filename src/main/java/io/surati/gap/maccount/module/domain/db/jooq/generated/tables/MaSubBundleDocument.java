@@ -13,13 +13,15 @@ import java.util.List;
 
 import org.jooq.Field;
 import org.jooq.ForeignKey;
+import org.jooq.Identity;
 import org.jooq.Name;
 import org.jooq.Record;
-import org.jooq.Row2;
+import org.jooq.Row8;
 import org.jooq.Schema;
 import org.jooq.Table;
 import org.jooq.TableField;
 import org.jooq.TableOptions;
+import org.jooq.UniqueKey;
 import org.jooq.impl.DSL;
 import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;
@@ -49,12 +51,42 @@ public class MaSubBundleDocument extends TableImpl<MaSubBundleDocumentRecord> {
     /**
      * The column <code>public.ma_sub_bundle_document.id</code>.
      */
-    public final TableField<MaSubBundleDocumentRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false), this, "");
+    public final TableField<MaSubBundleDocumentRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false).identity(true), this, "");
+
+    /**
+     * The column <code>public.ma_sub_bundle_document.no</code>.
+     */
+    public final TableField<MaSubBundleDocumentRecord, Integer> NO = createField(DSL.name("no"), SQLDataType.INTEGER.nullable(false), this, "");
+
+    /**
+     * The column <code>public.ma_sub_bundle_document.reference_document_id</code>.
+     */
+    public final TableField<MaSubBundleDocumentRecord, Long> REFERENCE_DOCUMENT_ID = createField(DSL.name("reference_document_id"), SQLDataType.BIGINT.nullable(false), this, "");
+
+    /**
+     * The column <code>public.ma_sub_bundle_document.year</code>.
+     */
+    public final TableField<MaSubBundleDocumentRecord, Short> YEAR = createField(DSL.name("year"), SQLDataType.SMALLINT.nullable(false), this, "");
+
+    /**
+     * The column <code>public.ma_sub_bundle_document.amount_paid_before</code>.
+     */
+    public final TableField<MaSubBundleDocumentRecord, Double> AMOUNT_PAID_BEFORE = createField(DSL.name("amount_paid_before"), SQLDataType.DOUBLE.nullable(false), this, "");
+
+    /**
+     * The column <code>public.ma_sub_bundle_document.annual_amount_paid</code>.
+     */
+    public final TableField<MaSubBundleDocumentRecord, Double> ANNUAL_AMOUNT_PAID = createField(DSL.name("annual_amount_paid"), SQLDataType.DOUBLE.nullable(false), this, "");
+
+    /**
+     * The column <code>public.ma_sub_bundle_document.amount_left</code>.
+     */
+    public final TableField<MaSubBundleDocumentRecord, Double> AMOUNT_LEFT = createField(DSL.name("amount_left"), SQLDataType.DOUBLE.nullable(false), this, "");
 
     /**
      * The column <code>public.ma_sub_bundle_document.sub_bundle_id</code>.
      */
-    public final TableField<MaSubBundleDocumentRecord, Long> SUB_BUNDLE_ID = createField(DSL.name("sub_bundle_id"), SQLDataType.BIGINT.nullable(false), this, "");
+    public final TableField<MaSubBundleDocumentRecord, Long> SUB_BUNDLE_ID = createField(DSL.name("sub_bundle_id"), SQLDataType.BIGINT, this, "");
 
     private MaSubBundleDocument(Name alias, Table<MaSubBundleDocumentRecord> aliased) {
         this(alias, aliased, null);
@@ -92,6 +124,21 @@ public class MaSubBundleDocument extends TableImpl<MaSubBundleDocumentRecord> {
     @Override
     public Schema getSchema() {
         return Public.PUBLIC;
+    }
+
+    @Override
+    public Identity<MaSubBundleDocumentRecord, Long> getIdentity() {
+        return (Identity<MaSubBundleDocumentRecord, Long>) super.getIdentity();
+    }
+
+    @Override
+    public UniqueKey<MaSubBundleDocumentRecord> getPrimaryKey() {
+        return Keys.MA_SUB_BUNDLE_DOCUMENT_PKEY;
+    }
+
+    @Override
+    public List<UniqueKey<MaSubBundleDocumentRecord>> getKeys() {
+        return Arrays.<UniqueKey<MaSubBundleDocumentRecord>>asList(Keys.MA_SUB_BUNDLE_DOCUMENT_PKEY);
     }
 
     @Override
@@ -135,11 +182,11 @@ public class MaSubBundleDocument extends TableImpl<MaSubBundleDocumentRecord> {
     }
 
     // -------------------------------------------------------------------------
-    // Row2 type methods
+    // Row8 type methods
     // -------------------------------------------------------------------------
 
     @Override
-    public Row2<Long, Long> fieldsRow() {
-        return (Row2) super.fieldsRow();
+    public Row8<Long, Integer, Long, Short, Double, Double, Double, Long> fieldsRow() {
+        return (Row8) super.fieldsRow();
     }
 }

@@ -13,7 +13,6 @@ import java.util.List;
 
 import org.jooq.Field;
 import org.jooq.ForeignKey;
-import org.jooq.Identity;
 import org.jooq.Name;
 import org.jooq.Record;
 import org.jooq.Row3;
@@ -51,7 +50,7 @@ public class MaBundle extends TableImpl<MaBundleRecord> {
     /**
      * The column <code>public.ma_bundle.id</code>.
      */
-    public final TableField<MaBundleRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false).identity(true), this, "");
+    public final TableField<MaBundleRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false), this, "");
 
     /**
      * The column <code>public.ma_bundle.code</code>.
@@ -99,11 +98,6 @@ public class MaBundle extends TableImpl<MaBundleRecord> {
     @Override
     public Schema getSchema() {
         return Public.PUBLIC;
-    }
-
-    @Override
-    public Identity<MaBundleRecord, Long> getIdentity() {
-        return (Identity<MaBundleRecord, Long>) super.getIdentity();
     }
 
     @Override

@@ -13,7 +13,6 @@ import java.util.List;
 
 import org.jooq.Field;
 import org.jooq.ForeignKey;
-import org.jooq.Identity;
 import org.jooq.Name;
 import org.jooq.Record;
 import org.jooq.Row4;
@@ -51,7 +50,7 @@ public class MaSection extends TableImpl<MaSectionRecord> {
     /**
      * The column <code>public.ma_section.id</code>.
      */
-    public final TableField<MaSectionRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false).identity(true), this, "");
+    public final TableField<MaSectionRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false), this, "");
 
     /**
      * The column <code>public.ma_section.code</code>.
@@ -104,11 +103,6 @@ public class MaSection extends TableImpl<MaSectionRecord> {
     @Override
     public Schema getSchema() {
         return Public.PUBLIC;
-    }
-
-    @Override
-    public Identity<MaSectionRecord, Long> getIdentity() {
-        return (Identity<MaSectionRecord, Long>) super.getIdentity();
     }
 
     @Override

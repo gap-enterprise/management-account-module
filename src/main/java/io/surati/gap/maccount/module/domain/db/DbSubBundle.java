@@ -16,18 +16,21 @@
  */
 package io.surati.gap.maccount.module.domain.db;
 
-import java.time.LocalDateTime;
-import javax.sql.DataSource;
 import io.surati.gap.admin.base.api.User;
 import io.surati.gap.admin.base.db.DbUser;
 import io.surati.gap.database.utils.jooq.JooqContext;
-import io.surati.gap.maccount.module.domain.api.Bundle;
-import io.surati.gap.maccount.module.domain.api.Section;
+import io.surati.gap.gtp.base.api.Bundle;
+import io.surati.gap.gtp.base.api.Section;
+import io.surati.gap.gtp.base.api.Title;
+import io.surati.gap.gtp.base.api.Warrant;
+import io.surati.gap.gtp.base.db.DbBundle;
+import io.surati.gap.gtp.base.db.DbSection;
+import io.surati.gap.gtp.base.db.DbTitle;
 import io.surati.gap.maccount.module.domain.api.SubBundle;
-import io.surati.gap.maccount.module.domain.api.SubBundleDocument;
-import io.surati.gap.maccount.module.domain.api.Title;
 import io.surati.gap.maccount.module.domain.db.jooq.generated.tables.MaSubBundle;
 import io.surati.gap.maccount.module.domain.db.jooq.generated.tables.records.MaSubBundleRecord;
+import java.time.LocalDateTime;
+import javax.sql.DataSource;
 
 /**
  * Sub-bundle from database.
@@ -62,8 +65,8 @@ public final class DbSubBundle implements SubBundle {
     }
     
     @Override
-    public Long order() {
-    	return this.record.getNo();
+    public int order() {
+    	return 0 /*this.record.getNo()*/;
     }
     
     @Override
@@ -78,21 +81,21 @@ public final class DbSubBundle implements SubBundle {
     
     @Override
     public Title title() {
-    	return new DbTitle(this.src, this.record.getTitleId());
+    	return new DbTitle(this.src, "0");
     }
     
     @Override
     public Section section() {
-    	return new DbSection(this.src, this.record.getSectionId());
+    	return new DbSection(this.src, "0");
     }
     
     @Override
     public Bundle bundle() {
-    	return new DbBundle(this.src, this.record.getBundleId());
+    	return new DbBundle(this.src, "0");
     }
     
     @Override
-	public Iterable<SubBundleDocument> iterate() {
+	public Iterable<Warrant> warrants() {
 		return null;
 	}
 }

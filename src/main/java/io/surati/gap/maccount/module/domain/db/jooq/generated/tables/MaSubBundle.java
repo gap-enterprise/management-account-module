@@ -17,7 +17,7 @@ import org.jooq.ForeignKey;
 import org.jooq.Identity;
 import org.jooq.Name;
 import org.jooq.Record;
-import org.jooq.Row7;
+import org.jooq.Row8;
 import org.jooq.Schema;
 import org.jooq.Table;
 import org.jooq.TableField;
@@ -55,9 +55,9 @@ public class MaSubBundle extends TableImpl<MaSubBundleRecord> {
     public final TableField<MaSubBundleRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT.nullable(false).identity(true), this, "");
 
     /**
-     * The column <code>public.ma_sub_bundle.no</code>.
+     * The column <code>public.ma_sub_bundle.fiscal_year</code>.
      */
-    public final TableField<MaSubBundleRecord, Long> NO = createField(DSL.name("no"), SQLDataType.BIGINT.nullable(false), this, "");
+    public final TableField<MaSubBundleRecord, Short> FISCAL_YEAR = createField(DSL.name("fiscal_year"), SQLDataType.SMALLINT.nullable(false), this, "");
 
     /**
      * The column <code>public.ma_sub_bundle.creation_date</code>.
@@ -70,19 +70,24 @@ public class MaSubBundle extends TableImpl<MaSubBundleRecord> {
     public final TableField<MaSubBundleRecord, Long> AUTHOR_ID = createField(DSL.name("author_id"), SQLDataType.BIGINT.nullable(false), this, "");
 
     /**
-     * The column <code>public.ma_sub_bundle.title_id</code>.
+     * The column <code>public.ma_sub_bundle.title</code>.
      */
-    public final TableField<MaSubBundleRecord, Long> TITLE_ID = createField(DSL.name("title_id"), SQLDataType.BIGINT.nullable(false), this, "");
+    public final TableField<MaSubBundleRecord, String> TITLE = createField(DSL.name("title"), SQLDataType.VARCHAR(10).nullable(false), this, "");
 
     /**
-     * The column <code>public.ma_sub_bundle.section_id</code>.
+     * The column <code>public.ma_sub_bundle.section</code>.
      */
-    public final TableField<MaSubBundleRecord, Long> SECTION_ID = createField(DSL.name("section_id"), SQLDataType.BIGINT.nullable(false), this, "");
+    public final TableField<MaSubBundleRecord, String> SECTION = createField(DSL.name("section"), SQLDataType.VARCHAR(10).nullable(false), this, "");
 
     /**
-     * The column <code>public.ma_sub_bundle.bundle_id</code>.
+     * The column <code>public.ma_sub_bundle.bundle</code>.
      */
-    public final TableField<MaSubBundleRecord, Long> BUNDLE_ID = createField(DSL.name("bundle_id"), SQLDataType.BIGINT.nullable(false), this, "");
+    public final TableField<MaSubBundleRecord, String> BUNDLE = createField(DSL.name("bundle"), SQLDataType.VARCHAR(10).nullable(false), this, "");
+
+    /**
+     * The column <code>public.ma_sub_bundle.bundle_split_warrant</code>.
+     */
+    public final TableField<MaSubBundleRecord, Boolean> BUNDLE_SPLIT_WARRANT = createField(DSL.name("bundle_split_warrant"), SQLDataType.BOOLEAN.nullable(false), this, "");
 
     private MaSubBundle(Name alias, Table<MaSubBundleRecord> aliased) {
         this(alias, aliased, null);
@@ -138,36 +143,6 @@ public class MaSubBundle extends TableImpl<MaSubBundleRecord> {
     }
 
     @Override
-    public List<ForeignKey<MaSubBundleRecord, ?>> getReferences() {
-        return Arrays.<ForeignKey<MaSubBundleRecord, ?>>asList(Keys.MA_SUB_BUNDLE__MA_SUB_BUNDLE_TITLE_ID_FKEY, Keys.MA_SUB_BUNDLE__MA_SUB_BUNDLE_SECTION_ID_FKEY, Keys.MA_SUB_BUNDLE__MA_SUB_BUNDLE_BUNDLE_ID_FKEY);
-    }
-
-    private transient MaTitle _maTitle;
-    private transient MaSection _maSection;
-    private transient MaBundle _maBundle;
-
-    public MaTitle maTitle() {
-        if (_maTitle == null)
-            _maTitle = new MaTitle(this, Keys.MA_SUB_BUNDLE__MA_SUB_BUNDLE_TITLE_ID_FKEY);
-
-        return _maTitle;
-    }
-
-    public MaSection maSection() {
-        if (_maSection == null)
-            _maSection = new MaSection(this, Keys.MA_SUB_BUNDLE__MA_SUB_BUNDLE_SECTION_ID_FKEY);
-
-        return _maSection;
-    }
-
-    public MaBundle maBundle() {
-        if (_maBundle == null)
-            _maBundle = new MaBundle(this, Keys.MA_SUB_BUNDLE__MA_SUB_BUNDLE_BUNDLE_ID_FKEY);
-
-        return _maBundle;
-    }
-
-    @Override
     public MaSubBundle as(String alias) {
         return new MaSubBundle(DSL.name(alias), this);
     }
@@ -194,11 +169,11 @@ public class MaSubBundle extends TableImpl<MaSubBundleRecord> {
     }
 
     // -------------------------------------------------------------------------
-    // Row7 type methods
+    // Row8 type methods
     // -------------------------------------------------------------------------
 
     @Override
-    public Row7<Long, Long, LocalDateTime, Long, Long, Long, Long> fieldsRow() {
-        return (Row7) super.fieldsRow();
+    public Row8<Long, Short, LocalDateTime, Long, String, String, String, Boolean> fieldsRow() {
+        return (Row8) super.fieldsRow();
     }
 }

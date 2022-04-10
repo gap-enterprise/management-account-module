@@ -4,13 +4,10 @@
 package io.surati.gap.maccount.module.domain.db.jooq.generated;
 
 
-import io.surati.gap.maccount.module.domain.db.jooq.generated.tables.MaBundle;
-import io.surati.gap.maccount.module.domain.db.jooq.generated.tables.MaData;
-import io.surati.gap.maccount.module.domain.db.jooq.generated.tables.MaDocumentToBundleView;
-import io.surati.gap.maccount.module.domain.db.jooq.generated.tables.MaSection;
+import io.surati.gap.maccount.module.domain.db.jooq.generated.tables.MaAnnualWarrant;
+import io.surati.gap.maccount.module.domain.db.jooq.generated.tables.MaAnnualWarrantView;
 import io.surati.gap.maccount.module.domain.db.jooq.generated.tables.MaSubBundle;
-import io.surati.gap.maccount.module.domain.db.jooq.generated.tables.MaSubBundleDocument;
-import io.surati.gap.maccount.module.domain.db.jooq.generated.tables.MaTitle;
+import io.surati.gap.maccount.module.domain.db.jooq.generated.tables.MaSubBundleView;
 
 import java.util.Arrays;
 import java.util.List;
@@ -35,24 +32,14 @@ public class Public extends SchemaImpl {
     public static final Public PUBLIC = new Public();
 
     /**
-     * The table <code>public.ma_bundle</code>.
+     * The table <code>public.ma_annual_warrant</code>.
      */
-    public final MaBundle MA_BUNDLE = MaBundle.MA_BUNDLE;
+    public final MaAnnualWarrant MA_ANNUAL_WARRANT = MaAnnualWarrant.MA_ANNUAL_WARRANT;
 
     /**
-     * The table <code>public.ma_data</code>.
+     * The table <code>public.ma_annual_warrant_view</code>.
      */
-    public final MaData MA_DATA = MaData.MA_DATA;
-
-    /**
-     * The table <code>public.ma_document_to_bundle_view</code>.
-     */
-    public final MaDocumentToBundleView MA_DOCUMENT_TO_BUNDLE_VIEW = MaDocumentToBundleView.MA_DOCUMENT_TO_BUNDLE_VIEW;
-
-    /**
-     * The table <code>public.ma_section</code>.
-     */
-    public final MaSection MA_SECTION = MaSection.MA_SECTION;
+    public final MaAnnualWarrantView MA_ANNUAL_WARRANT_VIEW = MaAnnualWarrantView.MA_ANNUAL_WARRANT_VIEW;
 
     /**
      * The table <code>public.ma_sub_bundle</code>.
@@ -60,14 +47,9 @@ public class Public extends SchemaImpl {
     public final MaSubBundle MA_SUB_BUNDLE = MaSubBundle.MA_SUB_BUNDLE;
 
     /**
-     * The table <code>public.ma_sub_bundle_document</code>.
+     * The table <code>public.ma_sub_bundle_view</code>.
      */
-    public final MaSubBundleDocument MA_SUB_BUNDLE_DOCUMENT = MaSubBundleDocument.MA_SUB_BUNDLE_DOCUMENT;
-
-    /**
-     * The table <code>public.ma_title</code>.
-     */
-    public final MaTitle MA_TITLE = MaTitle.MA_TITLE;
+    public final MaSubBundleView MA_SUB_BUNDLE_VIEW = MaSubBundleView.MA_SUB_BUNDLE_VIEW;
 
     /**
      * No further instances allowed
@@ -85,22 +67,15 @@ public class Public extends SchemaImpl {
     @Override
     public final List<Sequence<?>> getSequences() {
         return Arrays.<Sequence<?>>asList(
-            Sequences.MA_BUNDLE_ID_SEQ,
-            Sequences.MA_SECTION_ID_SEQ,
-            Sequences.MA_SUB_BUNDLE_DOCUMENT_ID_SEQ,
-            Sequences.MA_SUB_BUNDLE_ID_SEQ,
-            Sequences.MA_TITLE_ID_SEQ);
+            Sequences.MA_SUB_BUNDLE_ID_SEQ);
     }
 
     @Override
     public final List<Table<?>> getTables() {
         return Arrays.<Table<?>>asList(
-            MaBundle.MA_BUNDLE,
-            MaData.MA_DATA,
-            MaDocumentToBundleView.MA_DOCUMENT_TO_BUNDLE_VIEW,
-            MaSection.MA_SECTION,
+            MaAnnualWarrant.MA_ANNUAL_WARRANT,
+            MaAnnualWarrantView.MA_ANNUAL_WARRANT_VIEW,
             MaSubBundle.MA_SUB_BUNDLE,
-            MaSubBundleDocument.MA_SUB_BUNDLE_DOCUMENT,
-            MaTitle.MA_TITLE);
+            MaSubBundleView.MA_SUB_BUNDLE_VIEW);
     }
 }

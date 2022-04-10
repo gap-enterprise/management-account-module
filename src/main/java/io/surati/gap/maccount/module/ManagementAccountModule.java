@@ -46,54 +46,40 @@ public enum ManagementAccountModule implements Module {
 		Menu.VALUES.add(
 			new SimpleMenu(
 				700,
+				"management-account",
 				"lnr-diamond",
 				"Compte de gestion",
 				"bg-success",
 				"Suivie de l'exécution des paiements",
 				new IterableOf<>(
 					new SimpleSubmenu(
-						1, "lnr-pointer-left", "Documents non fractionnés à enliasser", "/maccount/document-to-bundle/entire/list",
+						1, "entire-warrant-to-bundle", "lnr-pointer-left",
+						"Enliassement des mandats non fractionnés", "/maccount/warrant-to-bundle/entire/list",
 						new IterableOf<>(
-							ManagementAccountAccess.VISUALISER_DOCUMENTS_A_ENLIASER
+							ManagementAccountAccess.VISUALISER_MANDATS_A_ENLIASER
 						),
 						false
 					),
 					new SimpleSubmenu(
-						2, "lnr-pointer-left", "Documents fractionnés à enliasser", "/maccount/document-to-bundle/partial/list",
+						2, "split-warrant-to-bundle", "lnr-pointer-left",
+						"Enliassement des mandats fractionnés", "/maccount/warrant-to-bundle/partial/list",
 						new IterableOf<>(
-							ManagementAccountAccess.VISUALISER_DOCUMENTS_A_ENLIASER
-						),
-						false
-					),
-					new SimpleSubmenu(
-						3, "lnr-book", "Configurer les liasses", "/maccount/bundle",
-						new IterableOf<>(
-							ManagementAccountAccess.CONFIGURER_LIASSES
-						),
-						true
-					),
-					new SimpleSubmenu(
-						4, "lnr-book", "Configurer les titres", "/maccount/title",
-						new IterableOf<>(
-							ManagementAccountAccess.CONFIGURER_TITRES
-						),
-						false
-					),
-					new SimpleSubmenu(
-						5, "lnr-book", "Configurer les sections", "/maccount/section",
-						new IterableOf<>(
-							ManagementAccountAccess.CONFIGURER_SECTIONS
-						),
-						false
-					),
-					new SimpleSubmenu(
-						6, "lnr-book", "Configurer les seuils d'enliassement", "/maccount/bundle-threshold/view",
-						new IterableOf<>(
-							ManagementAccountAccess.CONFIGURER_SEUILS_ENLIASSEMENT
+							ManagementAccountAccess.VISUALISER_MANDATS_A_ENLIASER
 						),
 						false
 					)
 				)
+			)
+		);
+		Menu.insertSubmenu(
+			"settings",
+			new SimpleSubmenu(
+				100, "bundle-threshold", "lnr-book",
+				"Les seuils d'enliassement", "/maccount/bundle-threshold/view",
+				new IterableOf<>(
+					ManagementAccountAccess.CONFIGURER_SEUILS_ENLIASSEMENT
+				),
+				true
 			)
 		);
 	}

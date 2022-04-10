@@ -18,7 +18,7 @@ SOFTWARE.
 <databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
   <changeSet author="baudoliver7" id="998" context="prod">
     <sql>
-        SELECT * FROM ma_title where id=0;
+        SELECT * FROM ma_annual_warrant where warrant_id=0;
     </sql>
   </changeSet>
 </databaseChangeLog>

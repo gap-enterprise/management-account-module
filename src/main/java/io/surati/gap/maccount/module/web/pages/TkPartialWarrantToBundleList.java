@@ -20,55 +20,69 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
- */ 
+ */
 package io.surati.gap.maccount.module.web.pages;
 
-import io.surati.gap.maccount.module.domain.api.PropBundleThreshold;
-import io.surati.gap.maccount.module.web.xe.XeBundleThreshold;
+import io.surati.gap.gtp.base.db.DbBudgetYears;
+import io.surati.gap.gtp.base.db.DbBundles;
+import io.surati.gap.gtp.base.db.DbSections;
+import io.surati.gap.gtp.base.db.DbTitles;
+import io.surati.gap.gtp.base.module.xe.XeBundles;
+import io.surati.gap.gtp.base.module.xe.XeSections;
+import io.surati.gap.gtp.base.module.xe.XeTitles;
+import io.surati.gap.maccount.module.web.xe.XeBudgetYears;
 import io.surati.gap.web.base.RsPage;
+import io.surati.gap.web.base.xe.XeRootPage;
 import javax.sql.DataSource;
 import org.cactoos.collection.Sticky;
 import org.takes.Request;
 import org.takes.Response;
 import org.takes.Take;
 import org.takes.rs.xe.XeAppend;
+import org.takes.rs.xe.XeChain;
 import org.takes.rs.xe.XeSource;
 
 /**
- * Take that edits bundle threshold.
+ * Take that lists partial documents to bundle.
  *
  * <p>The class is immutable and thread-safe.</p>
  *
  * @since 3.0
  */
-public final class TkBundleThresholdEdit implements Take {
+public final class TkPartialWarrantToBundleList implements Take {
 
-	/**
-	 * Data source.
-	 */
 	private final DataSource source;
 
 	/**
 	 * Ctor.
 	 * @param source DataSource
 	 */
-	public TkBundleThresholdEdit(final DataSource source) {
+	public TkPartialWarrantToBundleList(final DataSource source) {
 		this.source = source;
 	}
-
+	
 	@Override
 	public Response act(Request req) throws Exception {
-		final XeSource src = new XeBundleThreshold(
-			new PropBundleThreshold()
+		final XeSource src = new XeChain(
+			new XeSections(new DbSections(this.source)),
+			new XeTitles(new DbTitles(this.source)),
+			new XeBundles(new DbBundles(this.source)),
+			new XeBudgetYears(new DbBudgetYears(this.source))
 		);
 		return new RsPage(
-			"/io/surati/gap/maccount/module/xsl/threshold/edit.xsl",
+            "/io/surati/gap/maccount/module/xsl/warrant_to_bundle/partial_list.xsl",
 			req,
 			this.source,
 			() -> new Sticky<>(
-				new XeAppend("menu", "ma-bundle-threshold"),
+				new XeAppend("menu", "partial-document-to-bundle"),
+				new XeRootPage(
+					"Mandats à enliasser",
+					"Mandats fractionnés",
+					req
+				),
 				src
 			)
 		);
 	}
+
 }

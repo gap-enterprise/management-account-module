@@ -20,43 +20,41 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
- */
-package io.surati.gap.maccount.module.web.xe;
+ */ 
+package io.surati.gap.maccount.module.web.rest;
 
-import io.surati.gap.gtp.base.api.BudgetYears;
-import org.cactoos.collection.Mapped;
-import org.cactoos.iterable.Joined;
-import org.takes.rs.xe.XeAppend;
-import org.takes.rs.xe.XeDirectives;
-import org.takes.rs.xe.XeWrap;
-import org.xembly.Directives;
+import io.surati.gap.maccount.module.domain.api.WarrantsToBundle;
+import io.surati.gap.maccount.module.web.rq.RqEntireWarrantsToBundle;
+import io.surati.gap.maccount.module.web.xe.XeAnnualWarrantJson;
+import javax.sql.DataSource;
+import org.takes.Request;
+import org.takes.Response;
+import org.takes.Take;
+import org.takes.rs.RsJson;
 
-/**
- * Xml of a list of budget year.
- *
- * @since 3.0
- */
-public final class XeBudgetYears extends XeWrap {
+public final class TkEntireWarrantToBundleSearch implements Take {
 
-	public XeBudgetYears(final BudgetYears items) {
-		this(items.iterate());
+	/**
+	 * Database
+	 */
+	private final DataSource source;
+
+	/**
+	 * Ctor.
+	 * @param source DataSource
+	 */
+	public TkEntireWarrantToBundleSearch(final DataSource source) {
+		this.source = source;
 	}
-
-	public XeBudgetYears(final Iterable<Integer> items) {
-		super(
-			new XeDirectives(
-				new Directives()
-					.add("budget_years")
-					.append(
-						new Joined<>(
-							new Mapped<>(
-								item -> new XeAppend("budget_year", item.toString()).toXembly(),
-								items
-							)
-						)
-					)
+	
+	@Override
+	public Response act(Request req) throws Exception {	
+		final WarrantsToBundle items = new RqEntireWarrantsToBundle(this.source, req);
+		return new RsJson(
+			new XeAnnualWarrantJson(
+				items.iterate(),
+				items.count()
 			)
 		);
 	}
-
 }

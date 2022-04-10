@@ -16,6 +16,10 @@
  */
 package io.surati.gap.maccount.module.domain.api;
 
+import io.surati.gap.gtp.base.api.Bundle;
+import io.surati.gap.gtp.base.api.Section;
+import io.surati.gap.gtp.base.api.Title;
+import io.surati.gap.gtp.base.api.Warrant;
 import java.time.LocalDateTime;
 import io.surati.gap.admin.base.api.User;
 
@@ -35,7 +39,7 @@ public interface SubBundle {
      * Order number.
      * @return order
      */
-	Long order();
+	int order();
 	
 	/**
 	 * Get date of sub bundlde.
@@ -68,8 +72,8 @@ public interface SubBundle {
 	Bundle bundle();
 
     /**
-     * Iterate them all.
-     * @return List of SubBundleDocument
+     * Iterate all warrants bundled.
+     * @return List of Warrants
      */
-    Iterable<SubBundleDocument> iterate();
+    Iterable<Warrant> warrants();
 }

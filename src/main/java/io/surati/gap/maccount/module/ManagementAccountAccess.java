@@ -18,7 +18,6 @@ package io.surati.gap.maccount.module;
 
 import io.surati.gap.admin.base.api.Access;
 import io.surati.gap.admin.base.api.Module;
-import io.surati.gap.payment.base.module.PaymentBaseModule;
 
 /**
  * Access right for a user.
@@ -27,13 +26,9 @@ import io.surati.gap.payment.base.module.PaymentBaseModule;
  */
 public enum ManagementAccountAccess implements Access {
 
-	CONFIGURER_LIASSES("Configurer les liasses", ""),
-	CONFIGURER_TITRES("Configurer les titres", ""),
-	CONFIGURER_SECTIONS("Configurer les sections", ""),
-	DEFINIR_DONNEES_COMPTE_GESTION_DOC_REF("Définir les données de compte de gestion d'un document de référence", ""),
 	CONFIGURER_SEUILS_ENLIASSEMENT("Configurer les seuils d'enliassement", ""),
-	VISUALISER_DOCUMENTS_A_ENLIASER("Visualiser les documents à enliasser", ""),
-	ENLIASSER_DOCUMENTS("Enliasser les documents", "");
+	VISUALISER_MANDATS_A_ENLIASER("Visualiser les mandats à enliasser", ""),
+	ENLIASSER_MANDATS("Enliasser les mandats", "");
 
 	static {
 		for (Access acs : ManagementAccountAccess.values()) {
@@ -92,7 +87,7 @@ public enum ManagementAccountAccess implements Access {
 	 * @return Module name
 	 */
 	public Module module() {
-		return PaymentBaseModule.PAYMENT_BASE;
+		return ManagementAccountModule.MANAGEMENT_ACCOUNT;
 	}
 	
 	@Override

@@ -60,7 +60,7 @@ public final class TkBundleThresholdView implements Take {
 	public Response act(Request req) throws Exception {
 		final XeSource src = new XeBundleThreshold(new PropBundleThreshold());
 		return new RsPage(
-			"/io/surati/gap/maccount/module/xsl/bundle/threshold_view.xsl",
+			"/io/surati/gap/maccount/module/xsl/threshold/view.xsl",
 			req,
 			this.source,
 			() -> new Sticky<>(

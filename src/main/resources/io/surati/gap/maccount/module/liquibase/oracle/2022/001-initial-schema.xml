@@ -18,106 +18,49 @@ SOFTWARE.
 <databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
   <changeSet author="baudoliver7" id="001-ma" context="base">
     <sql>
-      CREATE TABLE ma_bundle (
-        id bigserial PRIMARY KEY,
-        code character varying(50) NOT NULL,
-        notes character varying(250)
-      );
-
-      CREATE TABLE ma_section (
-        id bigserial PRIMARY KEY,
-        code character varying(50) NOT NULL,
-        name character varying(200) NOT NULL,
-        notes character varying(250)
-      );
-
-      CREATE TABLE ma_title (
-        id bigserial PRIMARY KEY,
-        code character varying(50) NOT NULL,
-        name character varying(200) NOT NULL,
-        notes character varying(250)
-      );
-
-      CREATE TABLE ma_data (
-        id bigint PRIMARY KEY,
-        bundle_id integer NOT NULL,
-        title_id integer NOT NULL,
-        section_id integer NOT NULL,
-        imputation character varying(25),
-        CONSTRAINT ma_data_id_fkey FOREIGN KEY (id) REFERENCES pay_reference_document (id)
-          ON UPDATE CASCADE ON DELETE CASCADE,
-        CONSTRAINT ma_data_bundle_id_fkey FOREIGN KEY (bundle_id) REFERENCES ma_bundle (id)
-          ON UPDATE CASCADE ON DELETE CASCADE,
-        CONSTRAINT ma_data_title_id_fkey FOREIGN KEY (title_id) REFERENCES ma_title (id)
-          ON UPDATE CASCADE ON DELETE CASCADE,
-        CONSTRAINT ma_data_section_id_fkey FOREIGN KEY (section_id) REFERENCES ma_section (id)
-          ON UPDATE CASCADE ON DELETE CASCADE
-      );
-
-      CREATE VIEW ma_document_to_bundle_view AS
-        SELECT t2.id,
-        t2.reference,
-        t2.beneficiary_id,
-        t2.year_of_payment,
-        t2.total_amount,
-        t2.annual_amount_paid,
-        data.imputation,
-        data.bundle_id,
-        data.title_id,
-        data.section_id,
-        (t2.total_amount - t2.annual_amount_paid) AS left_amount,
-        (t2.total_amount &gt; t2.annual_amount_paid) AS is_split
-        FROM (( SELECT t1.id,
-        t1.reference,
-        t1.beneficiary_id,
-        t1.year_of_payment,
-        t1.total_amount,
-        sum(t1.annual_amount_paid) AS annual_amount_paid
-        FROM ( SELECT doc.id,
-        po.beneficiary_id,
-        doc.reference,
-        doc.amount AS total_amount,
-        format((pay.date)::date, 'YYYY') AS year_of_payment,
-        po.amount_to_pay AS annual_amount_paid
-        FROM ((pay_payment_order po
-        LEFT JOIN pay_reference_document doc ON ((doc.id = po.reference_document_id)))
-        LEFT JOIN pay_payment pay ON ((pay.group_id = po.group_id)))
-        WHERE ((pay.status_id)::text = 'ISSUED'::text)) t1
-        GROUP BY t1.id, t1.reference, t1.beneficiary_id, t1.year_of_payment, t1.total_amount) t2
-        LEFT JOIN ma_data data ON ((data.id = t2.id)));
-
 		CREATE TABLE ma_sub_bundle (
-	        id bigserial PRIMARY KEY,
-	        no bigint NOT NULL,
-			creation_date TIMESTAMP WITHOUT TIME ZONE NOT NULL,
-			author_id bigint NOT NULL,
-	        title_id bigint NOT NULL,
-	        section_id bigint NOT NULL,
-			bundle_id bigint NOT NULL,
-	        CONSTRAINT ma_sub_bundle_author_id_fkey FOREIGN KEY (author_id) REFERENCES ad_user (id)
-	          ON UPDATE CASCADE ON DELETE CASCADE,
-	        CONSTRAINT ma_sub_bundle_bundle_id_fkey FOREIGN KEY (bundle_id) REFERENCES ma_bundle (id)
-	          ON UPDATE CASCADE ON DELETE CASCADE,
-	        CONSTRAINT ma_sub_bundle_title_id_fkey FOREIGN KEY (title_id) REFERENCES ma_title (id)
-	          ON UPDATE CASCADE ON DELETE CASCADE,
-	        CONSTRAINT ma_sub_bundle_section_id_fkey FOREIGN KEY (section_id) REFERENCES ma_section (id)
-	          ON UPDATE CASCADE ON DELETE CASCADE
-	      );
+		id bigserial PRIMARY KEY,
+		no bigint NOT NULL,
+		creation_date TIMESTAMP WITHOUT TIME ZONE NOT NULL,
+		author_id bigint NOT NULL,
+		title_id bigint NOT NULL,
+		section_id bigint NOT NULL,
+		bundle_id bigint NOT NULL,
+		CONSTRAINT ma_sub_bundle_author_id_fkey FOREIGN KEY (author_id) REFERENCES ad_user (id)
+		ON UPDATE CASCADE ON DELETE CASCADE,
+		CONSTRAINT ma_sub_bundle_bundle_id_fkey FOREIGN KEY (bundle_id) REFERENCES gtp_bundle (id)
+		ON UPDATE CASCADE ON DELETE CASCADE,
+		CONSTRAINT ma_sub_bundle_title_id_fkey FOREIGN KEY (title_id) REFERENCES gtp_title (id)
+		ON UPDATE CASCADE ON DELETE CASCADE,
+		CONSTRAINT ma_sub_bundle_section_id_fkey FOREIGN KEY (section_id) REFERENCES gtp_section (id)
+		ON UPDATE CASCADE ON DELETE CASCADE
+		);
 
-		  CREATE TABLE ma_sub_bundle_document (
-	        id bigserial PRIMARY KEY,
-	        no integer NOT NULL,
-			reference_document_id bigint NOT NULL,
-			year smallint NOT NULL,
-			amount_paid_before DOUBLE PRECISION NOT NULL,
-			annual_amount_paid  DOUBLE PRECISION NOT NULL,
-			amount_left  DOUBLE PRECISION NOT NULL,
-			sub_bundle_id bigint, 
-	        CONSTRAINT ma_sub_bundle_document_reference_document_id_fkey FOREIGN KEY (reference_document_id) REFERENCES pay_reference_document (id)
-	          ON UPDATE CASCADE ON DELETE CASCADE,
-	        CONSTRAINT ma_sub_bundle_document_sub_bundle_id_fkey FOREIGN KEY (sub_bundle_id) REFERENCES ma_sub_bundle (id)
-	          ON UPDATE CASCADE ON DELETE CASCADE
-	      );
+		CREATE TABLE ma_warrant_for_bundle (
+		warrant_id bigint NOT NULL,
+		year smallint NOT NULL,
+		no integer NOT NULL,
+		annual_amount_paid_before DOUBLE PRECISION NOT NULL,
+		annual_amount_paid DOUBLE PRECISION NOT NULL,
+		annual_amount_left DOUBLE PRECISION NOT NULL,
+		sub_bundle_id bigint,
+		CONSTRAINT ma_warrant_for_bundle_pkey PRIMARY KEY (warrant_id, year),
+		CONSTRAINT ma_warrant_for_bundle_id_fkey FOREIGN KEY (warrant_id) REFERENCES gtp_warrant (id)
+		ON UPDATE CASCADE ON DELETE CASCADE,
+		CONSTRAINT ma_warrant_for_bundle_sub_bundle_id_fkey FOREIGN KEY (sub_bundle_id) REFERENCES ma_sub_bundle (id)
+		ON UPDATE CASCADE ON DELETE CASCADE
+		);
+
+		CREATE VIEW ma_warrant_for_bundle_view AS
+		SELECT wr.*,
+		wrb.year,
+		wrb.no,
+		wrb.annual_amount_paid_before,
+		wrb.annual_amount_paid,
+		wrb.annual_amount_left,
+		wrb.sub_bundle_id
+		FROM ma_warrant_for_bundle wrb
+		LEFT JOIN gtp_warrant_view wr ON wr.id = wrb.warrant_id;
     </sql>
   </changeSet>
 </databaseChangeLog>

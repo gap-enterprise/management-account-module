@@ -4,13 +4,10 @@
 package io.surati.gap.maccount.module.domain.db.jooq.generated;
 
 
-import io.surati.gap.maccount.module.domain.db.jooq.generated.tables.MaBundle;
-import io.surati.gap.maccount.module.domain.db.jooq.generated.tables.MaData;
-import io.surati.gap.maccount.module.domain.db.jooq.generated.tables.MaDocumentToBundleView;
-import io.surati.gap.maccount.module.domain.db.jooq.generated.tables.MaSection;
+import io.surati.gap.maccount.module.domain.db.jooq.generated.tables.MaAnnualWarrant;
+import io.surati.gap.maccount.module.domain.db.jooq.generated.tables.MaAnnualWarrantView;
 import io.surati.gap.maccount.module.domain.db.jooq.generated.tables.MaSubBundle;
-import io.surati.gap.maccount.module.domain.db.jooq.generated.tables.MaSubBundleDocument;
-import io.surati.gap.maccount.module.domain.db.jooq.generated.tables.MaTitle;
+import io.surati.gap.maccount.module.domain.db.jooq.generated.tables.MaSubBundleView;
 
 
 /**
@@ -20,24 +17,14 @@ import io.surati.gap.maccount.module.domain.db.jooq.generated.tables.MaTitle;
 public class Tables {
 
     /**
-     * The table <code>public.ma_bundle</code>.
+     * The table <code>public.ma_annual_warrant</code>.
      */
-    public static final MaBundle MA_BUNDLE = MaBundle.MA_BUNDLE;
+    public static final MaAnnualWarrant MA_ANNUAL_WARRANT = MaAnnualWarrant.MA_ANNUAL_WARRANT;
 
     /**
-     * The table <code>public.ma_data</code>.
+     * The table <code>public.ma_annual_warrant_view</code>.
      */
-    public static final MaData MA_DATA = MaData.MA_DATA;
-
-    /**
-     * The table <code>public.ma_document_to_bundle_view</code>.
-     */
-    public static final MaDocumentToBundleView MA_DOCUMENT_TO_BUNDLE_VIEW = MaDocumentToBundleView.MA_DOCUMENT_TO_BUNDLE_VIEW;
-
-    /**
-     * The table <code>public.ma_section</code>.
-     */
-    public static final MaSection MA_SECTION = MaSection.MA_SECTION;
+    public static final MaAnnualWarrantView MA_ANNUAL_WARRANT_VIEW = MaAnnualWarrantView.MA_ANNUAL_WARRANT_VIEW;
 
     /**
      * The table <code>public.ma_sub_bundle</code>.
@@ -45,12 +32,7 @@ public class Tables {
     public static final MaSubBundle MA_SUB_BUNDLE = MaSubBundle.MA_SUB_BUNDLE;
 
     /**
-     * The table <code>public.ma_sub_bundle_document</code>.
+     * The table <code>public.ma_sub_bundle_view</code>.
      */
-    public static final MaSubBundleDocument MA_SUB_BUNDLE_DOCUMENT = MaSubBundleDocument.MA_SUB_BUNDLE_DOCUMENT;
-
-    /**
-     * The table <code>public.ma_title</code>.
-     */
-    public static final MaTitle MA_TITLE = MaTitle.MA_TITLE;
+    public static final MaSubBundleView MA_SUB_BUNDLE_VIEW = MaSubBundleView.MA_SUB_BUNDLE_VIEW;
 }

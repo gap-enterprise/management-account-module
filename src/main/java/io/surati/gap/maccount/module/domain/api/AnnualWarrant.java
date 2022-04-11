@@ -6,11 +6,13 @@ public interface AnnualWarrant extends Warrant {
 
     int order();
 
-    int year();
+    short year();
 
     Double annualAmountToPay();
 
     Double annualAmountPaid();
 
     Double annualAmountLeft();
+
+    boolean isSplit();
 }

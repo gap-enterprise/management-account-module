@@ -1,9 +1,11 @@
 package io.surati.gap.maccount.module.domain.api;
 
+import io.surati.gap.admin.base.api.User;
+
 public interface WarrantsToBundle {
 
     /**
-     * Get a bundle.
+     * Get an annual warrant.
      * @param id Identifier
      * @return Warrant
      */
@@ -26,5 +28,17 @@ public interface WarrantsToBundle {
      * @return Number of warrants
      */
     Long count();
+
+    /**
+     * Bundle current selection.
+     * @param author Author
+     */
+    void bundle(User author);
+
+    /**
+     * Bundle any way selection.
+     * @param author Author
+     */
+    void bundleAnyway(User author);
 
 }

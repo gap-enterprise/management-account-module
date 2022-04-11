@@ -15,7 +15,7 @@ import org.jooq.Field;
 import org.jooq.ForeignKey;
 import org.jooq.Name;
 import org.jooq.Record;
-import org.jooq.Row6;
+import org.jooq.Row8;
 import org.jooq.Schema;
 import org.jooq.Table;
 import org.jooq.TableField;
@@ -58,6 +58,11 @@ public class MaAnnualWarrant extends TableImpl<MaAnnualWarrantRecord> {
     public final TableField<MaAnnualWarrantRecord, Short> FISCAL_YEAR = createField(DSL.name("fiscal_year"), SQLDataType.SMALLINT.nullable(false), this, "");
 
     /**
+     * The column <code>public.ma_annual_warrant.no</code>.
+     */
+    public final TableField<MaAnnualWarrantRecord, Integer> NO = createField(DSL.name("no"), SQLDataType.INTEGER.nullable(false), this, "");
+
+    /**
      * The column <code>public.ma_annual_warrant.annual_amount_to_pay</code>.
      */
     public final TableField<MaAnnualWarrantRecord, Double> ANNUAL_AMOUNT_TO_PAY = createField(DSL.name("annual_amount_to_pay"), SQLDataType.DOUBLE.nullable(false), this, "");
@@ -71,6 +76,11 @@ public class MaAnnualWarrant extends TableImpl<MaAnnualWarrantRecord> {
      * The column <code>public.ma_annual_warrant.annual_amount_left</code>.
      */
     public final TableField<MaAnnualWarrantRecord, Double> ANNUAL_AMOUNT_LEFT = createField(DSL.name("annual_amount_left"), SQLDataType.DOUBLE.nullable(false), this, "");
+
+    /**
+     * The column <code>public.ma_annual_warrant.is_split</code>.
+     */
+    public final TableField<MaAnnualWarrantRecord, Boolean> IS_SPLIT = createField(DSL.name("is_split"), SQLDataType.BOOLEAN.nullable(false), this, "");
 
     /**
      * The column <code>public.ma_annual_warrant.sub_bundle_id</code>.
@@ -166,11 +176,11 @@ public class MaAnnualWarrant extends TableImpl<MaAnnualWarrantRecord> {
     }
 
     // -------------------------------------------------------------------------
-    // Row6 type methods
+    // Row8 type methods
     // -------------------------------------------------------------------------
 
     @Override
-    public Row6<Long, Short, Double, Double, Double, Long> fieldsRow() {
-        return (Row6) super.fieldsRow();
+    public Row8<Long, Short, Integer, Double, Double, Double, Boolean, Long> fieldsRow() {
+        return (Row8) super.fieldsRow();
     }
 }

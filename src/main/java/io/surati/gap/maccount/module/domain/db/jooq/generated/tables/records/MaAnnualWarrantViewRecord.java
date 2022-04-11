@@ -22,15 +22,15 @@ public class MaAnnualWarrantViewRecord extends TableRecordImpl<MaAnnualWarrantVi
     /**
      * Setter for <code>public.ma_annual_warrant_view.no</code>.
      */
-    public void setNo(Long value) {
+    public void setNo(Integer value) {
         set(0, value);
     }
 
     /**
      * Getter for <code>public.ma_annual_warrant_view.no</code>.
      */
-    public Long getNo() {
-        return (Long) get(0);
+    public Integer getNo() {
+        return (Integer) get(0);
     }
 
     /**
@@ -593,7 +593,7 @@ public class MaAnnualWarrantViewRecord extends TableRecordImpl<MaAnnualWarrantVi
     /**
      * Create a detached, initialised MaAnnualWarrantViewRecord
      */
-    public MaAnnualWarrantViewRecord(Long no, Short fiscalYear, Double annualAmountToPay, Double annualAmountPaid, Double annualAmountLeft, Long subBundleId, Boolean isSplit, Long id, String typeId, LocalDate date, String reference, String internalReference, String object, String place, Double amount, LocalDate depositDate, LocalDate entryDate, Long beneficiaryId, String stepId, Long authorId, Long workerId, String statusId, Double amountPaid, Double amountLeft, String beneficiaryName, String beneficiaryAbbreviated, String beneficiaryCode, Double gross, Double deduction, String debitAccountPec, String creditAccountPec, LocalDate datePec, String title, String section, String chapter, String subChapter, String line, String bundle, String region, String imputation) {
+    public MaAnnualWarrantViewRecord(Integer no, Short fiscalYear, Double annualAmountToPay, Double annualAmountPaid, Double annualAmountLeft, Long subBundleId, Boolean isSplit, Long id, String typeId, LocalDate date, String reference, String internalReference, String object, String place, Double amount, LocalDate depositDate, LocalDate entryDate, Long beneficiaryId, String stepId, Long authorId, Long workerId, String statusId, Double amountPaid, Double amountLeft, String beneficiaryName, String beneficiaryAbbreviated, String beneficiaryCode, Double gross, Double deduction, String debitAccountPec, String creditAccountPec, LocalDate datePec, String title, String section, String chapter, String subChapter, String line, String bundle, String region, String imputation) {
         super(MaAnnualWarrantView.MA_ANNUAL_WARRANT_VIEW);
 
         setNo(no);

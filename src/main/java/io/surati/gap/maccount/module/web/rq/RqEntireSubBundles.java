@@ -1,28 +1,27 @@
 package io.surati.gap.maccount.module.web.rq;
 
-import io.surati.gap.admin.base.api.User;
 import io.surati.gap.gtp.base.api.Bundle;
 import io.surati.gap.gtp.base.api.Section;
 import io.surati.gap.gtp.base.api.Title;
 import io.surati.gap.gtp.base.db.DbBundles;
 import io.surati.gap.gtp.base.db.DbSections;
 import io.surati.gap.gtp.base.db.DbTitles;
-import io.surati.gap.maccount.module.domain.api.AnnualWarrant;
-import io.surati.gap.maccount.module.domain.api.WarrantsToBundle;
-import io.surati.gap.maccount.module.domain.db.DbPaginatedPartialWarrantsToBundle;
+import io.surati.gap.maccount.module.domain.api.SubBundle;
+import io.surati.gap.maccount.module.domain.api.SubBundles;
+import io.surati.gap.maccount.module.domain.db.DbPaginatedEntireSubBundles;
 import java.io.IOException;
 import javax.sql.DataSource;
 import org.apache.commons.lang3.StringUtils;
 import org.takes.Request;
 import org.takes.rq.RqHref.Smart;
 
-public final class RqPartialWarrantsToBundle implements WarrantsToBundle {
+public final class RqEntireSubBundles implements SubBundles {
 
-	private final WarrantsToBundle origin;
+	private final SubBundles origin;
 
-	public RqPartialWarrantsToBundle(final DataSource source, final Request req) throws IOException {
+	public RqEntireSubBundles(final DataSource source, final Request req) throws IOException {
 		final Smart href = new Smart(req);
-		final String filter = href.single("filter", "");
+		final String filter = href.single("filter", "");					
 		final Long page = Long.parseLong(href.single("page"));
 		final Long nbperpage = Long.parseLong(href.single("nbperpage"));
 		final short year = Short.parseShort(href.single("year"));
@@ -47,8 +46,8 @@ public final class RqPartialWarrantsToBundle implements WarrantsToBundle {
 		} else {
 			section = new DbSections(source).get(sctcode);
 		}
-		this.origin = new DbPaginatedPartialWarrantsToBundle(
-			source,
+		this.origin = new DbPaginatedEntireSubBundles(
+		    source,
 			nbperpage,
 			page,
 			title,
@@ -60,12 +59,12 @@ public final class RqPartialWarrantsToBundle implements WarrantsToBundle {
 	}
 
 	@Override
-	public Iterable<AnnualWarrant> iterate() {
+	public Iterable<SubBundle> iterate() {
 		return this.origin.iterate();
 	}
 
 	@Override
-	public AnnualWarrant get(final Long id) {
+	public SubBundle get(final Long id) {
 		return this.origin.get(id);
 	}
 
@@ -79,13 +78,5 @@ public final class RqPartialWarrantsToBundle implements WarrantsToBundle {
 		return this.origin.count();
 	}
 
-	@Override
-	public void bundle(final User author) {
-		this.origin.bundle(author);
-	}
 
-	@Override
-	public void bundleAnyway(final User author) {
-		this.origin.bundleAnyway(author);
-	}
 }

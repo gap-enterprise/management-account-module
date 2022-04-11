@@ -58,7 +58,7 @@ public final class DbAnnualWarrant implements AnnualWarrant {
     }
 
     @Override
-    public int year() {
+    public short year() {
         return this.record.getFiscalYear();
     }
 
@@ -75,6 +75,17 @@ public final class DbAnnualWarrant implements AnnualWarrant {
     @Override
     public Double annualAmountLeft() {
         return this.record.getAnnualAmountLeft();
+    }
+
+    @Override
+    public boolean isSplit() {
+        return this.ctx.fetchOne(
+            MaAnnualWarrantView.MA_ANNUAL_WARRANT_VIEW,
+            MaAnnualWarrantView.MA_ANNUAL_WARRANT_VIEW.ID.eq(this.id())
+                .and(
+                    MaAnnualWarrantView.MA_ANNUAL_WARRANT_VIEW.FISCAL_YEAR.eq(this.year())
+                )
+        ).getIsSplit();
     }
 
     @Override

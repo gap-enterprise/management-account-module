@@ -20,6 +20,7 @@ SOFTWARE.
     <sql>
 		CREATE TABLE ma_sub_bundle (
 	        id bigserial PRIMARY KEY,
+		    no integer NOT NULL,
 		    fiscal_year smallint NOT NULL,
 			creation_date TIMESTAMP WITHOUT TIME ZONE NOT NULL,
 			author_id bigint NOT NULL,
@@ -37,19 +38,14 @@ SOFTWARE.
 	          ON UPDATE CASCADE ON DELETE CASCADE
 	      );
 
-		CREATE VIEW ma_sub_bundle_view AS
-			SELECT
-				ROW_NUMBER() OVER (PARTITION BY fiscal_year) AS no,
-				*
-			FROM ma_sub_bundle
-			ORDER BY id;
-
 		  CREATE TABLE ma_annual_warrant (
 	        warrant_id bigint NOT NULL,
 			fiscal_year smallint NOT NULL,
+			no integer NOT NULL,
 		    annual_amount_to_pay DOUBLE PRECISION NOT NULL,
 			annual_amount_paid DOUBLE PRECISION NOT NULL,
 			annual_amount_left DOUBLE PRECISION NOT NULL,
+		    is_split BOOLEAN NOT NULL,
 			sub_bundle_id bigint,
 		    CONSTRAINT ma_warrant_for_bundle_pkey PRIMARY KEY (warrant_id, fiscal_year),
 	        CONSTRAINT ma_warrant_for_bundle_id_fkey FOREIGN KEY (warrant_id) REFERENCES gtp_warrant (id)
@@ -60,7 +56,7 @@ SOFTWARE.
 
 		CREATE VIEW ma_annual_warrant_view AS
 			SELECT
-				ROW_NUMBER() OVER (PARTITION BY fiscal_year) AS no,
+				awr.no,
 				awr.fiscal_year,
 				awr.annual_amount_to_pay,
 				awr.annual_amount_paid,
@@ -77,6 +73,8 @@ SOFTWARE.
 		'
 		DECLARE
 			cur_year smallint;
+			cur_no integer;
+			cur_is_split boolean;
 			cur_warrant_id bigint;
 			cur_total_amount double precision;
 			cur_amount_paid_before double precision;
@@ -106,6 +104,11 @@ SOFTWARE.
 				GROUP BY reference_document_id;
 			cur_annual_amount_paid := COALESCE(cur_annual_amount_paid, 0);
 			cur_annual_amount_left := cur_annual_amount_to_pay - cur_annual_amount_paid;
+			cur_is_split := NOT(cur_total_amount=cur_annual_amount_to_pay AND cur_annual_amount_left=0);
+			cur_no := CASE
+				WHEN (select count(*) from ma_annual_warrant where fiscal_year=cur_year and is_split=cur_is_split) = 0 THEN 1
+				ELSE (select no from ma_annual_warrant where fiscal_year=cur_year and is_split=cur_is_split order by no desc limit 1) + 1
+			END;
 			IF EXISTS (
 				SELECT * FROM ma_annual_warrant
 				WHERE warrant_id = cur_warrant_id AND fiscal_year = cur_year
@@ -113,18 +116,21 @@ SOFTWARE.
 				UPDATE ma_annual_warrant
 				SET annual_amount_to_pay=cur_annual_amount_to_pay,
 					annual_amount_paid=cur_annual_amount_paid,
-					annual_amount_left=cur_annual_amount_left
+					annual_amount_left=cur_annual_amount_left,
+					is_split=cur_is_split
 				WHERE warrant_id = cur_warrant_id;
 			ELSE
 				INSERT INTO ma_annual_warrant(
 					warrant_id, fiscal_year, annual_amount_to_pay,
-					annual_amount_paid, annual_amount_left
+					annual_amount_paid, annual_amount_left, is_split, no
 				) VALUES (
 					cur_warrant_id,
 					cur_year,
 					cur_annual_amount_to_pay,
 					cur_annual_amount_paid,
-					cur_annual_amount_left
+					cur_annual_amount_left,
+					cur_is_split,
+					cur_no
 				);
 			END IF;
 			DELETE FROM ma_annual_warrant

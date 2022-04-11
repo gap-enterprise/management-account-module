@@ -1,5 +1,6 @@
 package io.surati.gap.maccount.module.web.rq;
 
+import io.surati.gap.admin.base.api.User;
 import io.surati.gap.gtp.base.api.Bundle;
 import io.surati.gap.gtp.base.api.Section;
 import io.surati.gap.gtp.base.api.Title;
@@ -77,5 +78,16 @@ public final class RqEntireWarrantsToBundle implements WarrantsToBundle {
 	public Long count() {
 		return this.origin.count();
 	}
+
+	@Override
+	public void bundle(final User author) {
+		this.origin.bundle(author);
+	}
+
+	@Override
+	public void bundleAnyway(final User author) {
+		this.origin.bundleAnyway(author);
+	}
+
 
 }

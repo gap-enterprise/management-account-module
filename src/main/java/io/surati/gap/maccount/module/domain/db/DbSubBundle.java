@@ -26,11 +26,16 @@ import io.surati.gap.gtp.base.api.Warrant;
 import io.surati.gap.gtp.base.db.DbBundle;
 import io.surati.gap.gtp.base.db.DbSection;
 import io.surati.gap.gtp.base.db.DbTitle;
+import io.surati.gap.maccount.module.domain.api.AnnualWarrant;
 import io.surati.gap.maccount.module.domain.api.SubBundle;
+import io.surati.gap.maccount.module.domain.db.jooq.generated.tables.MaAnnualWarrant;
+import io.surati.gap.maccount.module.domain.db.jooq.generated.tables.MaAnnualWarrantView;
 import io.surati.gap.maccount.module.domain.db.jooq.generated.tables.MaSubBundle;
 import io.surati.gap.maccount.module.domain.db.jooq.generated.tables.records.MaSubBundleRecord;
 import java.time.LocalDateTime;
 import javax.sql.DataSource;
+import org.jooq.DSLContext;
+import org.jooq.impl.DSL;
 
 /**
  * Sub-bundle from database.
@@ -48,13 +53,16 @@ public final class DbSubBundle implements SubBundle {
 	 */
 	private final DataSource src;
 
+	private final DSLContext ctx;
+
 	/**
 	 * Ctor.
 	 * @param source Data source
 	 * @param id Identifier
 	 */
 	public DbSubBundle(final DataSource source, final Long id) {
-		this.record = new JooqContext(source)
+		this.ctx = new JooqContext(source);
+		this.record = this.ctx
 			.fetchOne(MaSubBundle.MA_SUB_BUNDLE, MaSubBundle.MA_SUB_BUNDLE.ID.eq(id));
 		this.src = source;
 	}
@@ -66,10 +74,15 @@ public final class DbSubBundle implements SubBundle {
     
     @Override
     public int order() {
-    	return 0 /*this.record.getNo()*/;
+    	return this.record.getNo();
     }
-    
-    @Override
+
+	@Override
+	public short year() {
+		return this.record.getFiscalYear();
+	}
+
+	@Override
 	public LocalDateTime creationDate() {
 		return this.record.getCreationDate();
 	}
@@ -81,21 +94,52 @@ public final class DbSubBundle implements SubBundle {
     
     @Override
     public Title title() {
-    	return new DbTitle(this.src, "0");
+    	return new DbTitle(this.src, this.record.getTitle());
     }
     
     @Override
     public Section section() {
-    	return new DbSection(this.src, "0");
+    	return new DbSection(this.src, this.record.getSection());
     }
     
     @Override
     public Bundle bundle() {
-    	return new DbBundle(this.src, "0");
+    	return new DbBundle(this.src, this.record.getBundle());
     }
     
     @Override
-	public Iterable<Warrant> warrants() {
-		return null;
+	public Iterable<AnnualWarrant> warrants() {
+		return this.ctx
+			.selectFrom(MaAnnualWarrantView.MA_ANNUAL_WARRANT_VIEW)
+			.where(MaAnnualWarrantView.MA_ANNUAL_WARRANT_VIEW.SUB_BUNDLE_ID.eq(this.id()))
+			.orderBy(
+				MaAnnualWarrantView.MA_ANNUAL_WARRANT_VIEW.DATE.asc(),
+				MaAnnualWarrantView.MA_ANNUAL_WARRANT_VIEW.ID.asc()
+			)
+			.fetch(
+				rec -> new DbAnnualWarrant(
+					this.src, rec.getId(), rec.getFiscalYear()
+				)
+			);
+	}
+
+	@Override
+	public int numberOfWarrants() {
+		return this.ctx
+			.fetchCount(
+				MaAnnualWarrant.MA_ANNUAL_WARRANT,
+				MaAnnualWarrant.MA_ANNUAL_WARRANT.SUB_BUNDLE_ID.eq(this.id())
+			);
+	}
+
+	@Override
+	public Double totalAmountPaid() {
+		return this.ctx
+			.select(DSL.sum(MaAnnualWarrant.MA_ANNUAL_WARRANT.ANNUAL_AMOUNT_PAID))
+			.from(MaAnnualWarrant.MA_ANNUAL_WARRANT)
+			.where(MaAnnualWarrant.MA_ANNUAL_WARRANT.SUB_BUNDLE_ID.eq(this.id()))
+			.fetchOne()
+			.value1()
+			.doubleValue();
 	}
 }

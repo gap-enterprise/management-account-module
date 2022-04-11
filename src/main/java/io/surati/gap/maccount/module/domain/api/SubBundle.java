@@ -40,7 +40,13 @@ public interface SubBundle {
      * @return order
      */
 	int order();
-	
+
+	/**
+	 * Year.
+	 * @return Year
+	 */
+	short year();
+
 	/**
 	 * Get date of sub bundlde.
 	 * @return Datetime
@@ -75,5 +81,13 @@ public interface SubBundle {
      * Iterate all warrants bundled.
      * @return List of Warrants
      */
-    Iterable<Warrant> warrants();
+    Iterable<AnnualWarrant> warrants();
+
+	int numberOfWarrants();
+
+	/**
+	 * Total amount paid.
+	 * @return Amount
+	 */
+	Double totalAmountPaid();
 }

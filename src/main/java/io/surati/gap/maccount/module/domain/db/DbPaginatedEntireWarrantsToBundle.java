@@ -1,16 +1,30 @@
 package io.surati.gap.maccount.module.domain.db;
 
+import io.surati.gap.admin.base.api.User;
 import io.surati.gap.database.utils.jooq.JooqContext;
 import io.surati.gap.gtp.base.api.Bundle;
 import io.surati.gap.gtp.base.api.Section;
 import io.surati.gap.gtp.base.api.Title;
+import io.surati.gap.gtp.base.db.DbBundle;
+import io.surati.gap.gtp.base.db.DbSection;
+import io.surati.gap.gtp.base.db.DbTitle;
 import io.surati.gap.maccount.module.domain.api.AnnualWarrant;
+import io.surati.gap.maccount.module.domain.api.PropBundleThreshold;
 import io.surati.gap.maccount.module.domain.api.WarrantsToBundle;
+import io.surati.gap.maccount.module.domain.db.jooq.generated.tables.MaAnnualWarrant;
 import io.surati.gap.maccount.module.domain.db.jooq.generated.tables.MaAnnualWarrantView;
+import io.surati.gap.maccount.module.domain.db.jooq.generated.tables.MaSubBundle;
+import java.time.LocalDateTime;
 import javax.sql.DataSource;
 import org.apache.commons.lang3.StringUtils;
+import org.cactoos.list.ListOf;
 import org.jooq.Condition;
+import org.jooq.Cursor;
 import org.jooq.DSLContext;
+import org.jooq.Record;
+import org.jooq.Record4;
+import org.jooq.Result;
+import org.jooq.SelectHavingStep;
 import org.jooq.impl.DSL;
 
 public final class DbPaginatedEntireWarrantsToBundle implements WarrantsToBundle {
@@ -65,9 +79,12 @@ public final class DbPaginatedEntireWarrantsToBundle implements WarrantsToBundle
         return this.ctx
             .selectFrom(MaAnnualWarrantView.MA_ANNUAL_WARRANT_VIEW)
             .where(this.condition())
-            .orderBy(MaAnnualWarrantView.MA_ANNUAL_WARRANT_VIEW.ID.desc())
-            .offset(this.nbperpage * (this.page - 1))
+            .orderBy(
+                MaAnnualWarrantView.MA_ANNUAL_WARRANT_VIEW.DATE.asc(),
+                MaAnnualWarrantView.MA_ANNUAL_WARRANT_VIEW.ID.asc()
+            )
             .limit(this.nbperpage)
+            .offset(this.nbperpage * (this.page - 1))
             .fetch(
                 rec -> new DbAnnualWarrant(
                     this.src, rec.getId(), rec.getFiscalYear()
@@ -81,6 +98,112 @@ public final class DbPaginatedEntireWarrantsToBundle implements WarrantsToBundle
             this.ctx
                 .fetchCount(MaAnnualWarrantView.MA_ANNUAL_WARRANT_VIEW, this.condition())
         );
+    }
+
+    /**
+     * Bundle selected warrants.
+     * @param warrants Warrants
+     * @param author Author
+     */
+    private void bundle(
+        final Iterable<AnnualWarrant> warrants,
+        final Title atitle, final Section asection,
+        final Bundle abundle, final User author
+    ) {
+        final Long sbdleid = this.ctx.insertInto(MaSubBundle.MA_SUB_BUNDLE)
+            .set(MaSubBundle.MA_SUB_BUNDLE.FISCAL_YEAR, this.year)
+            .set(MaSubBundle.MA_SUB_BUNDLE.CREATION_DATE, LocalDateTime.now())
+            .set(MaSubBundle.MA_SUB_BUNDLE.AUTHOR_ID, author.id())
+            .set(MaSubBundle.MA_SUB_BUNDLE.BUNDLE, abundle.code())
+            .set(MaSubBundle.MA_SUB_BUNDLE.SECTION, asection.code())
+            .set(MaSubBundle.MA_SUB_BUNDLE.TITLE, atitle.code())
+            .set(MaSubBundle.MA_SUB_BUNDLE.BUNDLE_SPLIT_WARRANT, false)
+            .set(
+                MaSubBundle.MA_SUB_BUNDLE.NO,
+                this.ctx.fetchCount(
+                    MaSubBundle.MA_SUB_BUNDLE,
+                    MaSubBundle.MA_SUB_BUNDLE.FISCAL_YEAR.eq(this.year)
+                        .and(
+                            MaSubBundle.MA_SUB_BUNDLE.BUNDLE_SPLIT_WARRANT.eq(false)
+                        )
+                ) + 1
+            )
+            .returning(MaSubBundle.MA_SUB_BUNDLE.ID)
+            .fetchOne()
+            .getId();
+        for (AnnualWarrant wr : warrants) {
+            this.ctx.update(MaAnnualWarrant.MA_ANNUAL_WARRANT)
+                .set(MaAnnualWarrant.MA_ANNUAL_WARRANT.SUB_BUNDLE_ID, sbdleid)
+                .where(
+                    MaAnnualWarrant.MA_ANNUAL_WARRANT.WARRANT_ID.eq(wr.id())
+                        .and(
+                            MaAnnualWarrant.MA_ANNUAL_WARRANT.FISCAL_YEAR.eq(this.year)
+                        )
+                )
+                .execute();
+        }
+    }
+
+    /**
+     * Bundle warrants.
+     * @param author Author
+     * @param anyway Bundle even if threshold isn't be reached
+     */
+    private void bundle(final User author, final boolean anyway) {
+        final int threshold = new PropBundleThreshold().totalPayment();
+        try(
+            Cursor<Record4<String, String, String, Integer>> cursor = this.ctx.select(
+                    MaAnnualWarrantView.MA_ANNUAL_WARRANT_VIEW.TITLE,
+                    MaAnnualWarrantView.MA_ANNUAL_WARRANT_VIEW.SECTION,
+                    MaAnnualWarrantView.MA_ANNUAL_WARRANT_VIEW.BUNDLE,
+                    DSL.count()
+                ).from(MaAnnualWarrantView.MA_ANNUAL_WARRANT_VIEW)
+                .where(this.condition())
+                .groupBy(
+                    MaAnnualWarrantView.MA_ANNUAL_WARRANT_VIEW.TITLE,
+                    MaAnnualWarrantView.MA_ANNUAL_WARRANT_VIEW.SECTION,
+                    MaAnnualWarrantView.MA_ANNUAL_WARRANT_VIEW.BUNDLE
+                ).fetchSize(1)
+                .fetchLazy()
+        ) {
+            while (cursor.hasNext()) {
+                final Record4<String, String, String, Integer> group = cursor.fetchNext();
+                int nbpage = group.value4() / threshold;
+                if (nbpage == 0) {
+                    if (anyway) {
+                        nbpage = 1;
+                    } else {
+                        continue;
+                    }
+                } else if (anyway && group.value4() % threshold > 0) {
+                    nbpage += 1;
+                }
+                final Title ltitle = new DbTitle(this.src, group.value1());
+                final Section lsection = new DbSection(this.src, group.value2());
+                final Bundle lbundle = new DbBundle(this.src, group.value3());
+                for (int pge = 1; pge <= nbpage; pge++) {
+                    final Iterable<AnnualWarrant> warrants = new DbPaginatedEntireWarrantsToBundle(
+                        this.src, (long)threshold, 1L,
+                        ltitle,
+                        lsection,
+                        lbundle,
+                        this.year,
+                        this.filter
+                    ).iterate();
+                    this.bundle(warrants, ltitle, lsection, lbundle, author);
+                }
+            }
+        }
+    }
+
+    @Override
+    public void bundle(final User author) {
+        this.bundle(author, false);
+    }
+
+    @Override
+    public void bundleAnyway(final User author) {
+        this.bundle(author, true);
     }
 
     @Override
@@ -122,6 +245,8 @@ public final class DbPaginatedEntireWarrantsToBundle implements WarrantsToBundle
             MaAnnualWarrantView.MA_ANNUAL_WARRANT_VIEW.FISCAL_YEAR.eq(this.year)
         ).and(
             MaAnnualWarrantView.MA_ANNUAL_WARRANT_VIEW.IS_SPLIT.eq(false)
+        ).and(
+            MaAnnualWarrantView.MA_ANNUAL_WARRANT_VIEW.SUB_BUNDLE_ID.isNull()
         );
         if (this.pbundle != Bundle.EMPTY) {
             result = result.and(

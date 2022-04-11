@@ -7,7 +7,6 @@ package io.surati.gap.maccount.module.domain.db.jooq.generated;
 import io.surati.gap.maccount.module.domain.db.jooq.generated.tables.MaAnnualWarrant;
 import io.surati.gap.maccount.module.domain.db.jooq.generated.tables.MaAnnualWarrantView;
 import io.surati.gap.maccount.module.domain.db.jooq.generated.tables.MaSubBundle;
-import io.surati.gap.maccount.module.domain.db.jooq.generated.tables.MaSubBundleView;
 
 import java.util.Arrays;
 import java.util.List;
@@ -47,11 +46,6 @@ public class Public extends SchemaImpl {
     public final MaSubBundle MA_SUB_BUNDLE = MaSubBundle.MA_SUB_BUNDLE;
 
     /**
-     * The table <code>public.ma_sub_bundle_view</code>.
-     */
-    public final MaSubBundleView MA_SUB_BUNDLE_VIEW = MaSubBundleView.MA_SUB_BUNDLE_VIEW;
-
-    /**
      * No further instances allowed
      */
     private Public() {
@@ -75,7 +69,6 @@ public class Public extends SchemaImpl {
         return Arrays.<Table<?>>asList(
             MaAnnualWarrant.MA_ANNUAL_WARRANT,
             MaAnnualWarrantView.MA_ANNUAL_WARRANT_VIEW,
-            MaSubBundle.MA_SUB_BUNDLE,
-            MaSubBundleView.MA_SUB_BUNDLE_VIEW);
+            MaSubBundle.MA_SUB_BUNDLE);
     }
 }

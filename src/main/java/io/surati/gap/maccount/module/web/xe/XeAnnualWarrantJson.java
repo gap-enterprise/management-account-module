@@ -2,7 +2,9 @@ package io.surati.gap.maccount.module.web.xe;
 
 import io.surati.gap.commons.utils.amount.FrAmountInXof;
 import io.surati.gap.commons.utils.amount.FrThousandSeparatorAmount;
+import io.surati.gap.commons.utils.convert.FrShortDateFormat;
 import io.surati.gap.maccount.module.domain.api.AnnualWarrant;
+import java.time.format.DateTimeFormatter;
 import javax.json.Json;
 import javax.json.JsonArray;
 import javax.json.JsonArrayBuilder;
@@ -34,6 +36,7 @@ public final class XeAnnualWarrantJson implements RsJson.Source {
 		for (final AnnualWarrant item : items) {
 			builder.add(Json.createObjectBuilder()
 				.add("id", item.id())
+				.add("date_view", new FrShortDateFormat().convert(item.date()))
 				.add("year", item.year())
 				.add("bundle", item.bundle().code())
 				.add("title", item.title().fullName())

@@ -54,23 +54,16 @@ SOFTWARE.
     <div class="main-card mb-3 card card-body" app="app" ng-controller="AppCtrl as vm">
       <div class="card-header">
         <div class="card-header-title font-size-lg text-capitalize font-weight-normal">
-          <xsl:value-of select="root_page/subtitle"/>
+          Sous-liasses - <xsl:value-of select="root_page/subtitle"/>
         </div>
         <div class="btn-actions-pane-right">
           <div class="row">
             <xsl:if test="sec:hasAccess(.,'ENLIASSER_MANDATS')">
-              <button ng-click="vm.bundle()" ng-disabled="vm.loadingBundle" class="btn-icon btn-wide btn-outline-2x btn btn-outline-focus btn-sm d-flex mr-1">
-                <xsl:text>Enliasser la sélection</xsl:text>
+              <button ng-click="vm.printAll()" ng-disabled="vm.loadingPrint" class="btn-icon btn-wide btn-outline-2x btn btn-outline-focus btn-sm d-flex mr-1">
+                <xsl:text>Imprimer étiquettes de la sélection</xsl:text>
                 <span class="pl-2 align-middle opacity-7">
-                  <i class="fa fa-spinner fa-spin" ng-if="vm.loadingBundle"/>
-                  <i class="lnr-book" ng-if="!vm.loadingBundle"/>
-                </span>
-              </button>
-              <button ng-click="vm.bundleAnyway()" ng-disabled="vm.loadingBundleAnyway" class="btn-icon btn-wide btn-outline-2x btn btn-outline-focus btn-sm d-flex">
-                <xsl:text>Enliasser totalement la sélection</xsl:text>
-                <span class="pl-2 align-middle opacity-7">
-                  <i class="fa fa-spinner fa-spin" ng-if="vm.loadingBundleAnyway"/>
-                  <i class="lnr-book" ng-if="!vm.loadingBundleAnyway"/>
+                  <i class="fa fa-spinner fa-spin" ng-if="vm.loadingPrint"/>
+                  <i class="lnr-book" ng-if="!vm.loadingPrint"/>
                 </span>
               </button>
             </xsl:if>
@@ -91,7 +84,7 @@ SOFTWARE.
               <div class="input-group-prepend">
                 <span class="input-group-text">Contient</span>
               </div>
-              <input type="search" class="form-control form-control-sm" placeholder="N° mandat, Imputation" aria-controls="example" ng-model="vm.filter" ng-model-options="{{ debounce: 1500 }}" ng-change="vm.search()" aria-describedby="search-addon"/>
+              <input type="search" class="form-control form-control-sm" placeholder="N° sous-liasse" aria-controls="example" ng-model="vm.filter" ng-model-options="{{ debounce: 1500 }}" ng-change="vm.search()" aria-describedby="search-addon"/>
               <div class="input-group-append">
                 <span class="input-group-text" id="search-addon1">
                   <i class="fa fa-search"/>
@@ -147,7 +140,7 @@ SOFTWARE.
         </div>
         <div class="mt-2" ng-if="!vm.loadingData">
           <h6 class="text-center pb-1 pt-5" ng-if="vm.items.length == 0">
-            <xsl:text>Il n'y a aucun mandat trouvé.</xsl:text>
+            <xsl:text>Il n'y a aucune liasse trouvé.</xsl:text>
           </h6>
           <div class="row" ng-if="vm.items.length &gt; 0">
             <div class="col-sm-12 col-md-12">
@@ -157,9 +150,10 @@ SOFTWARE.
                     <tr>
                       <th>N°</th>
                       <th>Date</th>
-                      <th>N° mandat</th>
-                      <th>Imputation</th>
-                      <th>Bénéficiaire</th>
+                      <th>Titre</th>
+                      <th>Section</th>
+                      <th>Liasse</th>
+                      <th>Mandats</th>
                       <th>Montant</th>
                       <th>Actions</th>
                     </tr>
@@ -173,21 +167,27 @@ SOFTWARE.
                         {{ item.date_view }}
                       </td>
                       <td>
-			                    {{ item.reference }}
+			                    {{ item.title }}
 			                  </td>
                       <td>
-								  {{ item.imputation }}
+								  {{ item.section }}
 							  </td>
                       <td>
-			                    {{ item.beneficiary }}
+			                    {{ item.bundle }} | {{ item.order }}
 			                  </td>
                       <td>
-			                    {{ item.total_amount_to_pay_in_human }}
+                        {{ item.number_of_warrants }}
+                      </td>
+                      <td>
+			                    {{ item.total_amount_paid_in_human }}
 			                  </td>
                       <td>
                         <div role="group">
-                          <a href="/warrant/view?id={{{{item.id}}}}&amp;{root_page/full}" class="mb-1 mr-1 btn btn-xs btn-outline-primary">
+                          <a href="/maccount/sub-bundle/view?id={{{{item.id}}}}&amp;{root_page/full}" class="mb-1 mr-1 btn btn-xs btn-outline-primary">
                             <i class="fa fa-eye"/>
+                          </a>
+                          <a href="/maccount/sub-bundle/print?id={{{{item.id}}}}&amp;{root_page/full}" class="mb-1 mr-1 btn btn-xs btn-outline-primary">
+                            <i class="fa fa-print"/>
                           </a>
                         </div>
                       </td>
@@ -238,14 +238,12 @@ SOFTWARE.
 				            };
 				
 				            vm.loadingData = true;
-				            return $http.get('/api/maccount/warrant-to-bundle/entire/search', config).then(
+				            return $http.get('/api/maccount/sub-bundle/entire/search', config).then(
 						            function(response){
 						            	vm.loadingData = false;
 						            	
 						            	vm.totalCount = response.data.count;						            
 							            vm.items = response.data.items;
-						                vm.annual_amount_paid = response.data.annual_amount_paid;
-						                vm.annual_amount_paid_in_human = response.data.annual_amount_paid_in_human;
 							            vm.firstPosition = vm.nbItemsPerPage * (vm.currentPage - 1) + 1;
 							            vm.lastPosition = vm.firstPosition + vm.items.length - 1;
 						            },
@@ -254,71 +252,7 @@ SOFTWARE.
 						            }
 				            );
 				       }
-					   
-         			   vm.bundleAnyway = function() {
-				            var data = {
-			                    page: vm.currentPage,
-                                nbperpage: vm.nbItemsPerPage,
-                                filter: vm.filter,
-                                year: vm.yearId,
-                                section: vm.sectionId,
-                                title: vm.titleId,
-                                bundle: vm.bundleId
-			                };
-			                vm.loadingBundleAnyway = true;
-				            return $http(
-					            {
-								    url: '/api/maccount/warrant-to-bundle/entire/bundle-anyway',
-								    method: 'POST',
-								    data: $httpParamSerializerJQLike(data),
-								    headers: {
-								      'Content-Type': 'application/x-www-form-urlencoded'
-								    }
-								}
-							).then(
-					            function(response){
-					            	vm.search();
-						            vm.loadingBundleAnyway = false;
-					            },
-					            function(error){
-						            vm.loadingBundleAnyway = false;
-					                toastr.error(error.data.message);
-					            }
-				            );
-				       }
 
-				       vm.bundle = function() {
-				            var data = {
-			                    page: vm.currentPage,
-                                nbperpage: vm.nbItemsPerPage,
-                                filter: vm.filter,
-                                year: vm.yearId,
-                                section: vm.sectionId,
-                                title: vm.titleId,
-                                bundle: vm.bundleId
-			                };
-                            vm.loadingBundle = true;
-				            return $http(
-					            {
-								    url: '/api/maccount/warrant-to-bundle/entire/bundle',
-								    method: 'POST',
-								    data: $httpParamSerializerJQLike(data),
-								    headers: {
-								      'Content-Type': 'application/x-www-form-urlencoded'
-								    }
-								}
-							).then(
-					            function(response){
-					            	vm.search();
-						            vm.loadingBundle = false;
-					            },
-					            function(error){
-					                vm.loadingBundle = false;
-					                toastr.error(error.data.message);
-					            }
-				            );
-				       }
-          			   
 		               vm.pageChanged = function(){
 		               		vm.search();
 		               };	

@@ -25,10 +25,9 @@ package io.surati.gap.maccount.module.web.xe;
 
 import com.minlessika.map.CleanMap;
 import io.surati.gap.commons.utils.amount.FrAmountInXof;
-import io.surati.gap.commons.utils.amount.FrThousandSeparatorAmount;
 import io.surati.gap.commons.utils.convert.FrShortDateFormat;
-import io.surati.gap.maccount.module.domain.api.AnnualWarrant;
-import java.time.format.DateTimeFormatter;
+import io.surati.gap.maccount.module.domain.api.SubBundle;
+import org.cactoos.list.ListOf;
 import org.takes.rs.xe.XeDirectives;
 import org.takes.rs.xe.XeWrap;
 import org.xembly.Directives;
@@ -38,13 +37,13 @@ import org.xembly.Directives;
  *
  * @since 3.0
  */
-public final class XeAnnualWarrant extends XeWrap {
+public final class XeSubBundle extends XeWrap {
 
-	public XeAnnualWarrant(final AnnualWarrant item) {
+	public XeSubBundle(final SubBundle item) {
 		this("item", item);
 	}
 
-	public XeAnnualWarrant(final String name, final AnnualWarrant item) {
+	public XeSubBundle(final String name, final SubBundle item) {
 		super(
 			new XeDirectives(
 				new Directives()
@@ -52,22 +51,16 @@ public final class XeAnnualWarrant extends XeWrap {
 				.add(
 					new CleanMap<>()
 						.add("id", item.id())
-						.add("date_view", new FrShortDateFormat().convert(item.date()))
+						.add("order", item.order())
+						.add("date_view", new FrShortDateFormat().convert(item.creationDate()))
 						.add("year", item.year())
 						.add("bundle", item.bundle().code())
-						.add("title", item.title().fullName())
-						.add("section", item.section().fullName())
-						.add("imputation", item.imputation())
-						.add("reference", item.reference())
-						.add("annual_amount_to_pay", item.annualAmountToPay())
-						.add("annual_amount_to_pay_in_human", new FrThousandSeparatorAmount(item.annualAmountToPay()))
-						.add("annual_amount_paid", item.annualAmountPaid())
-						.add("annual_amount_paid_in_human", new FrThousandSeparatorAmount(item.annualAmountPaid()))
-						.add("annual_amount_left", item.annualAmountLeft())
-						.add("annual_amount_left_in_human", new FrThousandSeparatorAmount(item.annualAmountLeft()))
-						.add("total_amount_to_pay", item.amount())
-						.add("total_amount_to_pay_in_human", new FrThousandSeparatorAmount(item.amount()))
-						.add("beneficiary", item.issuer().name())
+						.add("title", item.title().code())
+						.add("section", item.section().code())
+						.add("title_fullname", item.title().fullName())
+						.add("section_fullname", item.section().fullName())
+						.add("number_of_warrants", item.numberOfWarrants())
+						.add("total_amount_paid_in_human", new FrAmountInXof(item.totalAmountPaid()))
 				)
 				.up()
 			)

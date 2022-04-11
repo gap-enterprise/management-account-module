@@ -1,6 +1,12 @@
 package io.surati.gap.maccount.module.web.server;
 
+import io.surati.gap.maccount.module.web.rest.TkBundleAnywayEntireWarrants;
+import io.surati.gap.maccount.module.web.rest.TkBundleAnywayPartialWarrants;
+import io.surati.gap.maccount.module.web.rest.TkBundleEntireWarrants;
+import io.surati.gap.maccount.module.web.rest.TkBundlePartialWarrants;
+import io.surati.gap.maccount.module.web.rest.TkEntireSubBundleSearch;
 import io.surati.gap.maccount.module.web.rest.TkEntireWarrantToBundleSearch;
+import io.surati.gap.maccount.module.web.rest.TkPartialSubBundleSearch;
 import io.surati.gap.maccount.module.web.rest.TkPartialWarrantToBundleSearch;
 import io.surati.gap.web.base.TkSecure;
 import javax.sql.DataSource;
@@ -19,16 +25,58 @@ public final class FkApi extends FkWrap {
 		super(
 			new FkChain(
 				new FkRegex(
-					"/maccount/warrant-to-bundle/entire/search",
+					"/api/maccount/warrant-to-bundle/entire/search",
 					new TkSecure(
 						new TkEntireWarrantToBundleSearch(src),
 						src
 					)
 				),
 				new FkRegex(
-					"/maccount/warrant-to-bundle/partial/search",
+					"/api/maccount/warrant-to-bundle/partial/search",
 					new TkSecure(
 						new TkPartialWarrantToBundleSearch(src),
+						src
+					)
+				),
+				new FkRegex(
+					"/api/maccount/warrant-to-bundle/entire/bundle",
+					new TkSecure(
+						new TkBundleEntireWarrants(src),
+						src
+					)
+				),
+				new FkRegex(
+					"/api/maccount/warrant-to-bundle/entire/bundle-anyway",
+					new TkSecure(
+						new TkBundleAnywayEntireWarrants(src),
+						src
+					)
+				),
+				new FkRegex(
+					"/api/maccount/warrant-to-bundle/partial/bundle",
+					new TkSecure(
+						new TkBundlePartialWarrants(src),
+						src
+					)
+				),
+				new FkRegex(
+					"/api/maccount/warrant-to-bundle/partial/bundle-anyway",
+					new TkSecure(
+						new TkBundleAnywayPartialWarrants(src),
+						src
+					)
+				),
+				new FkRegex(
+					"/api/maccount/sub-bundle/entire/search",
+					new TkSecure(
+						new TkEntireSubBundleSearch(src),
+						src
+					)
+				),
+				new FkRegex(
+					"/api/maccount/sub-bundle/partial/search",
+					new TkSecure(
+						new TkPartialSubBundleSearch(src),
 						src
 					)
 				)

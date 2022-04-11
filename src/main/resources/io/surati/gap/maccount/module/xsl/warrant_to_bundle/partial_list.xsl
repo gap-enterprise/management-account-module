@@ -56,6 +56,26 @@ SOFTWARE.
         <div class="card-header-title font-size-lg text-capitalize font-weight-normal">
           <xsl:value-of select="root_page/subtitle"/>
         </div>
+        <div class="btn-actions-pane-right">
+          <div class="row">
+            <xsl:if test="sec:hasAccess(.,'ENLIASSER_MANDATS')">
+              <button ng-click="vm.bundle()" ng-disabled="vm.loadingBundle" class="btn-icon btn-wide btn-outline-2x btn btn-outline-focus btn-sm d-flex mr-1">
+                <xsl:text>Enliasser la sélection</xsl:text>
+                <span class="pl-2 align-middle opacity-7">
+                  <i class="fa fa-spinner fa-spin" ng-if="vm.loadingBundle"/>
+                  <i class="lnr-book" ng-if="!vm.loadingBundle"/>
+                </span>
+              </button>
+              <button ng-click="vm.bundleAnyway()" ng-disabled="vm.loadingBundleAnyway" class="btn-icon btn-wide btn-outline-2x btn btn-outline-focus btn-sm d-flex">
+                <xsl:text>Enliasser totalement la sélection</xsl:text>
+                <span class="pl-2 align-middle opacity-7">
+                  <i class="fa fa-spinner fa-spin" ng-if="vm.loadingBundleAnyway"/>
+                  <i class="lnr-book" ng-if="!vm.loadingBundleAnyway"/>
+                </span>
+              </button>
+            </xsl:if>
+          </div>
+        </div>
       </div>
       <div class="card-body">
         <div class="row dataTables_wrapper dt-bootstrap4">
@@ -131,18 +151,12 @@ SOFTWARE.
           </h6>
           <div class="row" ng-if="vm.items.length &gt; 0">
             <div class="col-sm-12 col-md-12">
-              <button type="button" class="mb-1 mr-1 btn btn-sm btn-success" ng-click="vm.selectMultiple()" ng-disabled="vm.loadingSelectMultiple"><i class="fa fa-spinner fa-spin" ng-if="vm.loadingSelectMultiple"/><i class="lnr-book" ng-if="!vm.loadingSelectMultiple"/> Enliasser les éléments sélectionnés
-                    </button>
-            </div>
-            <div class="col-sm-12 col-md-12">
               <div class="table-responsive">
                 <table class="table table-hover table-striped table-bordered table-sm dataTable dtr-inline">
                   <thead>
                     <tr>
-                      <th>
-                        <input type="checkbox" ng-model="vm.selectAll" ng-change="vm.selectAllChanged(vm.selectAll)"/>
-                      </th>
                       <th>N°</th>
+                      <th>Date</th>
                       <th>N° mandat</th>
                       <th>Imputation</th>
                       <th>Bénéficiaire</th>
@@ -156,30 +170,30 @@ SOFTWARE.
                   <tbody>
                     <tr ng-repeat="item in vm.items">
                       <td>
-                        <input type="checkbox" ng-model="item.selected"/>
-                      </td>
-                      <td>
 			                    {{ vm.firstPosition + $index }}
 			                  </td>
-                        <td>
+                      <td>
+                        {{ item.date_view }}
+                      </td>
+                      <td>
                             {{ item.reference }}
                         </td>
-                        <td>
+                      <td>
                             {{ item.imputation }}
                         </td>
-                        <td>
+                      <td>
                             {{ item.beneficiary }}
                         </td>
-                        <td>
+                      <td>
                             {{ item.total_amount_to_pay_in_human }}
                         </td>
-                        <td>
+                      <td>
                             {{ item.annual_amount_to_pay_in_human }}
                         </td>
-                        <td>
+                      <td>
                             {{ item.annual_amount_paid_in_human }}
                         </td>
-                        <td>
+                      <td>
                             {{ item.annual_amount_left_in_human }}
                         </td>
                       <td>
@@ -236,7 +250,7 @@ SOFTWARE.
 				            };
 				
 				            vm.loadingData = true;
-				            return $http.get('/maccount/warrant-to-bundle/partial/search', config).then(
+				            return $http.get('/api/maccount/warrant-to-bundle/partial/search', config).then(
 						            function(response){
 						            	vm.loadingData = false;
 						            	
@@ -252,55 +266,21 @@ SOFTWARE.
 						            }
 				            );
 				       }
-				       
-				       vm.selectSelection = function() {
-					      vm.loadingSelectSelection = true;
-					   	  select([], function() {
-					   	  	vm.loadingSelectSelection = false;
-					   	  });
-					   }
-					   
-					   vm.selectMultiple = function() {
-					      var docids = [];
-					      vm.items.forEach(function(item, index) {
-					      	if(item.selected) {
-					      	   docids.push(item.id);
-					      	}
-					      });
-					      if(docids.length == 0) {
-					      	return;
-					      }
-					      vm.loadingSelectMultiple = true;
-					   	  select(docids, function() {
-					   	  	vm.loadingSelectMultiple = false;
-					   	  });
-					   }
-					   
-					   vm.selectOne = function(item) {
-					   	   item.loadingSelectOne = true;
-					   	   select([item.id], function() {
-					   	   	 item.loadingSelectOne = false;
-					   	   });
-					   }
-					   
-         			   function select(docids, callback) {							
+
+				       vm.bundleAnyway = function() {
 				            var data = {
 			                    page: vm.currentPage,
-			                    nbperpage: vm.nbItemsPerPage,
-			                    filtercontains: vm.filterContains,
-			                    filternotcontains: vm.filterNotContains,
-			                    editbegindate: vm.editbegindate,
-			                    editenddate: vm.editenddate,
-			                    year: vm.yearId,
-			                    section: vm.sectionId,
-			                    title: vm.titleId,
-			                    bundle: vm.bundleId,
-			                    refdocids: docids
+                                nbperpage: vm.nbItemsPerPage,
+                                filter: vm.filter,
+                                year: vm.yearId,
+                                section: vm.sectionId,
+                                title: vm.titleId,
+                                bundle: vm.bundleId
 			                };
-			                
+			                vm.loadingBundleAnyway = true;
 				            return $http(
 					            {
-								    url: '/reference-document/select',
+								    url: '/api/maccount/warrant-to-bundle/partial/bundle-anyway',
 								    method: 'POST',
 								    data: $httpParamSerializerJQLike(data),
 								    headers: {
@@ -309,31 +289,47 @@ SOFTWARE.
 								}
 							).then(
 					            function(response){
-					            	vm.totalCount = response.data.count;						            
-						            vm.items = response.data.items;
-						            vm.total_amount = response.data.total_amount;
-						            vm.total_amount_in_human = response.data.total_amount_in_human;
-						            vm.amount_selected = response.data.amount_selected;
-						            vm.amount_selected_in_human = response.data.amount_selected_in_human;
-						            vm.amount_left = response.data.amount_left;
-						            vm.amount_left_in_human = response.data.amount_left_in_human;
-						            vm.selectAll = false;
-						            vm.firstPosition = vm.nbItemsPerPage * (vm.currentPage - 1) + 1;
-						            vm.lastPosition = vm.firstPosition + vm.items.length - 1;
-						            callback();
+					            	vm.search();
+						            vm.loadingBundleAnyway = false;
 					            },
 					            function(error){
-					                callback();
+						            vm.loadingBundleAnyway = false;
 					                toastr.error(error.data.message);
 					            }
 				            );
 				       }
-				        
-          			   vm.selectAllChanged = function(selected){
-          			   	   vm.items.forEach(function(item, index) {
-          			   	   		item.selected = selected;
-          			   	   });
-          			   }
+
+				       vm.bundle = function() {
+				            var data = {
+			                    page: vm.currentPage,
+                                nbperpage: vm.nbItemsPerPage,
+                                filter: vm.filter,
+                                year: vm.yearId,
+                                section: vm.sectionId,
+                                title: vm.titleId,
+                                bundle: vm.bundleId
+			                };
+                            vm.loadingBundle = true;
+				            return $http(
+					            {
+								    url: '/api/maccount/warrant-to-bundle/partial/bundle',
+								    method: 'POST',
+								    data: $httpParamSerializerJQLike(data),
+								    headers: {
+								      'Content-Type': 'application/x-www-form-urlencoded'
+								    }
+								}
+							).then(
+					            function(response){
+					            	vm.search();
+						            vm.loadingBundle = false;
+					            },
+					            function(error){
+					                vm.loadingBundle = false;
+					                toastr.error(error.data.message);
+					            }
+				            );
+				       }
           			   
 		               vm.pageChanged = function(){
 		               		vm.search();
@@ -386,7 +382,6 @@ SOFTWARE.
 					   	    vm.bundleId = "";
 					   	    vm.titleId = "";
 					   	    vm.yearId = vm.years[0].id;
-					   	    vm.amountSelected = "O FCFA";
 					   	    vm.search();
 					   };
 			    }]);	

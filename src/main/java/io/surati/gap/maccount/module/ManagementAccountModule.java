@@ -54,7 +54,7 @@ public enum ManagementAccountModule implements Module {
 				new IterableOf<>(
 					new SimpleSubmenu(
 						1, "entire-warrant-to-bundle", "lnr-pointer-left",
-						"Enliassement des mandats non fractionnés", "/maccount/warrant-to-bundle/entire/list",
+						"Mandats non fractionnés à enliasser", "/maccount/warrant-to-bundle/entire/list",
 						new IterableOf<>(
 							ManagementAccountAccess.VISUALISER_MANDATS_A_ENLIASER
 						),
@@ -62,9 +62,25 @@ public enum ManagementAccountModule implements Module {
 					),
 					new SimpleSubmenu(
 						2, "split-warrant-to-bundle", "lnr-pointer-left",
-						"Enliassement des mandats fractionnés", "/maccount/warrant-to-bundle/partial/list",
+						"Mandats fractionnés à enliasser", "/maccount/warrant-to-bundle/partial/list",
 						new IterableOf<>(
-							ManagementAccountAccess.VISUALISER_MANDATS_A_ENLIASER
+							ManagementAccountAccess.ENLIASSER_MANDATS
+						),
+						false
+					),
+					new SimpleSubmenu(
+						3, "entire-split-sub-bundle", "lnr-pointer-left",
+						"Sous-liasses de mandats non fractionnés", "/maccount/sub-bundle/entire/list",
+						new IterableOf<>(
+							ManagementAccountAccess.ENLIASSER_MANDATS
+						),
+						true
+					),
+					new SimpleSubmenu(
+						4, "partial-split-sub-bundle", "lnr-pointer-left",
+						"Sous-liasses de mandats fractionnés", "/maccount/sub-bundle/partial/list",
+						new IterableOf<>(
+							ManagementAccountAccess.ENLIASSER_MANDATS
 						),
 						false
 					)

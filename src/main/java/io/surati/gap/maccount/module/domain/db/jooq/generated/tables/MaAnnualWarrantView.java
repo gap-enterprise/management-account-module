@@ -46,7 +46,7 @@ public class MaAnnualWarrantView extends TableImpl<MaAnnualWarrantViewRecord> {
     /**
      * The column <code>public.ma_annual_warrant_view.no</code>.
      */
-    public final TableField<MaAnnualWarrantViewRecord, Long> NO = createField(DSL.name("no"), SQLDataType.BIGINT, this, "");
+    public final TableField<MaAnnualWarrantViewRecord, Integer> NO = createField(DSL.name("no"), SQLDataType.INTEGER, this, "");
 
     /**
      * The column <code>public.ma_annual_warrant_view.fiscal_year</code>.
@@ -248,7 +248,7 @@ public class MaAnnualWarrantView extends TableImpl<MaAnnualWarrantViewRecord> {
     }
 
     private MaAnnualWarrantView(Name alias, Table<MaAnnualWarrantViewRecord> aliased, Field<?>[] parameters) {
-        super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.view("create view \"ma_annual_warrant_view\" as  SELECT row_number() OVER (PARTITION BY awr.fiscal_year) AS no,\n    awr.fiscal_year,\n    awr.annual_amount_to_pay,\n    awr.annual_amount_paid,\n    awr.annual_amount_left,\n    awr.sub_bundle_id,\n    (NOT ((wr.amount = awr.annual_amount_to_pay) AND (awr.annual_amount_left = (0)::double precision))) AS is_split,\n    wr.id,\n    wr.type_id,\n    wr.date,\n    wr.reference,\n    wr.internal_reference,\n    wr.object,\n    wr.place,\n    wr.amount,\n    wr.deposit_date,\n    wr.entry_date,\n    wr.beneficiary_id,\n    wr.step_id,\n    wr.author_id,\n    wr.worker_id,\n    wr.status_id,\n    wr.amount_paid,\n    wr.amount_left,\n    wr.beneficiary_name,\n    wr.beneficiary_abbreviated,\n    wr.beneficiary_code,\n    wr.gross,\n    wr.deduction,\n    wr.debit_account_pec,\n    wr.credit_account_pec,\n    wr.date_pec,\n    wr.title,\n    wr.section,\n    wr.chapter,\n    wr.sub_chapter,\n    wr.line,\n    wr.bundle,\n    wr.region,\n    wr.imputation\n   FROM (ma_annual_warrant awr\n     LEFT JOIN gtp_warrant_view wr ON ((wr.id = awr.warrant_id)))\n  ORDER BY wr.id;"));
+        super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.view("create view \"ma_annual_warrant_view\" as  SELECT awr.no,\n    awr.fiscal_year,\n    awr.annual_amount_to_pay,\n    awr.annual_amount_paid,\n    awr.annual_amount_left,\n    awr.sub_bundle_id,\n    (NOT ((wr.amount = awr.annual_amount_to_pay) AND (awr.annual_amount_left = (0)::double precision))) AS is_split,\n    wr.id,\n    wr.type_id,\n    wr.date,\n    wr.reference,\n    wr.internal_reference,\n    wr.object,\n    wr.place,\n    wr.amount,\n    wr.deposit_date,\n    wr.entry_date,\n    wr.beneficiary_id,\n    wr.step_id,\n    wr.author_id,\n    wr.worker_id,\n    wr.status_id,\n    wr.amount_paid,\n    wr.amount_left,\n    wr.beneficiary_name,\n    wr.beneficiary_abbreviated,\n    wr.beneficiary_code,\n    wr.gross,\n    wr.deduction,\n    wr.debit_account_pec,\n    wr.credit_account_pec,\n    wr.date_pec,\n    wr.title,\n    wr.section,\n    wr.chapter,\n    wr.sub_chapter,\n    wr.line,\n    wr.bundle,\n    wr.region,\n    wr.imputation\n   FROM (ma_annual_warrant awr\n     LEFT JOIN gtp_warrant_view wr ON ((wr.id = awr.warrant_id)))\n  ORDER BY wr.id;"));
     }
 
     /**

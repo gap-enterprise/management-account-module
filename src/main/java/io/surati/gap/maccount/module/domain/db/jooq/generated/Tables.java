@@ -7,7 +7,6 @@ package io.surati.gap.maccount.module.domain.db.jooq.generated;
 import io.surati.gap.maccount.module.domain.db.jooq.generated.tables.MaAnnualWarrant;
 import io.surati.gap.maccount.module.domain.db.jooq.generated.tables.MaAnnualWarrantView;
 import io.surati.gap.maccount.module.domain.db.jooq.generated.tables.MaSubBundle;
-import io.surati.gap.maccount.module.domain.db.jooq.generated.tables.MaSubBundleView;
 
 
 /**
@@ -30,9 +29,4 @@ public class Tables {
      * The table <code>public.ma_sub_bundle</code>.
      */
     public static final MaSubBundle MA_SUB_BUNDLE = MaSubBundle.MA_SUB_BUNDLE;
-
-    /**
-     * The table <code>public.ma_sub_bundle_view</code>.
-     */
-    public static final MaSubBundleView MA_SUB_BUNDLE_VIEW = MaSubBundleView.MA_SUB_BUNDLE_VIEW;
 }

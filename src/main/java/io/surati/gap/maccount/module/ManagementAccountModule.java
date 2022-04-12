@@ -83,6 +83,14 @@ public enum ManagementAccountModule implements Module {
 							ManagementAccountAccess.ENLIASSER_MANDATS
 						),
 						false
+					),
+					new SimpleSubmenu(
+						5, "ma-report", "lnr-pointer-left",
+						"Rapports", "/maccount/report/list",
+						new IterableOf<>(
+							ManagementAccountAccess.TIRER_COMPTE_DE_GESTION
+						),
+						true
 					)
 				)
 			)

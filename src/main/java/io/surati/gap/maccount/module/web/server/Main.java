@@ -52,7 +52,9 @@ import org.takes.facets.fork.TkFork;
 import org.takes.facets.forward.TkForward;
 import org.takes.http.Exit;
 import org.takes.http.FtCli;
+import org.takes.tk.TkClasspath;
 import org.takes.tk.TkSlf4j;
+import org.takes.tk.TkWithType;
 
 /**
  * Entry of application.
@@ -112,6 +114,13 @@ public final class Main {
 									new TkTransaction(
 										new TkFork(
 											new FkMimes(),
+											new FkRegex(
+												"/io/.+/html/.+",
+												new TkWithType(
+													new TkClasspath(),
+													"text/html"
+												)
+											),
 											new FkRegex("/robots\\.txt", ""),
 											new FkActions(lcksrc),
 											new FkPages(lcksrc),

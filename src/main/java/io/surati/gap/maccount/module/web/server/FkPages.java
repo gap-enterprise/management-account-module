@@ -6,6 +6,8 @@ import io.surati.gap.maccount.module.web.pages.TkEntireSubBundleList;
 import io.surati.gap.maccount.module.web.pages.TkEntireWarrantToBundleList;
 import io.surati.gap.maccount.module.web.pages.TkPartialSubBundleList;
 import io.surati.gap.maccount.module.web.pages.TkPartialWarrantToBundleList;
+import io.surati.gap.maccount.module.web.pages.TkManagementAccountPreview;
+import io.surati.gap.maccount.module.web.pages.TkReport;
 import io.surati.gap.maccount.module.web.pages.TkSubBundleView;
 import io.surati.gap.web.base.TkSecure;
 import javax.sql.DataSource;
@@ -69,6 +71,20 @@ public final class FkPages extends FkWrap {
 					"/maccount/sub-bundle/view",
 					new TkSecure(
 						new TkSubBundleView(src),
+						src
+					)
+				),
+				new FkRegex(
+					"/maccount/management-account/preview",
+					new TkSecure(
+						new TkManagementAccountPreview(src),
+						src
+					)
+				),
+				new FkRegex(
+					"/maccount/report/list",
+					new TkSecure(
+						new TkReport(src),
 						src
 					)
 				)

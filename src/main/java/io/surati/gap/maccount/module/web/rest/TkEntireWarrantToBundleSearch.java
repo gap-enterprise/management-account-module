@@ -23,9 +23,9 @@ SOFTWARE.
  */ 
 package io.surati.gap.maccount.module.web.rest;
 
+import io.surati.gap.gtp.base.module.xe.XeAnnualWarrantJson;
 import io.surati.gap.maccount.module.domain.api.WarrantsToBundle;
 import io.surati.gap.maccount.module.web.rq.RqEntireWarrantsToBundle;
-import io.surati.gap.maccount.module.web.xe.XeAnnualWarrantJson;
 import javax.sql.DataSource;
 import org.takes.Request;
 import org.takes.Response;

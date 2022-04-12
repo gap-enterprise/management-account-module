@@ -16,12 +16,12 @@
  */
 package io.surati.gap.maccount.module.domain.api;
 
+import io.surati.gap.admin.base.api.User;
+import io.surati.gap.gtp.base.api.AnnualWarrant;
 import io.surati.gap.gtp.base.api.Bundle;
 import io.surati.gap.gtp.base.api.Section;
 import io.surati.gap.gtp.base.api.Title;
-import io.surati.gap.gtp.base.api.Warrant;
 import java.time.LocalDateTime;
-import io.surati.gap.admin.base.api.User;
 
 /**
  * Sub-bundle.

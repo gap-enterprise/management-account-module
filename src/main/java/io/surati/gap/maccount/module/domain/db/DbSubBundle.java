@@ -19,18 +19,18 @@ package io.surati.gap.maccount.module.domain.db;
 import io.surati.gap.admin.base.api.User;
 import io.surati.gap.admin.base.db.DbUser;
 import io.surati.gap.database.utils.jooq.JooqContext;
+import io.surati.gap.gtp.base.api.AnnualWarrant;
 import io.surati.gap.gtp.base.api.Bundle;
 import io.surati.gap.gtp.base.api.Section;
 import io.surati.gap.gtp.base.api.Title;
-import io.surati.gap.gtp.base.api.Warrant;
+import io.surati.gap.gtp.base.db.DbAnnualWarrant;
 import io.surati.gap.gtp.base.db.DbBundle;
 import io.surati.gap.gtp.base.db.DbSection;
 import io.surati.gap.gtp.base.db.DbTitle;
-import io.surati.gap.maccount.module.domain.api.AnnualWarrant;
 import io.surati.gap.maccount.module.domain.api.SubBundle;
-import io.surati.gap.maccount.module.domain.db.jooq.generated.tables.MaAnnualWarrant;
-import io.surati.gap.maccount.module.domain.db.jooq.generated.tables.MaAnnualWarrantView;
 import io.surati.gap.maccount.module.domain.db.jooq.generated.tables.MaSubBundle;
+import io.surati.gap.maccount.module.domain.db.jooq.generated.tables.MaWarrantBundled;
+import io.surati.gap.maccount.module.domain.db.jooq.generated.tables.MaWarrantBundledView;
 import io.surati.gap.maccount.module.domain.db.jooq.generated.tables.records.MaSubBundleRecord;
 import java.time.LocalDateTime;
 import javax.sql.DataSource;
@@ -110,11 +110,11 @@ public final class DbSubBundle implements SubBundle {
     @Override
 	public Iterable<AnnualWarrant> warrants() {
 		return this.ctx
-			.selectFrom(MaAnnualWarrantView.MA_ANNUAL_WARRANT_VIEW)
-			.where(MaAnnualWarrantView.MA_ANNUAL_WARRANT_VIEW.SUB_BUNDLE_ID.eq(this.id()))
+			.selectFrom(MaWarrantBundledView.MA_WARRANT_BUNDLED_VIEW)
+			.where(MaWarrantBundledView.MA_WARRANT_BUNDLED_VIEW.SUB_BUNDLE_ID.eq(this.id()))
 			.orderBy(
-				MaAnnualWarrantView.MA_ANNUAL_WARRANT_VIEW.DATE.asc(),
-				MaAnnualWarrantView.MA_ANNUAL_WARRANT_VIEW.ID.asc()
+				MaWarrantBundledView.MA_WARRANT_BUNDLED_VIEW.DATE.asc(),
+				MaWarrantBundledView.MA_WARRANT_BUNDLED_VIEW.ID.asc()
 			)
 			.fetch(
 				rec -> new DbAnnualWarrant(
@@ -127,17 +127,17 @@ public final class DbSubBundle implements SubBundle {
 	public int numberOfWarrants() {
 		return this.ctx
 			.fetchCount(
-				MaAnnualWarrant.MA_ANNUAL_WARRANT,
-				MaAnnualWarrant.MA_ANNUAL_WARRANT.SUB_BUNDLE_ID.eq(this.id())
+				MaWarrantBundled.MA_WARRANT_BUNDLED,
+				MaWarrantBundled.MA_WARRANT_BUNDLED.SUB_BUNDLE_ID.eq(this.id())
 			);
 	}
 
 	@Override
 	public Double totalAmountPaid() {
 		return this.ctx
-			.select(DSL.sum(MaAnnualWarrant.MA_ANNUAL_WARRANT.ANNUAL_AMOUNT_PAID))
-			.from(MaAnnualWarrant.MA_ANNUAL_WARRANT)
-			.where(MaAnnualWarrant.MA_ANNUAL_WARRANT.SUB_BUNDLE_ID.eq(this.id()))
+			.select(DSL.sum(MaWarrantBundledView.MA_WARRANT_BUNDLED_VIEW.ANNUAL_AMOUNT_PAID))
+			.from(MaWarrantBundledView.MA_WARRANT_BUNDLED_VIEW)
+			.where(MaWarrantBundledView.MA_WARRANT_BUNDLED_VIEW.SUB_BUNDLE_ID.eq(this.id()))
 			.fetchOne()
 			.value1()
 			.doubleValue();

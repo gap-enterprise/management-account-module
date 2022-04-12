@@ -28,7 +28,8 @@ public enum ManagementAccountAccess implements Access {
 
 	CONFIGURER_SEUILS_ENLIASSEMENT("Configurer les seuils d'enliassement", ""),
 	VISUALISER_MANDATS_A_ENLIASER("Visualiser les mandats à enliasser", ""),
-	ENLIASSER_MANDATS("Enliasser les mandats", "");
+	ENLIASSER_MANDATS("Enliasser les mandats", ""),
+	TIRER_COMPTE_DE_GESTION("Tirer le compte de gestion", "");
 
 	static {
 		for (Access acs : ManagementAccountAccess.values()) {

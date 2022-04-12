@@ -2,29 +2,26 @@ package io.surati.gap.maccount.module.domain.db;
 
 import io.surati.gap.admin.base.api.User;
 import io.surati.gap.database.utils.jooq.JooqContext;
+import io.surati.gap.gtp.base.api.AnnualWarrant;
 import io.surati.gap.gtp.base.api.Bundle;
 import io.surati.gap.gtp.base.api.Section;
 import io.surati.gap.gtp.base.api.Title;
+import io.surati.gap.gtp.base.db.DbAnnualWarrant;
 import io.surati.gap.gtp.base.db.DbBundle;
 import io.surati.gap.gtp.base.db.DbSection;
 import io.surati.gap.gtp.base.db.DbTitle;
-import io.surati.gap.maccount.module.domain.api.AnnualWarrant;
 import io.surati.gap.maccount.module.domain.api.PropBundleThreshold;
 import io.surati.gap.maccount.module.domain.api.WarrantsToBundle;
-import io.surati.gap.maccount.module.domain.db.jooq.generated.tables.MaAnnualWarrant;
-import io.surati.gap.maccount.module.domain.db.jooq.generated.tables.MaAnnualWarrantView;
 import io.surati.gap.maccount.module.domain.db.jooq.generated.tables.MaSubBundle;
+import io.surati.gap.maccount.module.domain.db.jooq.generated.tables.MaWarrantBundled;
+import io.surati.gap.maccount.module.domain.db.jooq.generated.tables.MaWarrantToBundleView;
 import java.time.LocalDateTime;
 import javax.sql.DataSource;
 import org.apache.commons.lang3.StringUtils;
-import org.cactoos.list.ListOf;
 import org.jooq.Condition;
 import org.jooq.Cursor;
 import org.jooq.DSLContext;
-import org.jooq.Record;
 import org.jooq.Record4;
-import org.jooq.Result;
-import org.jooq.SelectHavingStep;
 import org.jooq.impl.DSL;
 
 public final class DbPaginatedEntireWarrantsToBundle implements WarrantsToBundle {
@@ -77,11 +74,11 @@ public final class DbPaginatedEntireWarrantsToBundle implements WarrantsToBundle
     @Override
     public Iterable<AnnualWarrant> iterate() {
         return this.ctx
-            .selectFrom(MaAnnualWarrantView.MA_ANNUAL_WARRANT_VIEW)
+            .selectFrom(MaWarrantToBundleView.MA_WARRANT_TO_BUNDLE_VIEW)
             .where(this.condition())
             .orderBy(
-                MaAnnualWarrantView.MA_ANNUAL_WARRANT_VIEW.DATE.asc(),
-                MaAnnualWarrantView.MA_ANNUAL_WARRANT_VIEW.ID.asc()
+                MaWarrantToBundleView.MA_WARRANT_TO_BUNDLE_VIEW.DATE.asc(),
+                MaWarrantToBundleView.MA_WARRANT_TO_BUNDLE_VIEW.ID.asc()
             )
             .limit(this.nbperpage)
             .offset(this.nbperpage * (this.page - 1))
@@ -96,7 +93,7 @@ public final class DbPaginatedEntireWarrantsToBundle implements WarrantsToBundle
     public Long count() {
         return Long.valueOf(
             this.ctx
-                .fetchCount(MaAnnualWarrantView.MA_ANNUAL_WARRANT_VIEW, this.condition())
+                .fetchCount(MaWarrantToBundleView.MA_WARRANT_TO_BUNDLE_VIEW, this.condition())
         );
     }
 
@@ -131,15 +128,11 @@ public final class DbPaginatedEntireWarrantsToBundle implements WarrantsToBundle
             .returning(MaSubBundle.MA_SUB_BUNDLE.ID)
             .fetchOne()
             .getId();
-        for (AnnualWarrant wr : warrants) {
-            this.ctx.update(MaAnnualWarrant.MA_ANNUAL_WARRANT)
-                .set(MaAnnualWarrant.MA_ANNUAL_WARRANT.SUB_BUNDLE_ID, sbdleid)
-                .where(
-                    MaAnnualWarrant.MA_ANNUAL_WARRANT.WARRANT_ID.eq(wr.id())
-                        .and(
-                            MaAnnualWarrant.MA_ANNUAL_WARRANT.FISCAL_YEAR.eq(this.year)
-                        )
-                )
+        for (final AnnualWarrant wr : warrants) {
+            this.ctx.insertInto(MaWarrantBundled.MA_WARRANT_BUNDLED)
+                .set(MaWarrantBundled.MA_WARRANT_BUNDLED.ID, wr.id())
+                .set(MaWarrantBundled.MA_WARRANT_BUNDLED.FISCAL_YEAR, wr.year())
+                .set(MaWarrantBundled.MA_WARRANT_BUNDLED.SUB_BUNDLE_ID, sbdleid)
                 .execute();
         }
     }
@@ -153,16 +146,16 @@ public final class DbPaginatedEntireWarrantsToBundle implements WarrantsToBundle
         final int threshold = new PropBundleThreshold().totalPayment();
         try(
             Cursor<Record4<String, String, String, Integer>> cursor = this.ctx.select(
-                    MaAnnualWarrantView.MA_ANNUAL_WARRANT_VIEW.TITLE,
-                    MaAnnualWarrantView.MA_ANNUAL_WARRANT_VIEW.SECTION,
-                    MaAnnualWarrantView.MA_ANNUAL_WARRANT_VIEW.BUNDLE,
+                    MaWarrantToBundleView.MA_WARRANT_TO_BUNDLE_VIEW.TITLE,
+                    MaWarrantToBundleView.MA_WARRANT_TO_BUNDLE_VIEW.SECTION,
+                    MaWarrantToBundleView.MA_WARRANT_TO_BUNDLE_VIEW.BUNDLE,
                     DSL.count()
-                ).from(MaAnnualWarrantView.MA_ANNUAL_WARRANT_VIEW)
+                ).from(MaWarrantToBundleView.MA_WARRANT_TO_BUNDLE_VIEW)
                 .where(this.condition())
                 .groupBy(
-                    MaAnnualWarrantView.MA_ANNUAL_WARRANT_VIEW.TITLE,
-                    MaAnnualWarrantView.MA_ANNUAL_WARRANT_VIEW.SECTION,
-                    MaAnnualWarrantView.MA_ANNUAL_WARRANT_VIEW.BUNDLE
+                    MaWarrantToBundleView.MA_WARRANT_TO_BUNDLE_VIEW.TITLE,
+                    MaWarrantToBundleView.MA_WARRANT_TO_BUNDLE_VIEW.SECTION,
+                    MaWarrantToBundleView.MA_WARRANT_TO_BUNDLE_VIEW.BUNDLE
                 ).fetchSize(1)
                 .fetchLazy()
         ) {
@@ -227,8 +220,8 @@ public final class DbPaginatedEntireWarrantsToBundle implements WarrantsToBundle
     @Override
     public boolean has(final Long id) {
         return this.ctx.fetchCount(
-            MaAnnualWarrantView.MA_ANNUAL_WARRANT_VIEW, this.condition(),
-            MaAnnualWarrantView.MA_ANNUAL_WARRANT_VIEW.ID.eq(id)
+            MaWarrantToBundleView.MA_WARRANT_TO_BUNDLE_VIEW, this.condition(),
+            MaWarrantToBundleView.MA_WARRANT_TO_BUNDLE_VIEW.ID.eq(id)
         ) > 0;
     }
 
@@ -237,30 +230,28 @@ public final class DbPaginatedEntireWarrantsToBundle implements WarrantsToBundle
         if (StringUtils.isNotBlank(this.filter)) {
             result = result.and(
                 DSL.falseCondition()
-                    .or(MaAnnualWarrantView.MA_ANNUAL_WARRANT_VIEW.REFERENCE.like("%" + this.filter + "%"))
-                    .or(MaAnnualWarrantView.MA_ANNUAL_WARRANT_VIEW.IMPUTATION.like("%" + this.filter + "%"))
+                    .or(MaWarrantToBundleView.MA_WARRANT_TO_BUNDLE_VIEW.REFERENCE.like("%" + this.filter + "%"))
+                    .or(MaWarrantToBundleView.MA_WARRANT_TO_BUNDLE_VIEW.IMPUTATION.like("%" + this.filter + "%"))
             );
         }
         result = result.and(
-            MaAnnualWarrantView.MA_ANNUAL_WARRANT_VIEW.FISCAL_YEAR.eq(this.year)
+            MaWarrantToBundleView.MA_WARRANT_TO_BUNDLE_VIEW.FISCAL_YEAR.eq(this.year)
         ).and(
-            MaAnnualWarrantView.MA_ANNUAL_WARRANT_VIEW.IS_SPLIT.eq(false)
-        ).and(
-            MaAnnualWarrantView.MA_ANNUAL_WARRANT_VIEW.SUB_BUNDLE_ID.isNull()
+            MaWarrantToBundleView.MA_WARRANT_TO_BUNDLE_VIEW.IS_SPLIT.eq(false)
         );
         if (this.pbundle != Bundle.EMPTY) {
             result = result.and(
-                MaAnnualWarrantView.MA_ANNUAL_WARRANT_VIEW.BUNDLE.eq(this.pbundle.code())
+                MaWarrantToBundleView.MA_WARRANT_TO_BUNDLE_VIEW.BUNDLE.eq(this.pbundle.code())
             );
         }
         if (this.section != Section.EMPTY) {
             result = result.and(
-                MaAnnualWarrantView.MA_ANNUAL_WARRANT_VIEW.SECTION.eq(this.section.code())
+                MaWarrantToBundleView.MA_WARRANT_TO_BUNDLE_VIEW.SECTION.eq(this.section.code())
             );
         }
         if (this.title != Title.EMPTY) {
             result = result.and(
-                MaAnnualWarrantView.MA_ANNUAL_WARRANT_VIEW.TITLE.eq(this.title.code())
+                MaWarrantToBundleView.MA_WARRANT_TO_BUNDLE_VIEW.TITLE.eq(this.title.code())
             );
         }
         return result;

@@ -4,9 +4,11 @@
 package io.surati.gap.maccount.module.domain.db.jooq.generated;
 
 
-import io.surati.gap.maccount.module.domain.db.jooq.generated.tables.MaAnnualWarrant;
-import io.surati.gap.maccount.module.domain.db.jooq.generated.tables.MaAnnualWarrantView;
+import io.surati.gap.maccount.module.domain.db.jooq.generated.tables.MaManagementAccountView;
 import io.surati.gap.maccount.module.domain.db.jooq.generated.tables.MaSubBundle;
+import io.surati.gap.maccount.module.domain.db.jooq.generated.tables.MaWarrantBundled;
+import io.surati.gap.maccount.module.domain.db.jooq.generated.tables.MaWarrantBundledView;
+import io.surati.gap.maccount.module.domain.db.jooq.generated.tables.MaWarrantToBundleView;
 
 
 /**
@@ -16,17 +18,27 @@ import io.surati.gap.maccount.module.domain.db.jooq.generated.tables.MaSubBundle
 public class Tables {
 
     /**
-     * The table <code>public.ma_annual_warrant</code>.
+     * The table <code>public.ma_management_account_view</code>.
      */
-    public static final MaAnnualWarrant MA_ANNUAL_WARRANT = MaAnnualWarrant.MA_ANNUAL_WARRANT;
-
-    /**
-     * The table <code>public.ma_annual_warrant_view</code>.
-     */
-    public static final MaAnnualWarrantView MA_ANNUAL_WARRANT_VIEW = MaAnnualWarrantView.MA_ANNUAL_WARRANT_VIEW;
+    public static final MaManagementAccountView MA_MANAGEMENT_ACCOUNT_VIEW = MaManagementAccountView.MA_MANAGEMENT_ACCOUNT_VIEW;
 
     /**
      * The table <code>public.ma_sub_bundle</code>.
      */
     public static final MaSubBundle MA_SUB_BUNDLE = MaSubBundle.MA_SUB_BUNDLE;
+
+    /**
+     * The table <code>public.ma_warrant_bundled</code>.
+     */
+    public static final MaWarrantBundled MA_WARRANT_BUNDLED = MaWarrantBundled.MA_WARRANT_BUNDLED;
+
+    /**
+     * The table <code>public.ma_warrant_bundled_view</code>.
+     */
+    public static final MaWarrantBundledView MA_WARRANT_BUNDLED_VIEW = MaWarrantBundledView.MA_WARRANT_BUNDLED_VIEW;
+
+    /**
+     * The table <code>public.ma_warrant_to_bundle_view</code>.
+     */
+    public static final MaWarrantToBundleView MA_WARRANT_TO_BUNDLE_VIEW = MaWarrantToBundleView.MA_WARRANT_TO_BUNDLE_VIEW;
 }

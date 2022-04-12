@@ -1,33 +1,9 @@
 package io.surati.gap.maccount.module.domain.api;
 
 import io.surati.gap.admin.base.api.User;
+import io.surati.gap.gtp.base.api.AnnualWarrants;
 
-public interface WarrantsToBundle {
-
-    /**
-     * Get an annual warrant.
-     * @param id Identifier
-     * @return Warrant
-     */
-    AnnualWarrant get(Long id);
-
-    /**
-     * Has warranty of identifier.
-     * @param id Identifier
-     * @return Has or not
-     */
-    boolean has(Long id);
-    /**
-     * Iterate them all.
-     * @return
-     */
-    Iterable<AnnualWarrant> iterate();
-
-    /**
-     * Total.
-     * @return Number of warrants
-     */
-    Long count();
+public interface WarrantsToBundle extends AnnualWarrants {
 
     /**
      * Bundle current selection.

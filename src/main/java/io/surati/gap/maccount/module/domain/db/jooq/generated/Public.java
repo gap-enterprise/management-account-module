@@ -4,9 +4,11 @@
 package io.surati.gap.maccount.module.domain.db.jooq.generated;
 
 
-import io.surati.gap.maccount.module.domain.db.jooq.generated.tables.MaAnnualWarrant;
-import io.surati.gap.maccount.module.domain.db.jooq.generated.tables.MaAnnualWarrantView;
+import io.surati.gap.maccount.module.domain.db.jooq.generated.tables.MaManagementAccountView;
 import io.surati.gap.maccount.module.domain.db.jooq.generated.tables.MaSubBundle;
+import io.surati.gap.maccount.module.domain.db.jooq.generated.tables.MaWarrantBundled;
+import io.surati.gap.maccount.module.domain.db.jooq.generated.tables.MaWarrantBundledView;
+import io.surati.gap.maccount.module.domain.db.jooq.generated.tables.MaWarrantToBundleView;
 
 import java.util.Arrays;
 import java.util.List;
@@ -31,19 +33,29 @@ public class Public extends SchemaImpl {
     public static final Public PUBLIC = new Public();
 
     /**
-     * The table <code>public.ma_annual_warrant</code>.
+     * The table <code>public.ma_management_account_view</code>.
      */
-    public final MaAnnualWarrant MA_ANNUAL_WARRANT = MaAnnualWarrant.MA_ANNUAL_WARRANT;
-
-    /**
-     * The table <code>public.ma_annual_warrant_view</code>.
-     */
-    public final MaAnnualWarrantView MA_ANNUAL_WARRANT_VIEW = MaAnnualWarrantView.MA_ANNUAL_WARRANT_VIEW;
+    public final MaManagementAccountView MA_MANAGEMENT_ACCOUNT_VIEW = MaManagementAccountView.MA_MANAGEMENT_ACCOUNT_VIEW;
 
     /**
      * The table <code>public.ma_sub_bundle</code>.
      */
     public final MaSubBundle MA_SUB_BUNDLE = MaSubBundle.MA_SUB_BUNDLE;
+
+    /**
+     * The table <code>public.ma_warrant_bundled</code>.
+     */
+    public final MaWarrantBundled MA_WARRANT_BUNDLED = MaWarrantBundled.MA_WARRANT_BUNDLED;
+
+    /**
+     * The table <code>public.ma_warrant_bundled_view</code>.
+     */
+    public final MaWarrantBundledView MA_WARRANT_BUNDLED_VIEW = MaWarrantBundledView.MA_WARRANT_BUNDLED_VIEW;
+
+    /**
+     * The table <code>public.ma_warrant_to_bundle_view</code>.
+     */
+    public final MaWarrantToBundleView MA_WARRANT_TO_BUNDLE_VIEW = MaWarrantToBundleView.MA_WARRANT_TO_BUNDLE_VIEW;
 
     /**
      * No further instances allowed
@@ -67,8 +79,10 @@ public class Public extends SchemaImpl {
     @Override
     public final List<Table<?>> getTables() {
         return Arrays.<Table<?>>asList(
-            MaAnnualWarrant.MA_ANNUAL_WARRANT,
-            MaAnnualWarrantView.MA_ANNUAL_WARRANT_VIEW,
-            MaSubBundle.MA_SUB_BUNDLE);
+            MaManagementAccountView.MA_MANAGEMENT_ACCOUNT_VIEW,
+            MaSubBundle.MA_SUB_BUNDLE,
+            MaWarrantBundled.MA_WARRANT_BUNDLED,
+            MaWarrantBundledView.MA_WARRANT_BUNDLED_VIEW,
+            MaWarrantToBundleView.MA_WARRANT_TO_BUNDLE_VIEW);
     }
 }

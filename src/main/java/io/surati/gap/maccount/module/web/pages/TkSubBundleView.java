@@ -1,8 +1,8 @@
 package io.surati.gap.maccount.module.web.pages;
 
+import io.surati.gap.gtp.base.module.xe.XeAnnualWarrants;
 import io.surati.gap.maccount.module.domain.api.SubBundle;
 import io.surati.gap.maccount.module.domain.db.DbSubBundle;
-import io.surati.gap.maccount.module.web.xe.XeAnnualWarrants;
 import io.surati.gap.maccount.module.web.xe.XeSubBundle;
 import io.surati.gap.web.base.RsPage;
 import io.surati.gap.web.base.xe.XeRootPage;

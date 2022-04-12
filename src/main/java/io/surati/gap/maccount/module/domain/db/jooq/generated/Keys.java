@@ -4,10 +4,10 @@
 package io.surati.gap.maccount.module.domain.db.jooq.generated;
 
 
-import io.surati.gap.maccount.module.domain.db.jooq.generated.tables.MaAnnualWarrant;
 import io.surati.gap.maccount.module.domain.db.jooq.generated.tables.MaSubBundle;
-import io.surati.gap.maccount.module.domain.db.jooq.generated.tables.records.MaAnnualWarrantRecord;
+import io.surati.gap.maccount.module.domain.db.jooq.generated.tables.MaWarrantBundled;
 import io.surati.gap.maccount.module.domain.db.jooq.generated.tables.records.MaSubBundleRecord;
+import io.surati.gap.maccount.module.domain.db.jooq.generated.tables.records.MaWarrantBundledRecord;
 
 import org.jooq.ForeignKey;
 import org.jooq.TableField;
@@ -27,12 +27,12 @@ public class Keys {
     // UNIQUE and PRIMARY KEY definitions
     // -------------------------------------------------------------------------
 
-    public static final UniqueKey<MaAnnualWarrantRecord> MA_WARRANT_FOR_BUNDLE_PKEY = Internal.createUniqueKey(MaAnnualWarrant.MA_ANNUAL_WARRANT, DSL.name("ma_warrant_for_bundle_pkey"), new TableField[] { MaAnnualWarrant.MA_ANNUAL_WARRANT.WARRANT_ID, MaAnnualWarrant.MA_ANNUAL_WARRANT.FISCAL_YEAR }, true);
     public static final UniqueKey<MaSubBundleRecord> MA_SUB_BUNDLE_PKEY = Internal.createUniqueKey(MaSubBundle.MA_SUB_BUNDLE, DSL.name("ma_sub_bundle_pkey"), new TableField[] { MaSubBundle.MA_SUB_BUNDLE.ID }, true);
+    public static final UniqueKey<MaWarrantBundledRecord> MA_WARRANT_BUNDLED_PKEY = Internal.createUniqueKey(MaWarrantBundled.MA_WARRANT_BUNDLED, DSL.name("ma_warrant_bundled_pkey"), new TableField[] { MaWarrantBundled.MA_WARRANT_BUNDLED.ID, MaWarrantBundled.MA_WARRANT_BUNDLED.FISCAL_YEAR }, true);
 
     // -------------------------------------------------------------------------
     // FOREIGN KEY definitions
     // -------------------------------------------------------------------------
 
-    public static final ForeignKey<MaAnnualWarrantRecord, MaSubBundleRecord> MA_ANNUAL_WARRANT__MA_WARRANT_FOR_BUNDLE_SUB_BUNDLE_ID_FKEY = Internal.createForeignKey(MaAnnualWarrant.MA_ANNUAL_WARRANT, DSL.name("ma_warrant_for_bundle_sub_bundle_id_fkey"), new TableField[] { MaAnnualWarrant.MA_ANNUAL_WARRANT.SUB_BUNDLE_ID }, Keys.MA_SUB_BUNDLE_PKEY, new TableField[] { MaSubBundle.MA_SUB_BUNDLE.ID }, true);
+    public static final ForeignKey<MaWarrantBundledRecord, MaSubBundleRecord> MA_WARRANT_BUNDLED__MA_WARRANT_FOR_BUNDLE_SUB_BUNDLE_ID_FKEY = Internal.createForeignKey(MaWarrantBundled.MA_WARRANT_BUNDLED, DSL.name("ma_warrant_for_bundle_sub_bundle_id_fkey"), new TableField[] { MaWarrantBundled.MA_WARRANT_BUNDLED.SUB_BUNDLE_ID }, Keys.MA_SUB_BUNDLE_PKEY, new TableField[] { MaSubBundle.MA_SUB_BUNDLE.ID }, true);
 }

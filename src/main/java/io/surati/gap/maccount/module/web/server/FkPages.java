@@ -1,5 +1,6 @@
 package io.surati.gap.maccount.module.web.server;
 
+import io.surati.gap.maccount.module.web.pages.TkBudgetExpenditureDetailsPreview;
 import io.surati.gap.maccount.module.web.pages.TkBundleThresholdEdit;
 import io.surati.gap.maccount.module.web.pages.TkBundleThresholdView;
 import io.surati.gap.maccount.module.web.pages.TkEntireSubBundleList;
@@ -85,6 +86,13 @@ public final class FkPages extends FkWrap {
 					"/maccount/report/list",
 					new TkSecure(
 						new TkReport(src),
+						src
+					)
+				),
+				new FkRegex(
+					"/maccount/budget-expenditure-details/preview",
+					new TkSecure(
+						new TkBudgetExpenditureDetailsPreview(src),
 						src
 					)
 				)

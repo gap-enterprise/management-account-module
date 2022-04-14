@@ -91,10 +91,21 @@ SOFTWARE.
                   <tbody>
                     <tr>
                       <td>1</td>
-                      <td>Etat compte de gestion</td>
+                      <td>Compte de gestion</td>
                       <td>
                         <div role="group">
                           <a href="/maccount/management-account/preview?treasury={{{{vm.treasuryId}}}}&amp;year={{{{vm.yearId}}}}&amp;{root_page/full}" class="mb-1 mr-1 btn btn-xs btn-outline-primary">
+                            <i class="fa fa-print"/>
+                          </a>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>2</td>
+                      <td>Détails des dépenses budgétaires</td>
+                      <td>
+                        <div role="group">
+                          <a href="/maccount/budget-expenditure-details/preview?treasury={{{{vm.treasuryId}}}}&amp;year={{{{vm.yearId}}}}&amp;{root_page/full}" class="mb-1 mr-1 btn btn-xs btn-outline-primary">
                             <i class="fa fa-print"/>
                           </a>
                         </div>

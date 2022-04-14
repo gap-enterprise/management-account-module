@@ -1,5 +1,6 @@
 package io.surati.gap.maccount.module.web.server;
 
+import io.surati.gap.maccount.module.web.actions.TkBudgetExpenditureDetailsPrint;
 import io.surati.gap.maccount.module.web.actions.TkBundleThresholdSave;
 import io.surati.gap.maccount.module.web.actions.TkManagementAccountPrint;
 import io.surati.gap.web.base.TkSecure;
@@ -29,6 +30,13 @@ public final class FkActions extends FkWrap {
 					"/maccount/report/management-account/print",
 					new TkSecure(
 						new TkManagementAccountPrint(src),
+						src
+					)
+				),
+				new FkRegex(
+					"/maccount/report/budget-expenditure-details/print",
+					new TkSecure(
+						new TkBudgetExpenditureDetailsPrint(src),
 						src
 					)
 				)

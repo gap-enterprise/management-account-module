@@ -6,6 +6,7 @@ import io.surati.gap.gtp.base.api.Title;
 import io.surati.gap.gtp.base.db.DbBundles;
 import io.surati.gap.gtp.base.db.DbSections;
 import io.surati.gap.gtp.base.db.DbTitles;
+import io.surati.gap.gtp.base.db.DbTreasury;
 import io.surati.gap.maccount.module.domain.db.DbPaginatedEntireWarrantsToBundle;
 import io.surati.gap.maccount.module.domain.db.DbPaginatedPartialWarrantsToBundle;
 import io.surati.gap.web.base.rq.RqUser;
@@ -67,6 +68,10 @@ public final class TkBundleAnywayPartialWarrants implements Take {
 			}
 			new DbPaginatedPartialWarrantsToBundle(
 				this.source,
+				new DbTreasury(
+					source,
+					Long.parseLong(form.single("treasury"))
+				),
 				nbperpage,
 				page,
 				title,

@@ -26,45 +26,51 @@ package io.surati.gap.maccount.module.web.xe;
 import com.minlessika.map.CleanMap;
 import io.surati.gap.commons.utils.amount.FrAmountInXof;
 import io.surati.gap.commons.utils.convert.FrShortDateFormat;
-import io.surati.gap.maccount.module.domain.api.SubBundle;
-import org.cactoos.list.ListOf;
+import io.surati.gap.gtp.base.api.Treasuries;
+import io.surati.gap.gtp.base.api.Treasury;
+import org.cactoos.collection.Mapped;
+import org.cactoos.iterable.Joined;
+import org.takes.rs.xe.XeAppend;
 import org.takes.rs.xe.XeDirectives;
 import org.takes.rs.xe.XeWrap;
 import org.xembly.Directives;
 
 /**
- * Document to bundle xml.
+ * Xml of a list of budget year.
  *
  * @since 3.0
  */
-public final class XeSubBundle extends XeWrap {
+public final class XeTreasuries extends XeWrap {
 
-	public XeSubBundle(final SubBundle item) {
-		this("item", item);
+	public XeTreasuries(final Treasuries items) {
+		this(items.iterate());
 	}
 
-	public XeSubBundle(final String name, final SubBundle item) {
+	public XeTreasuries(final Iterable<Treasury> items) {
 		super(
 			new XeDirectives(
 				new Directives()
-				.add(name)
-				.add(
-					new CleanMap<>()
-						.add("id", item.id())
-						.add("order", item.order())
-						.add("date_view", new FrShortDateFormat().convert(item.creationDate()))
-						.add("year", item.year())
-						.add("treasury", item.treasury().name())
-						.add("bundle", item.bundle().code())
-						.add("title", item.title().code())
-						.add("section", item.section().code())
-						.add("title_fullname", item.title().fullName())
-						.add("section_fullname", item.section().fullName())
-						.add("number_of_warrants", item.numberOfWarrants())
-						.add("total_amount_paid_in_human", new FrAmountInXof(item.totalAmountPaid()))
-				)
-				.up()
+					.add("treasuries")
+					.append(
+						new Joined<>(
+							new Mapped<>(
+								item -> new XeDirectives(
+									new Directives()
+										.add("treasury")
+										.add(
+											new CleanMap<>()
+												.add("id", item.id())
+												.add("name", item.name())
+												.add("abbreviated", item.abbreviated())
+										)
+										.up()
+								).toXembly(),
+								items
+							)
+						)
+					)
 			)
 		);
 	}
+
 }

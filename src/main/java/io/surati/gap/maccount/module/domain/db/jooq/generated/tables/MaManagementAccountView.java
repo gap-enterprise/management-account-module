@@ -11,7 +11,7 @@ import org.jooq.Field;
 import org.jooq.ForeignKey;
 import org.jooq.Name;
 import org.jooq.Record;
-import org.jooq.Row6;
+import org.jooq.Row7;
 import org.jooq.Schema;
 import org.jooq.Table;
 import org.jooq.TableField;
@@ -41,6 +41,11 @@ public class MaManagementAccountView extends TableImpl<MaManagementAccountViewRe
     public Class<MaManagementAccountViewRecord> getRecordType() {
         return MaManagementAccountViewRecord.class;
     }
+
+    /**
+     * The column <code>public.ma_management_account_view.treasury_id</code>.
+     */
+    public final TableField<MaManagementAccountViewRecord, Long> TREASURY_ID = createField(DSL.name("treasury_id"), SQLDataType.BIGINT, this, "");
 
     /**
      * The column <code>public.ma_management_account_view.fiscal_year</code>.
@@ -77,7 +82,7 @@ public class MaManagementAccountView extends TableImpl<MaManagementAccountViewRe
     }
 
     private MaManagementAccountView(Name alias, Table<MaManagementAccountViewRecord> aliased, Field<?>[] parameters) {
-        super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.view("create view \"ma_management_account_view\" as  SELECT awr.fiscal_year,\n    sec.code AS section_code,\n    sec.name AS section_name,\n    sum(awr.annual_amount_paid) AS amount_in_digits,\n    count(awrb.id) AS number_of_bundles,\n    sum(COALESCE(awrb.annual_amount_paid, (0)::double precision)) AS amount_on_parts\n   FROM ((gtp_annual_warrant_view awr\n     LEFT JOIN gtp_section sec ON (((sec.code)::text = (awr.section)::text)))\n     LEFT JOIN ma_warrant_bundled_view awrb ON (((awrb.id = awr.id) AND (awrb.fiscal_year = awr.fiscal_year))))\n  GROUP BY awr.fiscal_year, sec.code, sec.name\n  ORDER BY awr.fiscal_year, sec.code;"));
+        super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.view("create view \"ma_management_account_view\" as  SELECT awr.treasury_id,\n    awr.fiscal_year,\n    sec.code AS section_code,\n    sec.name AS section_name,\n    sum(awr.annual_amount_paid) AS amount_in_digits,\n    count(awrb.id) AS number_of_bundles,\n    sum(COALESCE(awrb.annual_amount_paid, (0)::double precision)) AS amount_on_parts\n   FROM ((gtp_annual_warrant_view awr\n     LEFT JOIN gtp_section sec ON (((sec.code)::text = (awr.section)::text)))\n     LEFT JOIN ma_warrant_bundled_view awrb ON (((awrb.id = awr.id) AND (awrb.fiscal_year = awr.fiscal_year))))\n  GROUP BY awr.treasury_id, awr.fiscal_year, sec.code, sec.name\n  ORDER BY awr.treasury_id, awr.fiscal_year, sec.code;"));
     }
 
     /**
@@ -137,11 +142,11 @@ public class MaManagementAccountView extends TableImpl<MaManagementAccountViewRe
     }
 
     // -------------------------------------------------------------------------
-    // Row6 type methods
+    // Row7 type methods
     // -------------------------------------------------------------------------
 
     @Override
-    public Row6<Short, String, String, Double, Long, Double> fieldsRow() {
-        return (Row6) super.fieldsRow();
+    public Row7<Long, Short, String, String, Double, Long, Double> fieldsRow() {
+        return (Row7) super.fieldsRow();
     }
 }

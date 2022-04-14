@@ -4,6 +4,7 @@ import io.surati.gap.database.utils.jooq.JooqContext;
 import io.surati.gap.gtp.base.api.Bundle;
 import io.surati.gap.gtp.base.api.Section;
 import io.surati.gap.gtp.base.api.Title;
+import io.surati.gap.gtp.base.api.Treasury;
 import io.surati.gap.maccount.module.domain.api.SubBundle;
 import io.surati.gap.maccount.module.domain.api.SubBundles;
 import io.surati.gap.maccount.module.domain.db.jooq.generated.tables.MaSubBundle;
@@ -16,6 +17,8 @@ import org.jooq.impl.DSL;
 public final class DbPaginatedEntireSubBundles implements SubBundles {
 
     private final DataSource src;
+
+    private final Treasury treasury;
 
     private final Title title;
 
@@ -37,11 +40,12 @@ public final class DbPaginatedEntireSubBundles implements SubBundles {
     private final DSLContext ctx;
 
     public DbPaginatedEntireSubBundles(
-        final DataSource src, final Long nbperpage, final Long page,
+        final DataSource src, final Treasury treasury, final Long nbperpage, final Long page,
         final Title title, final Section section, final Bundle bundle,
         final short year, final String filter
     ) {
         this.src = src;
+        this.treasury = treasury;
         this.ctx = new JooqContext(this.src);
         this.nbperpage = nbperpage;
         this.page = page;
@@ -106,6 +110,8 @@ public final class DbPaginatedEntireSubBundles implements SubBundles {
             MaSubBundle.MA_SUB_BUNDLE.FISCAL_YEAR.eq(this.year)
         ).and(
             MaSubBundle.MA_SUB_BUNDLE.BUNDLE_SPLIT_WARRANT.eq(false)
+        ).and(
+            MaSubBundle.MA_SUB_BUNDLE.TREASURY_ID.eq(this.treasury.id())
         );
         if (this.bundle != Bundle.EMPTY) {
             result = result.and(

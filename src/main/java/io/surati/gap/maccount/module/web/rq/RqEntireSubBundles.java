@@ -6,6 +6,7 @@ import io.surati.gap.gtp.base.api.Title;
 import io.surati.gap.gtp.base.db.DbBundles;
 import io.surati.gap.gtp.base.db.DbSections;
 import io.surati.gap.gtp.base.db.DbTitles;
+import io.surati.gap.gtp.base.db.DbTreasury;
 import io.surati.gap.maccount.module.domain.api.SubBundle;
 import io.surati.gap.maccount.module.domain.api.SubBundles;
 import io.surati.gap.maccount.module.domain.db.DbPaginatedEntireSubBundles;
@@ -48,6 +49,10 @@ public final class RqEntireSubBundles implements SubBundles {
 		}
 		this.origin = new DbPaginatedEntireSubBundles(
 		    source,
+			new DbTreasury(
+				source,
+				Long.parseLong(href.single("treasury"))
+			),
 			nbperpage,
 			page,
 			title,

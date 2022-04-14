@@ -1,6 +1,7 @@
 package io.surati.gap.maccount.module.domain.db;
 
 import io.surati.gap.database.utils.jooq.JooqContext;
+import io.surati.gap.gtp.base.api.Treasury;
 import io.surati.gap.maccount.module.domain.api.ManagementAccount;
 import io.surati.gap.maccount.module.domain.api.ManagementAccountLine;
 import io.surati.gap.maccount.module.domain.db.jooq.generated.tables.MaManagementAccountView;
@@ -17,6 +18,8 @@ public final class DbManagementAccount implements ManagementAccount {
 
     private final DSLContext ctx;
 
+    private final Treasury treasury;
+
     private final short year;
 
     private final Scalar<Iterable<ManagementAccountLine>> sclines;
@@ -27,14 +30,18 @@ public final class DbManagementAccount implements ManagementAccount {
 
     private final Scalar<Double> scamop;
 
-    public DbManagementAccount(final DataSource src, final short year) {
+    public DbManagementAccount(final DataSource src, final Treasury treasury, final short year) {
         this.ctx = new JooqContext(src);
+        this.treasury = treasury;
         this.year = year;
         this.sclines = new Sticky<>(
             () -> this.ctx
                 .selectFrom(MaManagementAccountView.MA_MANAGEMENT_ACCOUNT_VIEW)
                 .where(
                     MaManagementAccountView.MA_MANAGEMENT_ACCOUNT_VIEW.FISCAL_YEAR.eq(this.year)
+                        .and(
+                            MaManagementAccountView.MA_MANAGEMENT_ACCOUNT_VIEW.TREASURY_ID.eq(this.treasury.id())
+                        )
                 )
                 .fetch(
                     rec -> new CachedManagementAccountLine(
@@ -54,6 +61,9 @@ public final class DbManagementAccount implements ManagementAccount {
                 .from(MaManagementAccountView.MA_MANAGEMENT_ACCOUNT_VIEW)
                 .where(
                     MaManagementAccountView.MA_MANAGEMENT_ACCOUNT_VIEW.FISCAL_YEAR.eq(this.year)
+                        .and(
+                            MaManagementAccountView.MA_MANAGEMENT_ACCOUNT_VIEW.TREASURY_ID.eq(this.treasury.id())
+                        )
                 )
                 .fetchOne()
                 .value1()
@@ -65,6 +75,9 @@ public final class DbManagementAccount implements ManagementAccount {
                 .from(MaManagementAccountView.MA_MANAGEMENT_ACCOUNT_VIEW)
                 .where(
                     MaManagementAccountView.MA_MANAGEMENT_ACCOUNT_VIEW.FISCAL_YEAR.eq(this.year)
+                        .and(
+                            MaManagementAccountView.MA_MANAGEMENT_ACCOUNT_VIEW.TREASURY_ID.eq(this.treasury.id())
+                        )
                 )
                 .fetchOne()
                 .value1()
@@ -76,11 +89,19 @@ public final class DbManagementAccount implements ManagementAccount {
                 .from(MaManagementAccountView.MA_MANAGEMENT_ACCOUNT_VIEW)
                 .where(
                     MaManagementAccountView.MA_MANAGEMENT_ACCOUNT_VIEW.FISCAL_YEAR.eq(this.year)
+                        .and(
+                            MaManagementAccountView.MA_MANAGEMENT_ACCOUNT_VIEW.TREASURY_ID.eq(this.treasury.id())
+                        )
                 )
                 .fetchOne()
                 .value1()
                 .doubleValue()
         );
+    }
+
+    @Override
+    public Treasury treasury() {
+        return this.treasury;
     }
 
     @Override

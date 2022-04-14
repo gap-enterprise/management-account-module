@@ -37,6 +37,7 @@ public final class XeSubBundleJson implements RsJson.Source {
 				.add("order", item.order())
 				.add("date_view", new FrShortDateFormat().convert(item.creationDate().toLocalDate()))
 				.add("year", item.year())
+				.add("treasury", item.treasury().name())
 				.add("bundle", item.bundle().code())
 				.add("title", item.title().code())
 				.add("section", item.section().code())

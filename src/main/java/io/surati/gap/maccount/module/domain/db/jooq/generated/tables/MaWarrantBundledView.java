@@ -44,36 +44,6 @@ public class MaWarrantBundledView extends TableImpl<MaWarrantBundledViewRecord> 
     }
 
     /**
-     * The column <code>public.ma_warrant_bundled_view.no</code>.
-     */
-    public final TableField<MaWarrantBundledViewRecord, Integer> NO = createField(DSL.name("no"), SQLDataType.INTEGER, this, "");
-
-    /**
-     * The column <code>public.ma_warrant_bundled_view.fiscal_year</code>.
-     */
-    public final TableField<MaWarrantBundledViewRecord, Short> FISCAL_YEAR = createField(DSL.name("fiscal_year"), SQLDataType.SMALLINT, this, "");
-
-    /**
-     * The column <code>public.ma_warrant_bundled_view.annual_amount_to_pay</code>.
-     */
-    public final TableField<MaWarrantBundledViewRecord, Double> ANNUAL_AMOUNT_TO_PAY = createField(DSL.name("annual_amount_to_pay"), SQLDataType.DOUBLE, this, "");
-
-    /**
-     * The column <code>public.ma_warrant_bundled_view.annual_amount_paid</code>.
-     */
-    public final TableField<MaWarrantBundledViewRecord, Double> ANNUAL_AMOUNT_PAID = createField(DSL.name("annual_amount_paid"), SQLDataType.DOUBLE, this, "");
-
-    /**
-     * The column <code>public.ma_warrant_bundled_view.annual_amount_left</code>.
-     */
-    public final TableField<MaWarrantBundledViewRecord, Double> ANNUAL_AMOUNT_LEFT = createField(DSL.name("annual_amount_left"), SQLDataType.DOUBLE, this, "");
-
-    /**
-     * The column <code>public.ma_warrant_bundled_view.is_split</code>.
-     */
-    public final TableField<MaWarrantBundledViewRecord, Boolean> IS_SPLIT = createField(DSL.name("is_split"), SQLDataType.BOOLEAN, this, "");
-
-    /**
      * The column <code>public.ma_warrant_bundled_view.id</code>.
      */
     public final TableField<MaWarrantBundledViewRecord, Long> ID = createField(DSL.name("id"), SQLDataType.BIGINT, this, "");
@@ -174,6 +144,11 @@ public class MaWarrantBundledView extends TableImpl<MaWarrantBundledViewRecord> 
     public final TableField<MaWarrantBundledViewRecord, String> BENEFICIARY_CODE = createField(DSL.name("beneficiary_code"), SQLDataType.VARCHAR(50), this, "");
 
     /**
+     * The column <code>public.ma_warrant_bundled_view.treasury_id</code>.
+     */
+    public final TableField<MaWarrantBundledViewRecord, Long> TREASURY_ID = createField(DSL.name("treasury_id"), SQLDataType.BIGINT, this, "");
+
+    /**
      * The column <code>public.ma_warrant_bundled_view.gross</code>.
      */
     public final TableField<MaWarrantBundledViewRecord, Double> GROSS = createField(DSL.name("gross"), SQLDataType.DOUBLE, this, "");
@@ -239,6 +214,36 @@ public class MaWarrantBundledView extends TableImpl<MaWarrantBundledViewRecord> 
     public final TableField<MaWarrantBundledViewRecord, String> IMPUTATION = createField(DSL.name("imputation"), SQLDataType.VARCHAR(50), this, "");
 
     /**
+     * The column <code>public.ma_warrant_bundled_view.no</code>.
+     */
+    public final TableField<MaWarrantBundledViewRecord, Integer> NO = createField(DSL.name("no"), SQLDataType.INTEGER, this, "");
+
+    /**
+     * The column <code>public.ma_warrant_bundled_view.fiscal_year</code>.
+     */
+    public final TableField<MaWarrantBundledViewRecord, Short> FISCAL_YEAR = createField(DSL.name("fiscal_year"), SQLDataType.SMALLINT, this, "");
+
+    /**
+     * The column <code>public.ma_warrant_bundled_view.annual_amount_to_pay</code>.
+     */
+    public final TableField<MaWarrantBundledViewRecord, Double> ANNUAL_AMOUNT_TO_PAY = createField(DSL.name("annual_amount_to_pay"), SQLDataType.DOUBLE, this, "");
+
+    /**
+     * The column <code>public.ma_warrant_bundled_view.annual_amount_paid</code>.
+     */
+    public final TableField<MaWarrantBundledViewRecord, Double> ANNUAL_AMOUNT_PAID = createField(DSL.name("annual_amount_paid"), SQLDataType.DOUBLE, this, "");
+
+    /**
+     * The column <code>public.ma_warrant_bundled_view.annual_amount_left</code>.
+     */
+    public final TableField<MaWarrantBundledViewRecord, Double> ANNUAL_AMOUNT_LEFT = createField(DSL.name("annual_amount_left"), SQLDataType.DOUBLE, this, "");
+
+    /**
+     * The column <code>public.ma_warrant_bundled_view.is_split</code>.
+     */
+    public final TableField<MaWarrantBundledViewRecord, Boolean> IS_SPLIT = createField(DSL.name("is_split"), SQLDataType.BOOLEAN, this, "");
+
+    /**
      * The column <code>public.ma_warrant_bundled_view.sub_bundle_id</code>.
      */
     public final TableField<MaWarrantBundledViewRecord, Long> SUB_BUNDLE_ID = createField(DSL.name("sub_bundle_id"), SQLDataType.BIGINT, this, "");
@@ -248,7 +253,7 @@ public class MaWarrantBundledView extends TableImpl<MaWarrantBundledViewRecord> 
     }
 
     private MaWarrantBundledView(Name alias, Table<MaWarrantBundledViewRecord> aliased, Field<?>[] parameters) {
-        super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.view("create view \"ma_warrant_bundled_view\" as  SELECT wr.no,\n    wr.fiscal_year,\n    wr.annual_amount_to_pay,\n    wr.annual_amount_paid,\n    wr.annual_amount_left,\n    wr.is_split,\n    wr.id,\n    wr.type_id,\n    wr.date,\n    wr.reference,\n    wr.internal_reference,\n    wr.object,\n    wr.place,\n    wr.amount,\n    wr.deposit_date,\n    wr.entry_date,\n    wr.beneficiary_id,\n    wr.step_id,\n    wr.author_id,\n    wr.worker_id,\n    wr.status_id,\n    wr.amount_paid,\n    wr.amount_left,\n    wr.beneficiary_name,\n    wr.beneficiary_abbreviated,\n    wr.beneficiary_code,\n    wr.gross,\n    wr.deduction,\n    wr.debit_account_pec,\n    wr.credit_account_pec,\n    wr.date_pec,\n    wr.title,\n    wr.section,\n    wr.chapter,\n    wr.sub_chapter,\n    wr.line,\n    wr.bundle,\n    wr.region,\n    wr.imputation,\n    wrb.sub_bundle_id\n   FROM (ma_warrant_bundled wrb\n     LEFT JOIN gtp_annual_warrant_view wr ON (((wr.id = wrb.id) AND (wr.fiscal_year = wrb.fiscal_year))));"));
+        super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.view("create view \"ma_warrant_bundled_view\" as  SELECT wr.id,\n    wr.type_id,\n    wr.date,\n    wr.reference,\n    wr.internal_reference,\n    wr.object,\n    wr.place,\n    wr.amount,\n    wr.deposit_date,\n    wr.entry_date,\n    wr.beneficiary_id,\n    wr.step_id,\n    wr.author_id,\n    wr.worker_id,\n    wr.status_id,\n    wr.amount_paid,\n    wr.amount_left,\n    wr.beneficiary_name,\n    wr.beneficiary_abbreviated,\n    wr.beneficiary_code,\n    wr.treasury_id,\n    wr.gross,\n    wr.deduction,\n    wr.debit_account_pec,\n    wr.credit_account_pec,\n    wr.date_pec,\n    wr.title,\n    wr.section,\n    wr.chapter,\n    wr.sub_chapter,\n    wr.line,\n    wr.bundle,\n    wr.region,\n    wr.imputation,\n    wr.no,\n    wr.fiscal_year,\n    wr.annual_amount_to_pay,\n    wr.annual_amount_paid,\n    wr.annual_amount_left,\n    wr.is_split,\n    wrb.sub_bundle_id\n   FROM (ma_warrant_bundled wrb\n     LEFT JOIN gtp_annual_warrant_view wr ON (((wr.id = wrb.id) AND (wr.fiscal_year = wrb.fiscal_year))));"));
     }
 
     /**

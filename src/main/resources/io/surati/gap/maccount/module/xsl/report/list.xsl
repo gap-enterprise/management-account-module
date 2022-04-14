@@ -59,7 +59,15 @@ SOFTWARE.
       </div>
       <div class="card-body">
         <div class="row mt-2">
-          <div class="col-sm-12 col-md-4 offset-md-4">
+          <div class="col-sm-12 col-md-4">
+            <div class="d-flex align-items-center">
+              <label class="col-md-4">Paierie:</label>
+              <select class="col-md-8 custom-select custom-select-sm form-control form-control-sm" aria-controls="example" ng-model="vm.treasuryId" ng-model-options="{{ debounce: 500 }}" ng-change="vm.search()">
+                <option ng-repeat="item in vm.treasuries" value="{{{{item.id}}}}">{{item.name}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-sm-12 col-md-4">
             <div class="d-flex align-items-center">
               <label class="col-md-4">Année:</label>
               <select class="col-md-8 custom-select custom-select-sm form-control form-control-sm" aria-controls="example" ng-model="vm.yearId" ng-model-options="{{ debounce: 500 }}">
@@ -86,7 +94,7 @@ SOFTWARE.
                       <td>Etat compte de gestion</td>
                       <td>
                         <div role="group">
-                          <a href="/maccount/management-account/preview?year={{{{vm.yearId}}}}&amp;{root_page/full}" class="mb-1 mr-1 btn btn-xs btn-outline-primary">
+                          <a href="/maccount/management-account/preview?treasury={{{{vm.treasuryId}}}}&amp;year={{{{vm.yearId}}}}&amp;{root_page/full}" class="mb-1 mr-1 btn btn-xs btn-outline-primary">
                             <i class="fa fa-print"/>
                           </a>
                         </div>
@@ -108,16 +116,26 @@ SOFTWARE.
 				app.controller("AppCtrl", ["$scope", "$http", "$httpParamSerializerJQLike", function ($scope, $http, $httpParamSerializerJQLike) {
 					   var vm = this;
 
+                       vm.treasuries = [
+			                    ]]><xsl:for-each select="treasuries/treasury">
+                                  {
+                                  id: "<xsl:value-of select="id"/>",
+                                  name: "<xsl:value-of select="abbreviated"/>"
+                                  },
+                                </xsl:for-each><![CDATA[
+			           ];
+
 					   vm.years = [
 			                    ]]><xsl:for-each select="budget_years/budget_year">
-      {
-      id: '<xsl:value-of select="."/>'
-      },
-    </xsl:for-each><![CDATA[
+                                {
+                                id: '<xsl:value-of select="."/>'
+                                },
+                      </xsl:for-each><![CDATA[
 					   ];
 
 					   this.$onInit = function(){
 					   	    vm.yearId = vm.years[0].id;
+					   	    vm.treasuryId = vm.treasuries[0].id;
 					   };
 			    }]);
 

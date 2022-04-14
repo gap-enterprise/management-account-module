@@ -8,6 +8,7 @@ import io.surati.gap.gtp.base.api.Title;
 import io.surati.gap.gtp.base.db.DbBundles;
 import io.surati.gap.gtp.base.db.DbSections;
 import io.surati.gap.gtp.base.db.DbTitles;
+import io.surati.gap.gtp.base.db.DbTreasury;
 import io.surati.gap.maccount.module.domain.api.WarrantsToBundle;
 import io.surati.gap.maccount.module.domain.db.DbPaginatedPartialWarrantsToBundle;
 import java.io.IOException;
@@ -49,6 +50,10 @@ public final class RqPartialWarrantsToBundle implements WarrantsToBundle {
 		}
 		this.origin = new DbPaginatedPartialWarrantsToBundle(
 			source,
+			new DbTreasury(
+				source,
+				Long.parseLong(href.single("treasury"))
+			),
 			nbperpage,
 			page,
 			title,

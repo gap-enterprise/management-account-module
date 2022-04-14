@@ -6,6 +6,7 @@ import io.surati.gap.gtp.base.api.AnnualWarrant;
 import io.surati.gap.gtp.base.api.Bundle;
 import io.surati.gap.gtp.base.api.Section;
 import io.surati.gap.gtp.base.api.Title;
+import io.surati.gap.gtp.base.api.Treasury;
 import io.surati.gap.gtp.base.db.DbAnnualWarrant;
 import io.surati.gap.gtp.base.db.DbBundle;
 import io.surati.gap.gtp.base.db.DbSection;
@@ -27,6 +28,8 @@ import org.jooq.impl.DSL;
 public final class DbPaginatedPartialWarrantsToBundle implements WarrantsToBundle {
 
     private final DataSource src;
+
+    private final Treasury treasury;
 
     private final Title title;
 
@@ -57,10 +60,11 @@ public final class DbPaginatedPartialWarrantsToBundle implements WarrantsToBundl
      * @param filter Filter on reference and imputation
      */
     public DbPaginatedPartialWarrantsToBundle(
-        final DataSource src, final Long nbperpage, final Long page, final Title title,
+        final DataSource src, final Treasury treasury, final Long nbperpage, final Long page, final Title title,
         final Section section, final Bundle pbundle, final short year, final String filter
     ) {
         this.src = src;
+        this.treasury = treasury;
         this.ctx = new JooqContext(this.src);
         this.nbperpage = nbperpage;
         this.page = page;
@@ -136,6 +140,8 @@ public final class DbPaginatedPartialWarrantsToBundle implements WarrantsToBundl
             MaWarrantToBundleView.MA_WARRANT_TO_BUNDLE_VIEW.FISCAL_YEAR.eq(this.year)
         ).and(
             MaWarrantToBundleView.MA_WARRANT_TO_BUNDLE_VIEW.IS_SPLIT.eq(true)
+        ).and(
+            MaWarrantToBundleView.MA_WARRANT_TO_BUNDLE_VIEW.TREASURY_ID.eq(this.treasury.id())
         );
         if (this.pbundle != Bundle.EMPTY) {
             result = result.and(
@@ -173,6 +179,7 @@ public final class DbPaginatedPartialWarrantsToBundle implements WarrantsToBundl
             .set(MaSubBundle.MA_SUB_BUNDLE.SECTION, asection.code())
             .set(MaSubBundle.MA_SUB_BUNDLE.TITLE, atitle.code())
             .set(MaSubBundle.MA_SUB_BUNDLE.BUNDLE_SPLIT_WARRANT, true)
+            .set(MaSubBundle.MA_SUB_BUNDLE.TREASURY_ID, this.treasury.id())
             .set(
                 MaSubBundle.MA_SUB_BUNDLE.NO,
                 this.ctx.fetchCount(
@@ -180,6 +187,8 @@ public final class DbPaginatedPartialWarrantsToBundle implements WarrantsToBundl
                     MaSubBundle.MA_SUB_BUNDLE.FISCAL_YEAR.eq(this.year)
                         .and(
                             MaSubBundle.MA_SUB_BUNDLE.BUNDLE_SPLIT_WARRANT.eq(true)
+                        ).and(
+                            MaSubBundle.MA_SUB_BUNDLE.TREASURY_ID.eq(this.treasury.id())
                         )
                 ) + 1
             )
@@ -234,7 +243,7 @@ public final class DbPaginatedPartialWarrantsToBundle implements WarrantsToBundl
                 final Bundle lbundle = new DbBundle(this.src, group.value3());
                 for (int pge = 1; pge <= nbpage; pge++) {
                     final Iterable<AnnualWarrant> warrants = new DbPaginatedPartialWarrantsToBundle(
-                        this.src, (long)threshold, 1L,
+                        this.src, this.treasury, (long)threshold, 1L,
                         ltitle,
                         lsection,
                         lbundle,

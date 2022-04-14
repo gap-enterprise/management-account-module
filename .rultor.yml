@@ -15,3 +15,12 @@ release:
      git commit -am "${tag}"
      mvn clean install -Dinvoker.skip
      mvn clean deploy -Psonatype,surati --errors --settings /home/r/settings.xml -Dstyle.color=never
+deploy:
+  script: |-
+    mkdir ~/.ssh
+    mv ~/id_rsa_surati_vps ~/id_rsa_surati_vps.pub ~/.ssh/
+    chmod -R 600 ~/.ssh/*
+    mv ~/surati_vps_ssh_config ~/.ssh/config
+    ssh surati_vps "rm -rf gap"
+    scp -C -r ~/repo surati_vps:~/gap
+    ssh surati_vps "cd gap && sh deploy.sh -p 7070"

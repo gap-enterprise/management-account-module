@@ -27,10 +27,12 @@ import io.surati.gap.gtp.base.db.DbBudgetYears;
 import io.surati.gap.gtp.base.db.DbBundles;
 import io.surati.gap.gtp.base.db.DbSections;
 import io.surati.gap.gtp.base.db.DbTitles;
+import io.surati.gap.gtp.base.db.DbTreasuries;
 import io.surati.gap.gtp.base.module.xe.XeBundles;
 import io.surati.gap.gtp.base.module.xe.XeSections;
 import io.surati.gap.gtp.base.module.xe.XeTitles;
 import io.surati.gap.maccount.module.web.xe.XeBudgetYears;
+import io.surati.gap.maccount.module.web.xe.XeTreasuries;
 import io.surati.gap.web.base.RsPage;
 import io.surati.gap.web.base.xe.XeRootPage;
 import javax.sql.DataSource;
@@ -67,7 +69,8 @@ public final class TkReport implements Take {
 			new XeSections(new DbSections(this.source)),
 			new XeTitles(new DbTitles(this.source)),
 			new XeBundles(new DbBundles(this.source)),
-			new XeBudgetYears(new DbBudgetYears(this.source))
+			new XeBudgetYears(new DbBudgetYears(this.source)),
+			new XeTreasuries(new DbTreasuries(this.source))
 		);
 		return new RsPage(
             "/io/surati/gap/maccount/module/xsl/report/list.xsl",

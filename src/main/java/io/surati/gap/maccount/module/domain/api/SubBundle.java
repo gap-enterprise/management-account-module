@@ -21,6 +21,7 @@ import io.surati.gap.gtp.base.api.AnnualWarrant;
 import io.surati.gap.gtp.base.api.Bundle;
 import io.surati.gap.gtp.base.api.Section;
 import io.surati.gap.gtp.base.api.Title;
+import io.surati.gap.gtp.base.api.Treasury;
 import java.time.LocalDateTime;
 
 /**
@@ -34,6 +35,12 @@ public interface SubBundle {
      * @return Number
      */
 	Long id();
+
+	/**
+	 * Get treasury.
+	 * @return Treasury
+	 */
+	Treasury treasury();
 
     /**
      * Order number.

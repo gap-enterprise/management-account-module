@@ -17,7 +17,7 @@ import org.jooq.ForeignKey;
 import org.jooq.Identity;
 import org.jooq.Name;
 import org.jooq.Record;
-import org.jooq.Row9;
+import org.jooq.Row10;
 import org.jooq.Schema;
 import org.jooq.Table;
 import org.jooq.TableField;
@@ -63,6 +63,11 @@ public class MaSubBundle extends TableImpl<MaSubBundleRecord> {
      * The column <code>public.ma_sub_bundle.fiscal_year</code>.
      */
     public final TableField<MaSubBundleRecord, Short> FISCAL_YEAR = createField(DSL.name("fiscal_year"), SQLDataType.SMALLINT.nullable(false), this, "");
+
+    /**
+     * The column <code>public.ma_sub_bundle.treasury_id</code>.
+     */
+    public final TableField<MaSubBundleRecord, Long> TREASURY_ID = createField(DSL.name("treasury_id"), SQLDataType.BIGINT.nullable(false), this, "");
 
     /**
      * The column <code>public.ma_sub_bundle.creation_date</code>.
@@ -174,11 +179,11 @@ public class MaSubBundle extends TableImpl<MaSubBundleRecord> {
     }
 
     // -------------------------------------------------------------------------
-    // Row9 type methods
+    // Row10 type methods
     // -------------------------------------------------------------------------
 
     @Override
-    public Row9<Long, Integer, Short, LocalDateTime, Long, String, String, String, Boolean> fieldsRow() {
-        return (Row9) super.fieldsRow();
+    public Row10<Long, Integer, Short, Long, LocalDateTime, Long, String, String, String, Boolean> fieldsRow() {
+        return (Row10) super.fieldsRow();
     }
 }

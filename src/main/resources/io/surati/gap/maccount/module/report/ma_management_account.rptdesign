@@ -17,6 +17,17 @@
                 <property name="category">Unformatted</property>
             </structure>
         </scalar-parameter>
+        <scalar-parameter name="Treasury" id="76">
+            <property name="valueType">static</property>
+            <property name="dataType">string</property>
+            <property name="distinct">true</property>
+            <list-property name="selectionList"/>
+            <property name="paramType">simple</property>
+            <property name="controlType">text-box</property>
+            <structure name="format">
+                <property name="category">Unformatted</property>
+            </structure>
+        </scalar-parameter>
     </parameters>
     <data-sources>
         <script-data-source name="srcLines" id="47"/>
@@ -131,9 +142,22 @@ return false;]]></method>
         </simple-master-page>
     </page-setup>
     <body>
+        <data id="78">
+            <property name="fontSize">10pt</property>
+            <property name="textAlign">left</property>
+            <list-property name="boundDataColumns">
+                <structure>
+                    <property name="name">Treasury</property>
+                    <expression name="expression" type="javascript">params["Treasury"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+            </list-property>
+            <property name="resultSetColumn">Treasury</property>
+        </data>
         <label id="46">
             <property name="fontSize">16pt</property>
             <property name="fontWeight">bold</property>
+            <property name="marginTop">30pt</property>
             <property name="textAlign">center</property>
             <text-property name="text">COMPTE DE GESTION</text-property>
         </label>

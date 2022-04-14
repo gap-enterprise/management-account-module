@@ -19,8 +19,9 @@ public final class TkManagementAccountPreview extends TkWrap {
                     new XeAppend(
                         "report_url",
                         String.format(
-                            "/maccount/report/management-account/print?year=%s",
-                            new RqHref.Smart(req).single("year")
+                            "/maccount/report/management-account/print?year=%s&treasury=%s",
+                            new RqHref.Smart(req).single("year"),
+                            new RqHref.Smart(req).single("treasury")
                         )
                     )
                 );

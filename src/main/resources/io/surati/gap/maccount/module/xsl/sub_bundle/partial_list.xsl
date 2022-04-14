@@ -94,7 +94,15 @@ SOFTWARE.
           </div>
         </div>
         <div class="row mt-2">
-          <div class="col-sm-12 col-md-4 offset-md-4">
+          <div class="col-sm-12 col-md-4">
+            <div class="d-flex align-items-center">
+              <label class="col-md-4">Paierie:</label>
+              <select class="col-md-8 custom-select custom-select-sm form-control form-control-sm" aria-controls="example" ng-model="vm.treasuryId" ng-model-options="{{ debounce: 500 }}" ng-change="vm.search()">
+                <option ng-repeat="item in vm.treasuries" value="{{{{item.id}}}}">{{item.name}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-sm-12 col-md-4">
             <div class="d-flex align-items-center">
               <label class="col-md-4">Année:</label>
               <select class="col-md-8 custom-select custom-select-sm form-control form-control-sm" aria-controls="example" ng-model="vm.yearId" ng-model-options="{{ debounce: 500 }}" ng-change="vm.search()">
@@ -230,6 +238,7 @@ SOFTWARE.
 				                    page: vm.currentPage,
 				                    nbperpage: vm.nbItemsPerPage,
 				                    filter: vm.filter,
+				                    treasury: vm.treasuryId,
 				                    year: vm.yearId,
 									section: vm.sectionId,
 									title: vm.titleId,
@@ -256,7 +265,16 @@ SOFTWARE.
 		               vm.pageChanged = function(){
 		               		vm.search();
 		               };	
-		               
+
+		               vm.treasuries = [
+			                    ]]><xsl:for-each select="treasuries/treasury">
+                                  {
+                                  id: "<xsl:value-of select="id"/>",
+                                  name: "<xsl:value-of select="abbreviated"/>"
+                                  },
+                                </xsl:for-each><![CDATA[
+			           ];
+
 		               vm.sections = [
 			                    ]]><xsl:for-each select="sections/section">
 			                    {
@@ -304,6 +322,7 @@ SOFTWARE.
 					   	    vm.bundleId = "";
 					   	    vm.titleId = "";
 					   	    vm.yearId = vm.years[0].id;
+					   	    vm.treasuryId = vm.treasuries[0].id;
 					   	    vm.search();
 					   };
 			    }]);	

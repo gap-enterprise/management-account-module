@@ -23,10 +23,12 @@ import io.surati.gap.gtp.base.api.AnnualWarrant;
 import io.surati.gap.gtp.base.api.Bundle;
 import io.surati.gap.gtp.base.api.Section;
 import io.surati.gap.gtp.base.api.Title;
+import io.surati.gap.gtp.base.api.Treasury;
 import io.surati.gap.gtp.base.db.DbAnnualWarrant;
 import io.surati.gap.gtp.base.db.DbBundle;
 import io.surati.gap.gtp.base.db.DbSection;
 import io.surati.gap.gtp.base.db.DbTitle;
+import io.surati.gap.gtp.base.db.DbTreasury;
 import io.surati.gap.maccount.module.domain.api.SubBundle;
 import io.surati.gap.maccount.module.domain.db.jooq.generated.tables.MaSubBundle;
 import io.surati.gap.maccount.module.domain.db.jooq.generated.tables.MaWarrantBundled;
@@ -71,8 +73,13 @@ public final class DbSubBundle implements SubBundle {
     public Long id() {
     	return this.record.getId();
     }
-    
-    @Override
+
+	@Override
+	public Treasury treasury() {
+		return new DbTreasury(this.src, this.record.getTreasuryId());
+	}
+
+	@Override
     public int order() {
     	return this.record.getNo();
     }

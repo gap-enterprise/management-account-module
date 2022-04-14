@@ -41,6 +41,7 @@ public final class BirtManagementAccountPrinter extends PrinterWrap {
 					task.setLocale(Locale.FRENCH);
 					task.setRenderOption(pdfOptions);
 					task.setAppContext(context);
+					task.setParameterValue("Treasury", macc.treasury().name());
 					task.setParameterValue("FiscalYear", macc.year());
 					task.run();
 					task.close();

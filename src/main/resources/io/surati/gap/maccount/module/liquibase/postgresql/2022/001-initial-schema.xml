@@ -22,6 +22,7 @@ SOFTWARE.
 	        id bigserial PRIMARY KEY,
 		    no integer NOT NULL,
 		    fiscal_year smallint NOT NULL,
+		    treasury_id BIGINT NOT NULL,
 			creation_date TIMESTAMP WITHOUT TIME ZONE NOT NULL,
 			author_id bigint NOT NULL,
 	        title character varying(10) NOT NULL,
@@ -65,6 +66,7 @@ SOFTWARE.
 
 		CREATE VIEW ma_management_account_view AS
 			SELECT
+		        awr.treasury_id,
 		        awr.fiscal_year,
 				sec.code section_code,
 				sec.name section_name,
@@ -74,8 +76,8 @@ SOFTWARE.
 			FROM gtp_annual_warrant_view awr
 		    LEFT JOIN gtp_section sec ON sec.code = awr.section
 		    LEFT JOIN ma_warrant_bundled_view awrb ON awrb.id = awr.id AND awrb.fiscal_year=awr.fiscal_year
-			GROUP BY awr.fiscal_year, sec.code, sec.name
-			ORDER BY awr.fiscal_year, sec.code;
+			GROUP BY awr.treasury_id, awr.fiscal_year, sec.code, sec.name
+			ORDER BY awr.treasury_id, awr.fiscal_year, sec.code;
     </sql>
   </changeSet>
 </databaseChangeLog>

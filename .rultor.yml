@@ -2,6 +2,9 @@ assets:
   settings.xml: gap-enterprise/home#assets/settings.xml
   public.key: gap-enterprise/home#assets/public.key
   private.key: gap-enterprise/home#assets/private.key
+  id_rsa_surati_vps: gap-enterprise/home#assets/id_rsa_surati_vps
+  id_rsa_surati_vps.pub: gap-enterprise/home#assets/id_rsa_surati_vps.pub
+  surati_vps_ssh_config: gap-enterprise/home#assets/surati_vps_ssh_config
 architect:
   - baudoliver7
 install: |

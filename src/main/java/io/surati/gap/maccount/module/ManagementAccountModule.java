@@ -50,7 +50,7 @@ public enum ManagementAccountModule implements Module {
 				"lnr-diamond",
 				"Compte de gestion",
 				"bg-success",
-				"Suivie de l'exécution des paiements",
+				"Suivi de l'exécution des paiements",
 				new IterableOf<>(
 					new SimpleSubmenu(
 						1, "entire-warrant-to-bundle", "lnr-pointer-left",

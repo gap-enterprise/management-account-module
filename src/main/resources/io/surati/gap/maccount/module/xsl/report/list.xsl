@@ -61,8 +61,8 @@ SOFTWARE.
         <div class="row mt-2">
           <div class="col-sm-12 col-md-4">
             <div class="d-flex align-items-center">
-              <label class="col-md-4">Paierie:</label>
-              <select class="col-md-8 custom-select custom-select-sm form-control form-control-sm" aria-controls="example" ng-model="vm.treasuryId" ng-model-options="{{ debounce: 500 }}" ng-change="vm.search()">
+              <label class="col-md-6">Poste comptable:</label>
+              <select class="col-md-6 custom-select custom-select-sm form-control form-control-sm" aria-controls="example" ng-model="vm.treasuryId" ng-model-options="{{ debounce: 500 }}" ng-change="vm.search()">
                 <option ng-repeat="item in vm.treasuries" value="{{{{item.id}}}}">{{item.name}}</option>
               </select>
             </div>
@@ -94,7 +94,7 @@ SOFTWARE.
                       <td>Compte de gestion</td>
                       <td>
                         <div role="group">
-                          <a href="/maccount/management-account/preview?treasury={{{{vm.treasuryId}}}}&amp;year={{{{vm.yearId}}}}&amp;{root_page/full}" class="mb-1 mr-1 btn btn-xs btn-outline-primary">
+                          <a href="/maccount/management-account/preview?treasury={{{{vm.treasuryId}}}}&amp;year={{{{vm.yearId}}}}&amp;{root_page/full}" class="btn btn-xs btn-outline-primary">
                             <i class="fa fa-print"/>
                           </a>
                         </div>
@@ -105,7 +105,7 @@ SOFTWARE.
                       <td>Détails des dépenses budgétaires</td>
                       <td>
                         <div role="group">
-                          <a href="/maccount/budget-expenditure-details/preview?treasury={{{{vm.treasuryId}}}}&amp;year={{{{vm.yearId}}}}&amp;{root_page/full}" class="mb-1 mr-1 btn btn-xs btn-outline-primary">
+                          <a href="/maccount/budget-expenditure-details/preview?treasury={{{{vm.treasuryId}}}}&amp;year={{{{vm.yearId}}}}&amp;{root_page/full}" class="btn btn-xs btn-outline-primary">
                             <i class="fa fa-print"/>
                           </a>
                         </div>

@@ -66,7 +66,7 @@ SOFTWARE.
             <div class="col-md-4">
               <div class="position-relative form-group">
                 <h5>
-                  <xsl:text>Paierie</xsl:text>
+                  <xsl:text>Poste comptable</xsl:text>
                 </h5>
                 <p>
                   <xsl:value-of select="item/treasury"/>

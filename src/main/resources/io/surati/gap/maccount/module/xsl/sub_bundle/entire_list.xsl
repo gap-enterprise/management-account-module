@@ -96,8 +96,8 @@ SOFTWARE.
         <div class="row mt-2">
           <div class="col-sm-12 col-md-4">
             <div class="d-flex align-items-center">
-              <label class="col-md-4">Paierie:</label>
-              <select class="col-md-8 custom-select custom-select-sm form-control form-control-sm" aria-controls="example" ng-model="vm.treasuryId" ng-model-options="{{ debounce: 500 }}" ng-change="vm.search()">
+              <label class="col-md-6">Poste comptable:</label>
+              <select class="col-md-6 custom-select custom-select-sm form-control form-control-sm" aria-controls="example" ng-model="vm.treasuryId" ng-model-options="{{ debounce: 500 }}" ng-change="vm.search()">
                 <option ng-repeat="item in vm.treasuries" value="{{{{item.id}}}}">{{item.name}}</option>
               </select>
             </div>
@@ -191,10 +191,10 @@ SOFTWARE.
 			                  </td>
                       <td>
                         <div role="group">
-                          <a href="/maccount/sub-bundle/view?id={{{{item.id}}}}&amp;{root_page/full}" class="mb-1 mr-1 btn btn-xs btn-outline-primary">
+                          <a href="/maccount/sub-bundle/view?id={{{{item.id}}}}&amp;{root_page/full}" class="mr-1 btn btn-xs btn-outline-primary">
                             <i class="fa fa-eye"/>
                           </a>
-                          <a href="/maccount/sub-bundle/print?id={{{{item.id}}}}&amp;{root_page/full}" class="mb-1 mr-1 btn btn-xs btn-outline-primary">
+                          <a href="/maccount/sub-bundle/print?id={{{{item.id}}}}&amp;{root_page/full}" class="btn btn-xs btn-outline-primary">
                             <i class="fa fa-print"/>
                           </a>
                         </div>

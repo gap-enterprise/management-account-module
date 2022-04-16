@@ -96,7 +96,7 @@ SOFTWARE.
     <dependency>
       <groupId>org.postgresql</groupId>
       <artifactId>postgresql</artifactId>
-      <version>42.3.3</version>
+      <version>42.3.4</version>
     </dependency>
     <!--
           Use 1.4.x because there is an error on 2.x.x.
@@ -190,7 +190,7 @@ SOFTWARE.
     <dependency>
       <groupId>io.surati.gap</groupId>
       <artifactId>web-base</artifactId>
-      <version>0.8.1</version>
+      <version>0.8.2</version>
     </dependency>
     <dependency>
       <groupId>net.sourceforge.saxon</groupId>
@@ -208,7 +208,7 @@ SOFTWARE.
     <dependency>
       <groupId>io.surati.gap</groupId>
       <artifactId>admin-base</artifactId>
-      <version>0.5.2</version>
+      <version>0.5.3</version>
     </dependency>
     <dependency>
       <groupId>io.surati.gap</groupId>
@@ -223,7 +223,7 @@ SOFTWARE.
     <dependency>
       <groupId>io.surati.gap</groupId>
       <artifactId>gtp-base-module</artifactId>
-      <version>0.2.0</version>
+      <version>0.2.1</version>
     </dependency>
     <dependency>
       <groupId>io.surati.gap</groupId>
